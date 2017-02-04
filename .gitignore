@@ -1,0 +1,8 @@
+#zendstudio
+.buildpath
+.project
+/.settings
+#mac
+.DS_Store
+#*nux
+*.swp
