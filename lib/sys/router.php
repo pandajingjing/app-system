@@ -140,7 +140,6 @@ class lib_sys_router
             $sParam = $this->_createParam($p_aRouterParams);
             $aURLParam[] = $sParam;
             $sURL = join('/', $aURLParam);
-            return $sURL;
         } else { // 自定义路由规则
             $aRoutes = get_config('route', 'router');
             $aTmpParams = [];
@@ -165,6 +164,7 @@ class lib_sys_router
                 return false;
             }
         }
+        return get_config('self_domain', 'domain') . $sURL;
     }
 
     /**
@@ -175,6 +175,7 @@ class lib_sys_router
      */
     protected function _parseParam($p_sParam)
     {
+        $aParam = [];
         $aTmp = explode($this->_sParamSeperator, $p_sParam);
         $iCnt = count($aTmp);
         for ($i = 0;;) {

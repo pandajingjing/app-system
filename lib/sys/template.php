@@ -117,12 +117,9 @@ class lib_sys_template
         function pandaRes($p_sPath, $p_sDomainKey = 'cdn_domain')
         {
             $sStaticDomain = get_config($p_sDomainKey, 'domain');
-            return get_config('page_secure', 'system') ? 'https://' : 'http://' . $sStaticDomain . $p_sPath;
+            return $sStaticDomain . $p_sPath;
         }
         
-        if (get_config('page_minify', 'system')) {
-            ob_start('util_sys_minifyhtml::minify');
-        }
         $this->pandaTpl($p_sPageName);
     }
 

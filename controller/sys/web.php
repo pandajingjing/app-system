@@ -54,12 +54,12 @@ abstract class controller_sys_web extends controller_sys_http
      * @param string $p_sChannel            
      * @param string $p_sAlias            
      * @param array $p_aRouterParam            
-     * @todo
-     *
      * @return string
      */
     protected function createOutURL($p_sChannel, $p_sAlias, $p_aRouterParam = [])
-    {}
+    {
+        return util_url::createOutURL($p_sChannel, $p_sAlias, $p_aRouterParam);
+    }
 
     /**
      * 设置cookie

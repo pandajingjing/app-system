@@ -33,6 +33,14 @@ class me extends 码畜
 ```
 
 ## change log
+- 20170206 V0.1.1
+ - 1.bin文件移动到system文件夹内
+ - 2.创建生成外部url的工具类util_url
+ - 3.将url中协议(https?://)和域名的配置合并
+ - 4.取消php压缩页面的功能
+ - 5.修改本地调用service的bug
+ - 6.修改路由生成本地url时返回全部url(包括域名)
+ - 7.增加$_SERVER['HTTP_HOST']的返回
 - 20170204 V0.1
  - 1.定义仓库内容
  - 2.创建基本目录结构

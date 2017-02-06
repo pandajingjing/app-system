@@ -208,6 +208,7 @@ class lib_sys_var
         $aServer['HTTP_USER_AGENT'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
         $aServer['DISPATCH_PARAM'] = $_SERVER['REQUEST_URI'];
         $aServer['HTTP_REFERER'] = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+        $aServer['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
         return $aServer;
     }
 

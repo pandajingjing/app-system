@@ -45,7 +45,7 @@ class lib_sys_client
             $oRelClass = new ReflectionClass($sBllName);
             $oRelInstance = $oRelClass->newInstance();
             $oRelMethod = $oRelClass->getMethod($p_sFuncName);
-            return $oRelMethod->invoke($oRelInstance, $p_aFuncParam);
+            return $oRelMethod->invokeArgs($oRelInstance, $p_aFuncParam);
         } else {
             throw new Exception($sBllName . ' does not found');
         }
