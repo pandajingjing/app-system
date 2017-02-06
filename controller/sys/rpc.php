@@ -11,7 +11,7 @@
  * @author jxu
  * @todo
  */
-class controller_sys_rpc extends controller_sys_http
+abstract class controller_sys_rpc extends controller_sys_http
 {
 
     /**

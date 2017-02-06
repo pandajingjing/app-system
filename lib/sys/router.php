@@ -76,47 +76,53 @@ class lib_sys_router
     function parseRoute($p_sDispatchParam)
     {
         $aDispatchParams = parse_url($p_sDispatchParam);
-        $aTmp = explode('/', $aDispatchParams['path']);
-        $sParam = array_pop($aTmp);
-        if (1 == count($aTmp)) {
-            $sControllerName = 'controller_home_home';
+        $sPath = $aDispatchParams['path'];
+        // 自定义路由规则
+        $aRoutes = get_config('route', 'router');
+        $aTmpParams = [];
+        $bFound = false;
+        foreach ($aRoutes as $sPattern => $aRoute) {
+            if (preg_match($sPattern, $sPath, $aTmpParams)) {
+                $bFound = true;
+                break;
+            }
+        }
+        $sControllerName = '';
+        $aRouteParams = [];
+        if ($bFound) {
+            $sControllerName = $aRoute[0];
+            if (isset($aRoute[1])) {
+                $aParamList = [];
+                $iIndex = 0;
+                foreach ($aRoute[1] as $sKey) {
+                    $aParamList[$sKey] = $aTmpParams[++ $iIndex];
+                }
+                $aRouteParams = $aParamList;
+            }
         } else {
-            $aTmp[0] = 'controller';
-            $sControllerName = join('_', $aTmp);
+            $aTmp = explode('/', $sPath);
+            $sParam = array_pop($aTmp);
+            if (1 == count($aTmp)) {
+                $sControllerName = 'controller_home_home';
+            } else {
+                $aTmp[0] = 'controller';
+                $sControllerName = join('_', $aTmp);
+            }
+            $aRouteParams = $this->_parseParam($sParam);
         }
         if (class_exists($sControllerName)) { // 默认路由规则
             $oRelClass = new ReflectionClass($sControllerName);
             if ($oRelClass->isInstantiable()) {
                 $this->_sControllerName = $sControllerName;
-                $this->_aRouterParams = $this->_parseParam($sParam);
+                $this->_aRouterParams = $aRouteParams;
                 return true;
             } else {
                 $this->_sControllerName = 'controller_home_404';
+                $this->_aRouterParams['sURL'] = $sPath;
             }
-        } else { // 自定义路由规则
-            $aRoutes = get_config('route', 'router');
-            $aTmpParams = [];
-            $bFound = false;
-            foreach ($aRoutes as $sPattern => $aRoute) {
-                if (preg_match($sPattern, $aDispatchParams['path'], $aTmpParams)) {
-                    $bFound = true;
-                    break;
-                }
-            }
-            if ($bFound) {
-                $this->_sControllerName = $aRoute[0];
-                if (isset($aRoute[1])) {
-                    $aParamList = [];
-                    $iIndex = 0;
-                    foreach ($aRoute[1] as $sKey) {
-                        $aParamList[$sKey] = $aTmpParams[++ $iIndex];
-                    }
-                    $this->_aRouteParams = $aParamList;
-                }
-            } else {
-                $this->_sControllerName = 'controller_home_404';
-                $this->_aRouterParams['sURL'] = $sParam;
-            }
+        } else {
+            $this->_sControllerName = 'controller_home_404';
+            $this->_aRouterParams['sURL'] = $sPath;
         }
     }
 
@@ -130,40 +136,45 @@ class lib_sys_router
     function createURL($p_sControllerName, $p_aRouterParams)
     {
         $sURL = '';
-        if (class_exists($p_sControllerName)) { // 默认路由规则
-            if ('controller_home_home' == $p_sControllerName) {
-                $aURLParam = [];
-            } else {
-                $aURLParam = explode('_', $p_sControllerName);
-                $aURLParam[0] = '';
-            }
-            $sParam = $this->_createParam($p_aRouterParams);
-            $aURLParam[] = $sParam;
-            $sURL = join('/', $aURLParam);
-        } else { // 自定义路由规则
-            $aRoutes = get_config('route', 'router');
-            $aTmpParams = [];
-            $bFound = false;
-            foreach ($aRoutes as $sPattern => $aRoute) {
-                if (preg_match($sPattern, $aDispatchParams['path'], $aTmpParams)) {
-                    $bFound = true;
-                    break;
-                }
-            }
-            if ($bFound) {
-                $this->_sControllerName = $aRoute[0];
-                if (isset($aRoute[1])) {
-                    $aParamList = [];
-                    $iIndex = 0;
-                    foreach ($aRoute[1] as $sKey) {
-                        $aParamList[$sKey] = $aTmpParams[++ $iIndex];
-                    }
-                    $this->_aRouteParams = $aParamList;
-                }
-            } else {
-                return false;
+        // 自定义路由规则
+        $aRoutes = get_config('route', 'router');
+        $bFound = false;
+        foreach ($aRoutes as $sPattern => $aRoute) {
+            if ($aRoute[0] == $p_sControllerName) {
+                $bFound = true;
+                break;
             }
         }
+        if ($bFound) {
+            $aSearchKey = $aReplaceVal = $aNormalParam = [];
+            foreach ($aRoute[1] as $sKey) {
+                $aSearchKey[] = '{' . $sKey . '}';
+                $aReplaceVal[] = $p_aRouterParams[$sKey];
+                unset($p_aRouterParams[$sKey]);
+            }
+            if (empty($p_aRouterParams)) {
+                $sURL = str_replace($aSearchKey, $aReplaceVal, $aRoute[2]);
+            } else {
+                $sURL = str_replace($aSearchKey, $aReplaceVal, $aRoute[2]) . '?' . http_build_query($p_aRouterParams);
+            }
+        } else {
+            if (class_exists($p_sControllerName)) { // 默认路由规则
+                if ('controller_home_home' == $p_sControllerName) {
+                    $aURLParam = [
+                        ''
+                    ];
+                } else {
+                    $aURLParam = explode('_', $p_sControllerName);
+                    $aURLParam[0] = '';
+                }
+                $sParam = $this->_createParam($p_aRouterParams);
+                $aURLParam[] = $sParam;
+                $sURL = join('/', $aURLParam);
+            } else {
+                throw new Exception('controller(' . $p_sControllerName . ') is lost.');
+            }
+        }
+        
         return get_config('self_domain', 'domain') . $sURL;
     }
 

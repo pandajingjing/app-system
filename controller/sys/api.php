@@ -12,7 +12,7 @@
  * @todo
  *
  */
-class controller_sys_api extends controller_sys_service
+abstract class controller_sys_api extends controller_sys_service
 {
 
     /**

@@ -41,6 +41,8 @@ class me extends 码畜
  - 5.修改本地调用service的bug
  - 6.修改路由生成本地url时返回全部url(包括域名)
  - 7.增加$_SERVER['HTTP_HOST']的返回
+ - 8.增加框架输出跨域配置,phpinfo,robot的输出
+ - 9.完善自定义url的路由操作
 - 20170204 V0.1
  - 1.定义仓库内容
  - 2.创建基本目录结构
