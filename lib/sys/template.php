@@ -114,9 +114,9 @@ class lib_sys_template
          * @param string $p_sPath            
          * @return string
          */
-        function pandaRes($p_sPath, $p_sDomainKey = 'cdn_domain')
+        function pandaRes($p_sPath, $p_sDomainKey = 'cdn_scheme_domain')
         {
-            $sStaticDomain = get_config($p_sDomainKey, 'domain');
+            $sStaticDomain = lib_sys_var::getInstance()->getConfig($p_sDomainKey, 'domain');
             return $sStaticDomain . $p_sPath;
         }
         

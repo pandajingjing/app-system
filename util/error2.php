@@ -95,7 +95,7 @@ class util_error
      *
      * @var string
      */
-    const TYPE_ERROR = 'Error';
+    const TYPE_UNKNOWN_ERROR = 'Unknown_Error';
 
     /**
      * 错误池

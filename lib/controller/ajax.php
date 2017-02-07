@@ -10,6 +10,6 @@
  *
  * @author jxu
  */
-abstract class contoller_sys_ajax extends controller_sys_service
+abstract class lib_controller_ajax extends lib_controller_service
 {
 }

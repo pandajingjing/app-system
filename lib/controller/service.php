@@ -10,7 +10,7 @@
  *
  * @author jxu
  */
-abstract class controller_sys_service extends controller_sys_http
+abstract class lib_controller_service extends lib_controller_http
 {
 
     /**
@@ -20,7 +20,7 @@ abstract class controller_sys_service extends controller_sys_http
      */
     function afterRequest()
     {
-        $this->addHeader('Content-type: application/json;charset=UTF-8');
+        $this->addHeader('Content-type: application/json;charset=utf-8');
         parent::afterRequest();
     }
 

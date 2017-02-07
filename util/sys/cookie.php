@@ -39,14 +39,16 @@ class util_sys_cookie
      * @param string $p_sValue            
      * @param int $p_iExpireTime            
      * @param string $p_sPath            
+     * @param string $p_sDomain            
      */
-    static function setCookie($p_sName, $p_sValue, $p_iExpireTime, $p_sPath = '/')
+    static function setCookie($p_sName, $p_sValue, $p_iExpireTime, $p_sPath = '/', $p_sDomain = '')
     {
         self::$_aSendCookies[] = array(
             $p_sName,
             $p_sValue,
             $p_iExpireTime,
-            $p_sPath
+            $p_sPath,
+            $p_sDomain
         );
     }
 
@@ -56,7 +58,7 @@ class util_sys_cookie
     static function sendCookies()
     {
         foreach (self::$_aSendCookies as $aCookie) {
-            setcookie($aCookie[0], $aCookie[1], $aCookie[2], $aCookie[3]);
+            setcookie($aCookie[0], $aCookie[1], $aCookie[2], $aCookie[3], $aCookie[4]);
         }
     }
 }

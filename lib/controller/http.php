@@ -10,7 +10,7 @@
  *
  * @author jxu
  */
-abstract class controller_sys_http extends lib_sys_controller
+abstract class lib_controller_http extends lib_sys_controller
 {
 
     /**

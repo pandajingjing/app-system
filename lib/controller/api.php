@@ -12,7 +12,7 @@
  * @todo
  *
  */
-abstract class controller_sys_api extends controller_sys_service
+abstract class lib_controller_api extends lib_controller_service
 {
 
     /**
@@ -33,8 +33,5 @@ abstract class controller_sys_api extends controller_sys_service
     }
 
     protected function verify()
-    {}
-
-    function doRequest()
     {}
 }

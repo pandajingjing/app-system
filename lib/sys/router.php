@@ -78,7 +78,7 @@ class lib_sys_router
         $aDispatchParams = parse_url($p_sDispatchParam);
         $sPath = $aDispatchParams['path'];
         // 自定义路由规则
-        $aRoutes = get_config('route', 'router');
+        $aRoutes = lib_sys_var::getInstance()->getConfig('route', 'router');
         $aTmpParams = [];
         $bFound = false;
         foreach ($aRoutes as $sPattern => $aRoute) {
@@ -137,7 +137,7 @@ class lib_sys_router
     {
         $sURL = '';
         // 自定义路由规则
-        $aRoutes = get_config('route', 'router');
+        $aRoutes = lib_sys_var::getInstance()->getConfig('route', 'router');
         $bFound = false;
         foreach ($aRoutes as $sPattern => $aRoute) {
             if ($aRoute[0] == $p_sControllerName) {
@@ -146,11 +146,12 @@ class lib_sys_router
             }
         }
         if ($bFound) {
-            $aSearchKey = $aReplaceVal = $aNormalParam = [];
+            $aSearchKey = $aReplaceVal = [];
+            $aNormalParam = $p_aRouterParams;
             foreach ($aRoute[1] as $sKey) {
                 $aSearchKey[] = '{' . $sKey . '}';
                 $aReplaceVal[] = $p_aRouterParams[$sKey];
-                unset($p_aRouterParams[$sKey]);
+                unset($aNormalParam[$sKey]);
             }
             if (empty($p_aRouterParams)) {
                 $sURL = str_replace($aSearchKey, $aReplaceVal, $aRoute[2]);
@@ -174,8 +175,7 @@ class lib_sys_router
                 throw new Exception('controller(' . $p_sControllerName . ') is lost.');
             }
         }
-        
-        return get_config('self_domain', 'domain') . $sURL;
+        return lib_sys_var::getInstance()->getConfig('self_scheme_domain', 'domain') . $sURL;
     }
 
     /**

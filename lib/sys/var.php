@@ -44,6 +44,13 @@ class lib_sys_var
     private $_aFile = [];
 
     /**
+     * 配置数据
+     *
+     * @var array
+     */
+    private $_aConfig = [];
+
+    /**
      * 获取的cookie数据
      *
      * @var array
@@ -182,6 +189,33 @@ class lib_sys_var
             default:
                 return array_merge($this->_aGetCookies, $this->_aGet, $this->_aPost);
                 break;
+        }
+    }
+
+    /**
+     * 获取配置
+     *
+     * @param string $p_sKey            
+     * @param string $p_sClass            
+     * @return mix
+     */
+    function getConfig($p_sKey, $p_sClass)
+    {
+        if (! isset($this->_aConfig[$p_sClass])) {
+            $this->_aConfig[$p_sClass] = [];
+            global $G_CONFIG_DIR;
+            foreach ($G_CONFIG_DIR as $sConfigDir) {
+                $sConfigFilePath = $sConfigDir . DIRECTORY_SEPARATOR . $p_sClass . '.php';
+                if (file_exists($sConfigFilePath)) {
+                    $aConfig = include $sConfigFilePath;
+                    $this->_aConfig[$p_sClass] = array_merge($this->_aConfig[$p_sClass], $aConfig);
+                }
+            }
+        }
+        if (isset($this->_aConfig[$p_sClass][$p_sKey])) {
+            return $this->_aConfig[$p_sClass][$p_sKey];
+        } else {
+            throw new Exception('Miss Config Key (' . $p_sKey . ') in class (' . $p_sClass . ').');
         }
     }
 

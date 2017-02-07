@@ -1,2 +1,4 @@
 <?php
-$G_CONFIG['domain']=[];
+return [
+    'cookie_domain' => 'dev.jxu.home'
+];

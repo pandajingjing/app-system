@@ -10,7 +10,7 @@
  *
  * @author jxu
  */
-abstract class controller_sys_web extends controller_sys_http
+abstract class lib_controller_web extends lib_controller_http
 {
 
     /**
@@ -67,10 +67,12 @@ abstract class controller_sys_web extends controller_sys_http
      * @param string $p_sName            
      * @param string $p_sValue            
      * @param int $p_iLifeTime            
+     * @param string $p_sPath            
      */
-    protected function setCookie($p_sName, $p_sValue, $p_iLifeTime)
+    protected function setCookie($p_sName, $p_sValue, $p_iLifeTime, $p_sPath = '/')
     {
         $iExpireTime = 0 == $p_iLifeTime ? 0 : $this->getVisitTime() + $p_iLifeTime;
-        util_sys_cookie::setCookie($p_sName, $p_sValue, $iExpireTime);
+        $sDomain = lib_sys_var::getInstance()->getConfig('cookie_domain', 'domain');
+        util_sys_cookie::setCookie($p_sName, $p_sValue, $iExpireTime, $p_sPath, $sDomain);
     }
 }

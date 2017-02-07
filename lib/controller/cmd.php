@@ -10,7 +10,7 @@
  *
  * @author jxu
  */
-abstract class controller_sys_cmd extends lib_sys_controller
+abstract class lib_controller_cmd extends lib_sys_controller
 {
 
     /**
@@ -26,14 +26,6 @@ abstract class controller_sys_cmd extends lib_sys_controller
      * @var float
      */
     private $_fEndTime = '';
-
-    /**
-     * 构造函数
-     */
-    function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * 在控制器开始时执行（调度使用）
@@ -54,7 +46,19 @@ abstract class controller_sys_cmd extends lib_sys_controller
     {
         $this->stdOut('PHP Console Type End');
         $this->_fEndTime = $this->getRealTime(true);
-        $this->stdOut('Execute time: ' . ($this->_fEndTime - $this->_fStartTime));
+        $iResult = ($this->_fEndTime - $this->_fStartTime); // 1秒=1000毫秒=1000000微秒
+        if ($iResult > 1) {
+            $sUnit = 's';
+        } else {
+            $iResult = $iResult * 1000;
+            if ($iResult > 1) {
+                $sUnit = 'ms';
+            } else {
+                $iResult = $iResult * 1000;
+                $sUnit = 'μs';
+            }
+        }
+        $this->stdOut('Execute time: ' . $iResult . ' ' . $sUnit);
         parent::afterRequest();
     }
 
@@ -65,8 +69,7 @@ abstract class controller_sys_cmd extends lib_sys_controller
      */
     protected function stdOut($p_sMsg)
     {
-        $sContent = date('Ymd H:i:s') . ' ' . $p_sMsg . PHP_EOL;
-        echo $sContent;
+        echo date('Ymd H:i:s') . ' ' . $p_sMsg . PHP_EOL;
     }
 
     /**
@@ -75,8 +78,10 @@ abstract class controller_sys_cmd extends lib_sys_controller
      * @param string $p_sCmd            
      * @return array
      */
-    protected function terminal($p_sCmd)
+    protected function excuteCmd($p_sCmd)
     {
+        $iRetVar = 0;
+        $sOutput = '';
         if (function_exists('system')) {
             // system
             ob_start();
@@ -93,8 +98,8 @@ abstract class controller_sys_cmd extends lib_sys_controller
             } else {
                 if (function_exists('exec')) {
                     // exec
-                    exec($p_sCmd, $sOutput, $iRetVar);
-                    $sOutput = implode(PHP_EOL, $sOutput);
+                    exec($p_sCmd, $aOutput, $iRetVar);
+                    $sOutput = implode(PHP_EOL, $aOutput);
                 } else {
                     if (function_exists('shell_exec')) {
                         // shell_exec
@@ -106,9 +111,9 @@ abstract class controller_sys_cmd extends lib_sys_controller
                 }
             }
         }
-        return array(
-            'output' => $sOutput,
-            'status' => $iRetVar
-        );
+        return [
+            'sOutput' => $sOutput,
+            'iStatus' => $iRetVar
+        ];
     }
 }

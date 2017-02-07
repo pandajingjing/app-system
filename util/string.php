@@ -32,10 +32,10 @@ class util_string
             foreach ($p_mValue as $sKey => $mValue) {
                 $p_mValue[$sKey] = self::trimString($mValue, $p_sCharList);
             }
+            return $p_mValue;
         } else {
-            $p_mValue = trim($p_mValue, $p_sCharList);
+            return trim($p_mValue, $p_sCharList);
         }
-        return $p_mValue;
     }
 
     /**

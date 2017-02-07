@@ -10,23 +10,18 @@
  *
  * @author jxu
  * @todo
+ *
  */
-abstract class controller_sys_rpc extends controller_sys_http
+class controller_sys_rpc extends lib_controller_rpc
 {
 
-    /**
-     * 在控制器开始时执行（调度使用）
-     */
-    function beforeRequest()
-    {
-        parent::beforeRequest();
-        // 检测接口数据
-        $this->verify();
-    }
-
-    protected function verify()
-    {}
-
     function doRequest()
-    {}
+    {
+        if (util_error::isError()) {
+            $this->setData('mJData', util_sys_response::returnError(util_error::getErrors()));
+        } else {
+            $this->setData('mJData', util_sys_response::returnSuccess(['this is a rpc request.']));
+        }
+        return 'service_json';
+    }
 }

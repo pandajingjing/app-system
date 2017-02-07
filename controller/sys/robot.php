@@ -1,16 +1,16 @@
 <?php
 
 /**
- * controller_app_crossdomain
+ * controller_sys_robot
  * @author jxu
- * @package system_controller_app
+ * @package system_controller_sys
  */
 /**
- * controller_app_crossdomain
+ * controller_sys_robot
  *
  * @author jxu
  */
-class controller_app_robot extends controller_sys_web
+class controller_sys_robot extends lib_controller_web
 {
 
     function doRequest()
