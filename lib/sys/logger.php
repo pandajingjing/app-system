@@ -68,7 +68,7 @@ class lib_sys_logger
      * @param string $p_sContent            
      * @param string $p_sClass            
      */
-    function addLog($p_sContent, $p_sClass = 'custom')
+    function addLog($p_sContent, $p_sClass = 'comon')
     {
         if (! isset($this->_aLog[$p_sClass])) {
             $this->_aLog[$p_sClass] = [];
@@ -84,8 +84,17 @@ class lib_sys_logger
      */
     function writeLog()
     {
-        $sLog = var_export($p_aContent, true);
-        $sLog = date('YmdHis', $this->_oVari->getRealTime()) . $sLog . PHP_EOL;
-        file_put_contents($sLogFile, $sLog, FILE_APPEND);
+        foreach ($this->_aLog as $sClass => $aLogs) {
+            $sDir = $this->_sBaseDir . DIRECTORY_SEPARATOR . PANDA_LOADER . '_' . PANDA_REQUEST_TYPE;
+            if (! is_dir($sDir)) {
+                util_file::tryMakeDir($sDir, 0755, true);
+            }
+            $sFileName = $sDir . DIRECTORY_SEPARATOR . $sClass . '.log';
+            if (is_writable($sFileName)) {
+                foreach ($aLogs as $sLog) {
+                    util_file::tryWriteFile($sFileName, $sLog);
+                }
+            }
+        }
     }
 }

@@ -56,16 +56,18 @@ class lib_sys_bll
 
     /**
      * 添加日志
-     * 
-     * @param string $p_aContent            
+     *
+     * @param string $p_sContent            
      * @param string $p_sClass            
      */
-    protected function addLog($p_aContent, $p_sClass = 'common')
-    {}
+    protected function addLog($p_sContent, $p_sClass = 'common')
+    {
+        lib_sys_logger::getInstance()->addLog($p_sContent, $p_sClass = 'common');
+    }
 
     /**
      * 筛选数据
-     * 
+     *
      * @param array $p_aAllData            
      * @param string $p_sColumn            
      * @param mix $p_mValue            
@@ -80,5 +82,17 @@ class lib_sys_bll
             }
         }
         return $p_mDefault;
+    }
+
+    /**
+     * 获取配置
+     *
+     * @param string $p_sKey            
+     * @param string $p_sClass            
+     * @return mix
+     */
+    protected function getConfig($p_sKey, $p_sClass = 'common')
+    {
+        return lib_sys_var::getInstance()->getConfig($p_sKey, $p_sClass);
     }
 }

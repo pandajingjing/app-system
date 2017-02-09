@@ -186,6 +186,9 @@ class lib_sys_var
             case 'file':
                 return $this->_aFile;
                 break;
+            case 'config':
+                return $this->_aConfig;
+                break;
             default:
                 return array_merge($this->_aGetCookies, $this->_aGet, $this->_aPost);
                 break;

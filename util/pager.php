@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Util_Pager
+ * util_pager
  * @author jxu
- * @package util
+ * @package system_util
  */
 /**
- * Util_Pager
+ * util_pager
  *
  * @author jxu
  */
-class Util_Pager
+class util_pager
 {
 
     /**
@@ -112,12 +112,12 @@ class Util_Pager
      * 设置翻页控件数据
      *
      * @param array $p_aPage            
-     * @param string $p_sURL            
+     * @param string $p_sControllerName            
      * @param string $p_sColumn            
      * @param array $p_aParam            
      * @return array
      */
-    static function setPager($p_aPage, $p_sURL, $p_sColumn, $p_aParam = array())
+    static function setPager($p_aPage, $p_sControllerName, $p_sColumn, $p_aParam = array())
     {
         $iCurrentPage = $p_aPage['aCurrentPage']['iIndex'];
         foreach ($p_aPage as $sKey => $aPage) {
@@ -127,7 +127,7 @@ class Util_Pager
                 } else {
                     $p_aPage[$sKey]['bLink'] = true;
                 }
-                $p_aPage[$sKey]['sURL'] = $p_sURL . '?' . http_build_query(array_merge($p_aParam, array(
+                $p_aPage[$sKey]['sURL'] = lib_sys_router::getInstance()->createURL($p_sControllerName, array_merge($p_aParam, array(
                     $p_sColumn => $p_aPage[$sKey]['iIndex']
                 )));
             }
@@ -139,7 +139,7 @@ class Util_Pager
             } else {
                 $p_aPage['aNumURL'][$i]['bLink'] = true;
             }
-            $p_aPage['aNumURL'][$i]['sURL'] = $p_sURL . '?' . http_build_query(array_merge($p_aParam, array(
+            $p_aPage['aNumURL'][$i]['sURL'] = lib_sys_router::getInstance()->createURL($p_sControllerName, array_merge($p_aParam, array(
                 $p_sColumn => $p_aPage['aNumURL'][$i]['iIndex']
             )));
         }

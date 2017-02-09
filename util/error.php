@@ -2,37 +2,16 @@
 
 /**
  * util_error
+ * @author jxu
  * @package system_util
  */
 /**
  * util_error
  *
  * @author jxu
- * @package system_util
  */
 class util_error
 {
-
-    /**
-     * 错误等级-系统
-     *
-     * @var string
-     */
-    const LEVEL_SYS = 'Sys';
-
-    /**
-     * 错误等级-业务
-     *
-     * @var string
-     */
-    const LEVEL_BIZ = 'Biz';
-
-    /**
-     * 错误等级-字段校验
-     *
-     * @var string
-     */
-    const LEVEL_FIELD = 'Field';
 
     /**
      * 错误类型-不在某个可选范围内
@@ -105,28 +84,48 @@ class util_error
     private static $_aErr = array();
 
     /**
-     * 添加错误
+     * 添加业务错误
      *
      * @param string $p_sErrField            
      * @param string $p_sErrType            
-     * @param string $p_sErrLevel            
-     * @param string $p_sErrValue            
+     * @param mix $p_mErrValue            
      */
-    static function addError($p_sErrField, $p_sErrType, $p_sErrLevel = self::LEVEL_BIZ, $p_sErrValue = '')
+    static function addBizError($p_sErrField, $p_sErrType, $p_mErrValue = '')
     {
-        self::$_aErr[$p_sErrField] = self::tagError($p_sErrType, $p_sErrLevel);
+        self::$_aErr[$p_sErrField] = [
+            'tag' => 'Biz_' . $p_sErrType,
+            'val' => $p_mErrValue
+        ];
     }
 
     /**
-     * 生成错误标记
+     * 添加字段检验错误
      *
+     * @param string $p_sErrField            
      * @param string $p_sErrType            
-     * @param string $p_sErrLevel            
-     * @return string
+     * @param mix $p_mErrValue            
      */
-    static function tagError($p_sErrType, $p_sErrLevel = self::LEVEL_BIZ)
+    static function addFieldError($p_sErrField, $p_sErrType, $p_mErrValue = '')
     {
-        return $p_sErrLevel . '_' . $p_sErrType;
+        self::$_aErr[$p_sErrField] = [
+            'tag' => 'Field_' . $p_sErrType,
+            'val' => $p_mErrValue
+        ];
+    }
+
+    /**
+     * 添加系统错误
+     *
+     * @param string $p_sErrField            
+     * @param string $p_sErrType            
+     * @param mix $p_mErrValue            
+     */
+    static function addSysError($p_sErrField, $p_sErrType, $p_mErrValue = '')
+    {
+        self::$_aErr[$p_sErrField] = [
+            'tag' => 'Sys_' . $p_sErrType,
+            'val' => $p_mErrValue
+        ];
     }
 
     /**

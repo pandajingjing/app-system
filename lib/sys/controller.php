@@ -69,18 +69,6 @@ abstract class lib_sys_controller
     }
 
     /**
-     * 获取配置
-     *
-     * @param string $p_sKey            
-     * @param string $p_sClass            
-     * @return mix
-     */
-    protected function getConfig($p_sKey, $p_sClass = 'common')
-    {
-        return lib_sys_var::getInstance()->getConfig($p_sKey, $p_sClass);
-    }
-
-    /**
      * 获取请求时间
      *
      * @param boolean $p_bFloat            
@@ -104,34 +92,43 @@ abstract class lib_sys_controller
 
     /**
      * 添加日志
-     * 
-     * @param string $p_aContent            
+     *
+     * @param string $p_sContent            
      * @param string $p_sClass            
      */
-    protected function addLog($p_aContent, $p_sClass = 'common')
-    {}
-    
+    protected function addLog($p_sContent, $p_sClass = 'common')
+    {
+        lib_sys_logger::getInstance()->addLog($p_sContent, $p_sClass);
+    }
+
     /**
      * 开始调试
-     * @param string $p_sModule
+     *
+     * @param string $p_sModule            
      */
-    protected function startDebug($p_sModule){
-        self::$_aAllPri['oDebugger']->startDebug($p_sModule);
+    protected function startDebug($p_sModule)
+    {
+        lib_sys_debugger::getInstance()->startDebug($p_sModule);
     }
-    
+
     /**
      * 发送调试信息
-     * @param string $p_sMsg
+     *
+     * @param string $p_sMsg            
+     * @param boolean $p_bIsHTML            
      */
-    protected function showDebugMsg($p_sMsg){
-        self::$_aAllPri['oDebugger']->showMsg($p_sMsg);
+    protected function showDebugMsg($p_sMsg, $p_bIsHTML = false)
+    {
+        lib_sys_debugger::getInstance()->showMsg($p_sMsg);
     }
-    
+
     /**
      * 结束调试
-     * @param string $p_sModule
+     *
+     * @param string $p_sModule            
      */
-    protected function stopDebug($p_sModule){
-        self::$_aAllPri['oDebugger']->stopDebug($p_sModule);
+    protected function stopDebug($p_sModule)
+    {
+        lib_sys_debugger::getInstance()->stopDebug($p_sModule);
     }
 }
