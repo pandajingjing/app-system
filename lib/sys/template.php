@@ -25,7 +25,7 @@ class lib_sys_template
     /**
      * 页面数据
      */
-    private $_aPageData = [];
+    private $_aDatas = [];
 
     /**
      * 获取实例
@@ -55,11 +55,11 @@ class lib_sys_template
     /**
      * 设置页面数据
      *
-     * @param array $p_aPageData            
+     * @param array $p_aDatas            
      */
-    function setPageData($p_aPageData)
+    function setDatas($p_aDatas)
     {
-        $this->_aPageData = $p_aPageData;
+        $this->_aDatas = $p_aDatas;
     }
 
     /**
@@ -114,7 +114,7 @@ class lib_sys_template
          * @param string $p_sPath            
          * @return string
          */
-        function pandaRes($p_sPath, $p_sDomainKey = 'cdn_scheme_domain')
+        function pandaRes($p_sPath, $p_sDomainKey = 'sCDNSchemeDomain')
         {
             $sStaticDomain = lib_sys_var::getInstance()->getConfig($p_sDomainKey, 'domain');
             return $sStaticDomain . $p_sPath;
@@ -138,13 +138,12 @@ class lib_sys_template
             $sLoadFilePath = $sLoadDir . DIRECTORY_SEPARATOR . $sSubPath . '.phtml';
             // echo $sLoadFilePath,'<br />';
             if (file_exists($sLoadFilePath)) {
-                extract($this->_aPageData);
-                extract($p_aExtendDatas);
+                extract(array_merge($this->_aDatas, $p_aExtendDatas));
                 unset($p_aExtendDatas);
                 include $sLoadFilePath;
                 return true;
             }
         }
-        throw new Exception('template(' . $p_sPageName . ') is lost.');
+        throw new Exception(__CLASS__ . ': can not found template(' . $p_sPageName . ').');
     }
 }

@@ -25,14 +25,14 @@ class util_sys_response
     /**
      * 返回失败数据
      *
-     * @param array $p_aError            
+     * @param array $p_aErrors            
      * @return string
      */
-    static function returnError($p_aError)
+    static function returnError($p_aErrors)
     {
         return [
             'iStatus' => 0,
-            'aError' => $p_aError
+            'aError' => $p_aErrors
         ];
     }
 

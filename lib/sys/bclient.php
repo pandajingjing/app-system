@@ -1,17 +1,17 @@
 <?php
 
 /**
- * lib_sys_client
+ * lib_sys_bclient
  * @author jxu
  * @package system_lib_sys
  */
 
 /**
- * lib_sys_client
+ * lib_sys_bclient
  *
  * @author jxu
  */
-class lib_sys_client
+class lib_sys_bclient
 {
 
     /**
@@ -24,7 +24,7 @@ class lib_sys_client
      *
      * @return array
      */
-    static private function _rpcCall($p_sClassName, $p_sFuncName, $p_aFuncParam)
+    static private function _remoteCall($p_sClassName, $p_sFuncName, $p_aFuncParam)
     {}
 
     /**
@@ -47,7 +47,7 @@ class lib_sys_client
             $oRelMethod = $oRelClass->getMethod($p_sFuncName);
             return $oRelMethod->invokeArgs($oRelInstance, $p_aFuncParam);
         } else {
-            throw new Exception($sBllName . ' does not found');
+            throw new Exception(__CLASS__ . ': can not find bll class(' . $sBllName . ').');
         }
     }
 

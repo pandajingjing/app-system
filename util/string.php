@@ -141,7 +141,7 @@ class util_string
         if ($p_iStyle < 1 or $p_iStyle > 15) {
             $p_iStyle = 6;
         }
-        $p_iStyle = substr('0000' . decbin($p_iStyle), - 4);
+        $sStyle = substr('0000' . decbin($p_iStyle), - 4);
         $aSource = [
             '`-=[]\\;\',./~!@#$%^&*()_+{}|:"<>?',
             '0123456789',
@@ -150,7 +150,7 @@ class util_string
         ];
         $sSource = '';
         for ($iIndex = 0; $iIndex < 4; ++ $iIndex) {
-            if (1 == $p_iStyle[$iIndex]) {
+            if (1 == $sStyle[$iIndex]) {
                 $sSource .= $aSource[$iIndex];
             }
         }

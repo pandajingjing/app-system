@@ -1,5 +1,5 @@
 <?php
 return [
-    'debug' => true,
-    'aAllowedIps' => []
+    'bDebug' => true,
+    'aAllowedIpList' => []
 ];

@@ -20,7 +20,7 @@ abstract class lib_controller_api extends lib_controller_service
      *
      * @var array
      */
-    protected $_aField = [];
+    protected $_aFields = [];
 
     /**
      * 在控制器开始时执行（调度使用）

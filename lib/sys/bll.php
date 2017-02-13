@@ -34,12 +34,12 @@ class lib_sys_bll
     /**
      * 返回失败数据
      *
-     * @param array $p_aError            
+     * @param array $p_aErrors            
      * @return array
      */
-    protected function returnError($p_aError)
+    protected function returnError($p_aErrors)
     {
-        return util_sys_response::returnError($p_aError);
+        return util_sys_response::returnError($p_aErrors);
     }
 
     /**
@@ -94,5 +94,36 @@ class lib_sys_bll
     protected function getConfig($p_sKey, $p_sClass = 'common')
     {
         return lib_sys_var::getInstance()->getConfig($p_sKey, $p_sClass);
+    }
+
+    /**
+     * 开始调试
+     *
+     * @param string $p_sModule            
+     */
+    protected function startDebug($p_sModule)
+    {
+        lib_sys_debugger::getInstance()->startDebug($p_sModule);
+    }
+
+    /**
+     * 发送调试信息
+     *
+     * @param string $p_sMsg            
+     * @param boolean $p_bIsHTML            
+     */
+    protected function showDebugMsg($p_sMsg, $p_bIsHTML = false)
+    {
+        lib_sys_debugger::getInstance()->showMsg($p_sMsg, $p_bIsHTML);
+    }
+
+    /**
+     * 结束调试
+     *
+     * @param string $p_sModule            
+     */
+    protected function stopDebug($p_sModule)
+    {
+        lib_sys_debugger::getInstance()->stopDebug($p_sModule);
     }
 }

@@ -69,7 +69,7 @@ class lib_sys_var
      *
      * @var array
      */
-    private $_aRouterParam = [];
+    private $_aRouterParams = [];
 
     /**
      * 获取实例
@@ -111,9 +111,9 @@ class lib_sys_var
      *
      * @param array $p_aParam            
      */
-    function setRouterParam($p_aParam)
+    function setRouterParams($p_aParams)
     {
-        $this->_aRouterParam = util_string::trimString($p_aParam);
+        $this->_aRouterParams = util_string::trimString($p_aParams);
     }
 
     /**
@@ -178,7 +178,7 @@ class lib_sys_var
                 return $this->_aGetCookies;
                 break;
             case 'router':
-                return $this->_aRouterParam;
+                return $this->_aRouterParams;
                 break;
             case 'server':
                 return $this->_aServerParam;
@@ -218,7 +218,7 @@ class lib_sys_var
         if (isset($this->_aConfig[$p_sClass][$p_sKey])) {
             return $this->_aConfig[$p_sClass][$p_sKey];
         } else {
-            throw new Exception('Miss Config Key (' . $p_sKey . ') in class (' . $p_sClass . ').');
+            throw new Exception(__CLASS__ . ': can not found config key (' . $p_sKey . ') in class (' . $p_sClass . ').');
         }
     }
 

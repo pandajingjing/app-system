@@ -81,7 +81,7 @@ class util_error
      *
      * @var array
      */
-    private static $_aErr = array();
+    private static $_aErrs = [];
 
     /**
      * 添加业务错误
@@ -92,9 +92,9 @@ class util_error
      */
     static function addBizError($p_sErrField, $p_sErrType, $p_mErrValue = '')
     {
-        self::$_aErr[$p_sErrField] = [
-            'tag' => 'Biz_' . $p_sErrType,
-            'val' => $p_mErrValue
+        self::$_aErrs[$p_sErrField] = [
+            'sTag' => 'Biz_' . $p_sErrType,
+            'mVal' => $p_mErrValue
         ];
     }
 
@@ -107,9 +107,9 @@ class util_error
      */
     static function addFieldError($p_sErrField, $p_sErrType, $p_mErrValue = '')
     {
-        self::$_aErr[$p_sErrField] = [
-            'tag' => 'Field_' . $p_sErrType,
-            'val' => $p_mErrValue
+        self::$_aErrs[$p_sErrField] = [
+            'sTag' => 'Field_' . $p_sErrType,
+            'mVal' => $p_mErrValue
         ];
     }
 
@@ -122,9 +122,9 @@ class util_error
      */
     static function addSysError($p_sErrField, $p_sErrType, $p_mErrValue = '')
     {
-        self::$_aErr[$p_sErrField] = [
-            'tag' => 'Sys_' . $p_sErrType,
-            'val' => $p_mErrValue
+        self::$_aErrs[$p_sErrField] = [
+            'sTag' => 'Sys_' . $p_sErrType,
+            'mVal' => $p_mErrValue
         ];
     }
 
@@ -135,7 +135,7 @@ class util_error
      */
     static function isError()
     {
-        if (empty(self::$_aErr)) {
+        if (empty(self::$_aErrs)) {
             return false;
         } else {
             return true;
@@ -149,7 +149,7 @@ class util_error
      */
     static function getErrors()
     {
-        return self::$_aErr;
+        return self::$_aErrs;
     }
 
     /**
@@ -159,7 +159,7 @@ class util_error
      */
     static function getLastError()
     {
-        return self::$_aErr[count(self::$_aErr) - 1];
+        return self::$_aErrs[count(self::$_aErrs) - 1];
     }
 
     /**
@@ -167,6 +167,6 @@ class util_error
      */
     static function initError()
     {
-        self::$_aErr = array();
+        self::$_aErrs = [];
     }
 }

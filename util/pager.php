@@ -117,8 +117,9 @@ class util_pager
      * @param array $p_aParam            
      * @return array
      */
-    static function setPager($p_aPage, $p_sControllerName, $p_sColumn, $p_aParam = array())
+    static function setPager($p_aPage, $p_sControllerName, $p_sColumn, $p_aParam = [])
     {
+        $sDomain = lib_sys_var::getInstance()->getConfig('sSelfSchemeDomain', 'domain');
         $iCurrentPage = $p_aPage['aCurrentPage']['iIndex'];
         foreach ($p_aPage as $sKey => $aPage) {
             if (is_array($aPage) and isset($aPage['iIndex'])) {
@@ -127,7 +128,7 @@ class util_pager
                 } else {
                     $p_aPage[$sKey]['bLink'] = true;
                 }
-                $p_aPage[$sKey]['sURL'] = lib_sys_router::getInstance()->createURL($p_sControllerName, array_merge($p_aParam, array(
+                $p_aPage[$sKey]['sURL'] = $sDomain . lib_sys_router::getInstance()->createURI($p_sControllerName, array_merge($p_aParam, array(
                     $p_sColumn => $p_aPage[$sKey]['iIndex']
                 )));
             }
@@ -139,7 +140,7 @@ class util_pager
             } else {
                 $p_aPage['aNumURL'][$i]['bLink'] = true;
             }
-            $p_aPage['aNumURL'][$i]['sURL'] = lib_sys_router::getInstance()->createURL($p_sControllerName, array_merge($p_aParam, array(
+            $p_aPage['aNumURL'][$i]['sURL'] = $sDomain . lib_sys_router::getInstance()->createURI($p_sControllerName, array_merge($p_aParam, array(
                 $p_sColumn => $p_aPage['aNumURL'][$i]['iIndex']
             )));
         }

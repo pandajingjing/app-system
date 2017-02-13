@@ -45,20 +45,20 @@ abstract class lib_controller_web extends lib_controller_http
      */
     protected function createInURL($p_sControllerName, $p_aRouterParams = [])
     {
-        return lib_sys_router::getInstance()->createURL($p_sControllerName, $p_aRouterParams);
+        return lib_sys_var::getInstance()->getConfig('sSelfSchemeDomain', 'domain') . lib_sys_router::getInstance()->createURI($p_sControllerName, $p_aRouterParams);
     }
 
     /**
      * 获取其他域名的路径
      *
-     * @param string $p_sChannel            
+     * @param string $p_sDomainKey            
      * @param string $p_sAlias            
-     * @param array $p_aRouterParam            
+     * @param array $p_aRouterParams            
      * @return string
      */
-    protected function createOutURL($p_sChannel, $p_sAlias, $p_aRouterParam = [])
+    protected function createOutURL($p_sDomainKey, $p_sAlias, $p_aRouterParams = [])
     {
-        return util_url::createOutURL($p_sChannel, $p_sAlias, $p_aRouterParam);
+        return lib_sys_var::getInstance()->getConfig($p_sDomainKey, 'domain') . lib_sys_router::getInstance()->createOutURI($p_sDomainKey, $p_sAlias, $p_aRouterParams);
     }
 
     /**
@@ -72,7 +72,7 @@ abstract class lib_controller_web extends lib_controller_http
     protected function setCookie($p_sName, $p_sValue, $p_iLifeTime, $p_sPath = '/')
     {
         $iExpireTime = 0 == $p_iLifeTime ? 0 : $this->getVisitTime() + $p_iLifeTime;
-        $sDomain = lib_sys_var::getInstance()->getConfig('cookie_domain', 'domain');
+        $sDomain = lib_sys_var::getInstance()->getConfig('sCookieDomain', 'domain');
         util_sys_cookie::setCookie($p_sName, $p_sValue, $iExpireTime, $p_sPath, $sDomain);
     }
 }

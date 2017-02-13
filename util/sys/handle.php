@@ -110,5 +110,6 @@ class util_sys_handle
         // if (class_exists('bll_blackbox')) {
         // bll_blackbox::commit();
         // }
+        lib_sys_logger::getInstance()->writeLog();
     }
 }

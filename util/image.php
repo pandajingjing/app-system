@@ -7,7 +7,7 @@
  */
 /**
  * util image
- * 
+ *
  * @author jxu
  * @todo 提供更多功能
  * @package system_common_lib_util
@@ -17,14 +17,14 @@ class util_image
 
     /**
      * 处理图片的类库
-     * 
+     *
      * @var emu
      */
     static $_eType = 'imagick';
 
     /**
      * 使用Imagick重新绘制图片
-     * 
+     *
      * @param string $p_sPath            
      * @param int $p_iWidth            
      * @param int $p_iHeight            
@@ -123,7 +123,7 @@ class util_image
                 } elseif (isset($aEdge['bMiddle']) || isset($aEdge['bWidthMiddle'])) {
                     $iPosX = max(0, floor(($iImageWidth - $iWatermarkWidth) / 2));
                 } else {
-                    throw new Exception(__CLASS__ . ': configuration(resize_watermark_edge) lost.');
+                    throw new Exception(__CLASS__ . ': can not found configuration(resize_watermark_edge).');
                     return false;
                 }
                 if (isset($aEdge['iUp'])) {
@@ -133,14 +133,14 @@ class util_image
                 } elseif (isset($aEdge['bMiddle']) || isset($aEdge['bHeightMiddle'])) {
                     $iPosY = max(0, floor(($iImageHeight - $iWatermarkHeight) / 2));
                 } else {
-                    throw new Exception(__CLASS__ . ': configuration(resize_watermark_edge) lost.');
+                    throw new Exception(__CLASS__ . ': can not found configuration(resize_watermark_edge)');
                     return false;
                 }
                 $oImage->compositeImage($oWaterMark, Imagick::COMPOSITE_DEFAULT, $iPosX, $iPosY);
                 $oWaterMark->clear();
                 $oWaterMark->destroy();
             } else {
-                throw new Exception(__CLASS__ . ': configuration(resize_watermark_path) lost.');
+                throw new Exception(__CLASS__ . ': can not found resize_watermark_path(' . $aWatermark['sFilePath'] . ')');
                 return false;
             }
         }
@@ -156,7 +156,7 @@ class util_image
 
     /**
      * 重新绘制图片
-     * 
+     *
      * @param string $p_sPath            
      * @param int $p_iWidth            
      * @param int $p_iHeight            
@@ -178,7 +178,7 @@ class util_image
 
     /**
      * 剪裁图片
-     * 
+     *
      * @param string $p_sPath            
      * @param int $p_iCutPointX            
      * @param int $p_iCutPointY            
@@ -212,11 +212,6 @@ class util_image
         
         $oImage->setImageFormat($p_sExtension);
         $oImage->setImageCompression(Imagick::COMPRESSION_JPEG);
-        $a = $oImage->getImageCompressionQuality() * 0.75;
-        if ($a == 0) {
-            $a = 75;
-        }
-        $oImage->setImageCompressionQuality($a);
         $oImage->stripImage();
         $blImage = $oImage->getImageBlob();
         $oImage->clear();
@@ -226,7 +221,7 @@ class util_image
 
     /**
      * 使用GD重新绘制图片
-     * 
+     *
      * @param string $p_sPath            
      * @param int $p_iWidth            
      * @param int $p_iHeight            
@@ -359,7 +354,7 @@ class util_image
 
     /**
      * 生成验证码图片
-     * 
+     *
      * @param int $p_iWidth            
      * @param int $p_iHeight            
      * @param string $p_sStr            
@@ -429,7 +424,7 @@ class util_image
     
     /**
      * 生成验证码图片
-     * 
+     *
      * @param int $p_iWidth            
      * @param int $p_iHeight            
      * @param string $p_sStr            

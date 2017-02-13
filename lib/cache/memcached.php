@@ -8,4 +8,4 @@
  * @author jxu
  * @package system_common_lib_cache
  */
-class cache_memcached extends Memcached{}
+class lib_sys_memcached extends Memcached{}

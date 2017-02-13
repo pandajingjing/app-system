@@ -39,12 +39,12 @@ abstract class lib_controller_service extends lib_controller_http
     /**
      * 返回失败数据
      *
-     * @param array $p_aError            
+     * @param array $p_aErrors            
      * @return string
      */
-    protected function returnError($p_aError)
+    protected function returnError($p_aErrors)
     {
-        $this->setData('mJData', util_sys_response::returnError($p_aError));
+        $this->setData('mJData', util_sys_response::returnError($p_aErrors));
         return 'service_json';
     }
 

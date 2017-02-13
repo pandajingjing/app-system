@@ -38,16 +38,16 @@ function bin($p_bHttpRequest = true)
     error_reporting(E_ALL);
     
     $oVar = lib_sys_var::getInstance();
-    date_default_timezone_set($oVar->getConfig('timezone', 'system'));
+    date_default_timezone_set($oVar->getConfig('sTimeZone', 'system'));
     mb_internal_encoding('utf8');
     // register_shutdown_function('Util_Sys_Handle::handleShutdown');
     // set_exception_handler('Util_Sys_Handle::handleException');
     // set_error_handler('Util_Sys_Handle::handleError');
     
     $oRouter = lib_sys_router::getInstance();
-    $oRouter->parseRoute($oVar->getParam('DISPATCH_PARAM', 'server'));
+    $oRouter->parseURI($oVar->getParam('DISPATCH_PARAM', 'server'));
     $sControllerName = $oRouter->getControllerName();
-    $oVar->setRouterParam($oRouter->getRouterParam());
+    $oVar->setRouterParams($oRouter->getRouterParams());
     
     while (true) {
         $oRelClass = new ReflectionClass($sControllerName);
@@ -71,7 +71,51 @@ function bin($p_bHttpRequest = true)
         $aPageDatas = $oRelMethod->invoke($oRelInstance);
         
         $oTpl = lib_sys_template::getInstance();
-        $oTpl->setPageData($aPageDatas);
+        $oTpl->setDatas($aPageDatas);
         $oTpl->render($sPagePath);
+    }
+}
+
+/**
+ * 调试函数
+ *
+ * 支持任意个参数。
+ */
+function debug()
+{
+    $iCnt = func_num_args();
+    $aParamList = func_get_args();
+    
+    if (0 == $iCnt) {
+        return;
+    } elseif (1 == $iCnt) {
+        $mParam = $aParamList[0];
+        switch (true) {
+            case is_string($mParam):
+                echo '<p class="text-success">string(' . mb_strlen($mParam) . '):' . htmlspecialchars($mParam) . '</p>';
+                break;
+            case is_float($mParam):
+                echo '<p class="text-info">float:' . $mParam . '</p>';
+                break;
+            case is_int($mParam):
+                echo '<p class="text-info">int:' . $mParam . '</p>';
+                break;
+            case is_null($mParam):
+                echo '<p class="text-danger">null</p>';
+                break;
+            case is_bool($mParam):
+                echo '<p class="text-warning">' . ($mParam ? 'true' : 'false') . '</p>';
+                break;
+            case is_array($mParam):
+                echo '<pre>' . var_export($mParam, true) . '</pre>';
+                break;
+            case is_object($mParam):
+                echo '<pre>' . var_export($mParam, true) . '</pre>';
+                break;
+        }
+    } else {
+        foreach ($aParamList as $mParam) {
+            debug($mParam);
+        }
     }
 }

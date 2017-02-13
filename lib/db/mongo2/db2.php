@@ -15,7 +15,7 @@ include_once dirname(__FILE__).'/MongoQB/Builder.php';
 
 class mongo_db {
 
-    public static $instances = array();
+    static $instances = array();
 
     /**
      * 获取一个mongodb操作实例

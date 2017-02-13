@@ -1,4 +1,4 @@
 <?php
 return [
-    'timezone' => 'Asia/Shanghai'
+    'sTimeZone' => 'Asia/Shanghai'
 ];

@@ -119,7 +119,7 @@ abstract class lib_sys_controller
      */
     protected function showDebugMsg($p_sMsg, $p_bIsHTML = false)
     {
-        lib_sys_debugger::getInstance()->showMsg($p_sMsg);
+        lib_sys_debugger::getInstance()->showMsg($p_sMsg, $p_bIsHTML);
     }
 
     /**

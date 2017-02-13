@@ -1,14 +1,14 @@
 <?php
 return [
-    'route' => [
-        '/^\/crossdomain\.xml$/i' => [
-            'controller_sys_crossdomain'
+    'aRouteList' => [
+        'controller_sys_crossdomain' => [
+            '/^\/crossdomain\.xml$/i'
         ],
-        '/^\/robot\.txt$/i' => [
-            'controller_sys_robot'
+        'controller_sys_robot' => [
+            '/^\/robot\.txt$/i'
         ],
-        '/^\/(\w+)-(\w+)-(\w+)/i' => [
-            'controller_app_test',
+        'controller_app_test' => [
+            '/^\/(\w+)-(\w+)-(\w+)/i',
             [
                 's1',
                 's2',

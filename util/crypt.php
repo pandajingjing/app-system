@@ -20,7 +20,7 @@ class util_crypt
      * @param string $p_sKey            
      * @return string
      */
-    public static function encrypt($p_sValue, $p_sKey)
+    static function enCrypt($p_sValue, $p_sKey)
     {
         return self::_code($p_sValue, 'ENCODE', $p_sKey);
     }
@@ -32,7 +32,7 @@ class util_crypt
      * @param string $p_sKey            
      * @return string
      */
-    public static function decrypt($p_sValue, $p_sKey)
+    static function deCrypt($p_sValue, $p_sKey)
     {
         return self::_code($p_sValue, 'DECODE', $p_sKey);
     }
@@ -52,7 +52,7 @@ class util_crypt
         $p_sValue = $p_sOperation == 'DECODE' ? base64_decode($p_sValue) : substr(md5($p_sValue . $p_sKey), 0, 8) . $p_sValue;
         $p_sValue_length = strlen($p_sValue);
         
-        $rndkey = $box = array();
+        $rndkey = $box = [];
         $result = '';
         for ($i = 0; $i <= 255; $i ++) {
             $rndkey[$i] = ord($p_sKey[$i % $p_sKey_length]);

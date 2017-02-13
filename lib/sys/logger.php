@@ -40,7 +40,7 @@ class lib_sys_logger
      */
     private function __construct()
     {
-        $this->_sBaseDir = lib_sys_var::getInstance()->getConfig('base_dir', 'logger');
+        $this->_sBaseDir = lib_sys_var::getInstance()->getConfig('sBaseDir', 'logger');
     }
 
     /**
@@ -68,7 +68,7 @@ class lib_sys_logger
      * @param string $p_sContent            
      * @param string $p_sClass            
      */
-    function addLog($p_sContent, $p_sClass = 'comon')
+    function addLog($p_sContent, $p_sClass = 'common')
     {
         if (! isset($this->_aLog[$p_sClass])) {
             $this->_aLog[$p_sClass] = [];

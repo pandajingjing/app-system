@@ -26,14 +26,14 @@ class lib_sys_debugger
      *
      * @var array
      */
-    private $_aMessage = array();
+    private $_aMessages = [];
 
     /**
      * 调试信息
      *
      * @var array
      */
-    private $_aDebugInfo = array();
+    private $_aDebugInfos = [];
 
     /**
      * 是否开启debug
@@ -62,8 +62,8 @@ class lib_sys_debugger
     private function __construct()
     {
         $this->_oVari = lib_sys_var::getInstance();
-        if ($this->_oVari->getConfig('debug', 'debugger')) { // 系统配置
-            $aAllowIPs = $this->_oVari->getConfig('aAllowedIps', 'debugger'); // ip过滤
+        if ($this->_oVari->getConfig('bDebug', 'debugger')) { // 系统配置
+            $aAllowIPs = $this->_oVari->getConfig('aAllowedIpList', 'debugger'); // ip过滤
             $sIP = $this->_oVari->getParam('CLIENTIP', 'server');
             $bCanIP = false;
             foreach ($aAllowIPs as $sPattern) {
@@ -126,7 +126,7 @@ class lib_sys_debugger
     function showMsg($p_sMsg, $p_bIsHTML = false)
     {
         if ($this->_bolNeedDebug) {
-            $this->_aMessage[] = array(
+            $this->_aMessages[] = array(
                 'fTime' => $this->_oVari->getRealTime(true),
                 'bIsHTML' => $p_bIsHTML,
                 'sMsg' => $p_sMsg
@@ -142,8 +142,10 @@ class lib_sys_debugger
     function startDebug($p_sModule)
     {
         if ($this->_bolNeedDebug) {
-            $this->_aDebugInfo[$p_sModule]['fStartTime'] = $this->_oVari->getMicroTime();
-            $this->_aDebugInfo[$p_sModule]['iStartMemory'] = $this->_getMemoryUsage();
+            $this->_aDebugInfos[$p_sModule] = [
+                'fStartTime' => $this->_oVari->getRealTime(true),
+                'iStartMemory' => $this->_getMemoryUsage()
+            ];
         }
     }
 
@@ -155,8 +157,8 @@ class lib_sys_debugger
     function stopDebug($p_sModule = '')
     {
         if ($this->_bolNeedDebug) {
-            $this->_aDebugInfo[$p_sModule]['fEndTime'] = $this->_oVari->getMicroTime();
-            $this->_aDebugInfo[$p_sModule]['iEndMemory'] = $this->_getMemoryUsage();
+            $this->_aDebugInfos[$p_sModule]['fEndTime'] = $this->_oVari->getRealTime(true);
+            $this->_aDebugInfos[$p_sModule]['iEndMemory'] = $this->_getMemoryUsage();
         }
     }
 
@@ -167,7 +169,7 @@ class lib_sys_debugger
      */
     function getMsgs()
     {
-        return $this->_aMessage;
+        return $this->_aMessages;
     }
 
     /**
@@ -177,7 +179,7 @@ class lib_sys_debugger
      */
     function getDebugInfo()
     {
-        return $this->_aDebugInfo;
+        return $this->_aDebugInfos;
     }
 
     /**
