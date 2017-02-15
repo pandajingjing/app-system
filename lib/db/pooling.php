@@ -31,7 +31,7 @@ class lib_db_pooling
      *
      * @var array
      */
-    private $_aConnects = [];
+    private $_aConnect = [];
 
     /**
      * 构造函数
@@ -72,10 +72,10 @@ class lib_db_pooling
      */
     function getConnect($p_sDBName)
     {
-        if (! isset($this->_aConnects[$p_sDBName])) {
-            $this->_aConnects[$p_sDBName] = $this->_loadDB($p_sDBName);
+        if (! isset($this->_aConnect[$p_sDBName])) {
+            $this->_aConnect[$p_sDBName] = $this->_loadDB($p_sDBName);
         }
-        return $this->_aConnects[$p_sDBName];
+        return $this->_aConnect[$p_sDBName];
     }
 
     /**

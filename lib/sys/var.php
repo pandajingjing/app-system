@@ -55,7 +55,7 @@ class lib_sys_var
      *
      * @var array
      */
-    private $_aGetCookies = [];
+    private $_aGetCookie = [];
 
     /**
      * 服务器参数
@@ -69,7 +69,7 @@ class lib_sys_var
      *
      * @var array
      */
-    private $_aRouterParams = [];
+    private $_aRouterParam = [];
 
     /**
      * 获取实例
@@ -92,7 +92,7 @@ class lib_sys_var
         $this->_aGet = util_string::trimString($_GET);
         $this->_aPost = util_string::trimString($_POST);
         $this->_aFile = $_FILES;
-        $this->_aGetCookies = util_string::trimString(util_sys_cookie::getCookies());
+        $this->_aGetCookie = util_string::trimString(util_sys_cookie::getCookie());
         if (PANDA_REQUEST_TYPE == PANDA_REQTYPE_CONSOLE) {
             $this->_aServerParam = util_string::trimString($this->_getConsoleParam());
         } else {
@@ -111,9 +111,9 @@ class lib_sys_var
      *
      * @param array $p_aParam            
      */
-    function setRouterParams($p_aParams)
+    function setRouterParam($p_aParam)
     {
-        $this->_aRouterParams = util_string::trimString($p_aParams);
+        $this->_aRouterParam = util_string::trimString($p_aParam);
     }
 
     /**
@@ -155,8 +155,8 @@ class lib_sys_var
      */
     function getParam($p_sKey, $p_sType)
     {
-        $aTmp = $this->getParams($p_sType);
-        return isset($aTmp[$p_sKey]) ? $aTmp[$p_sKey] : null;
+        $aTmp = $this->getAllParams($p_sType);
+        return $aTmp[$p_sKey] ?: null;
     }
 
     /**
@@ -165,7 +165,7 @@ class lib_sys_var
      * @param string $p_sType            
      * @return mix
      */
-    function getParams($p_sType)
+    function getAllParams($p_sType)
     {
         switch ($p_sType) {
             case 'post':
@@ -175,10 +175,10 @@ class lib_sys_var
                 return $this->_aGet;
                 break;
             case 'cookie':
-                return $this->_aGetCookies;
+                return $this->_aGetCookie;
                 break;
             case 'router':
-                return $this->_aRouterParams;
+                return $this->_aRouterParam;
                 break;
             case 'server':
                 return $this->_aServerParam;
@@ -190,7 +190,7 @@ class lib_sys_var
                 return $this->_aConfig;
                 break;
             default:
-                return array_merge($this->_aGetCookies, $this->_aGet, $this->_aPost);
+                return array_merge($this->_aGetCookie, $this->_aGet, $this->_aPost);
                 break;
         }
     }
@@ -237,14 +237,14 @@ class lib_sys_var
             $aIPLists = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
             $sIP = array_shift($aIPLists);
         } else {
-            $sIP = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+            $sIP = $_SERVER['REMOTE_ADDR'] ?: null;
         }
         $aServer['CLIENTIP'] = $sIP;
         $aServer['REQUEST_TIME'] = $_SERVER['REQUEST_TIME'];
         $aServer['REQUEST_TIME_FLOAT'] = $_SERVER['REQUEST_TIME_FLOAT'];
-        $aServer['HTTP_USER_AGENT'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+        $aServer['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'] ?: '';
         $aServer['DISPATCH_PARAM'] = $_SERVER['REQUEST_URI'];
-        $aServer['HTTP_REFERER'] = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+        $aServer['HTTP_REFERER'] = $_SERVER['HTTP_REFERER'] ?: '';
         $aServer['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
         return $aServer;
     }
@@ -257,10 +257,10 @@ class lib_sys_var
     private function _getConsoleParam()
     {
         $aCmd = [];
-        $aCmd['DISPATCH_PARAM'] = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : '';
+        $aCmd['DISPATCH_PARAM'] = $_SERVER['argv'][1] ?: '';
         $aCmd['REQUEST_TIME'] = $_SERVER['REQUEST_TIME'];
         if ($_SERVER['argc'] > 2) {
-            $aCmd['REQUEST_ARGV'] = array();
+            $aCmd['REQUEST_ARGV'] = [];
             for ($iIndex = 2; $iIndex < $_SERVER['argc']; ++ $iIndex) {
                 if (isset($_SERVER['argv'][$iIndex]) and isset($_SERVER['argv'][$iIndex + 1])) {
                     if ('-' == substr($_SERVER['argv'][$iIndex], 0, 1)) {

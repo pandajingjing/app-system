@@ -25,7 +25,7 @@ class lib_sys_template
     /**
      * 页面数据
      */
-    private $_aDatas = [];
+    private $_aPageData = [];
 
     /**
      * 获取实例
@@ -55,11 +55,11 @@ class lib_sys_template
     /**
      * 设置页面数据
      *
-     * @param array $p_aDatas            
+     * @param array $p_aPageData            
      */
-    function setDatas($p_aDatas)
+    function setPageData($p_aPageData)
     {
-        $this->_aDatas = $p_aDatas;
+        $this->_aPageData = $p_aPageData;
     }
 
     /**
@@ -138,7 +138,7 @@ class lib_sys_template
             $sLoadFilePath = $sLoadDir . DIRECTORY_SEPARATOR . $sSubPath . '.phtml';
             // echo $sLoadFilePath,'<br />';
             if (file_exists($sLoadFilePath)) {
-                extract(array_merge($this->_aDatas, $p_aExtendDatas));
+                extract(array_merge($this->_aPageData, $p_aExtendDatas));
                 unset($p_aExtendDatas);
                 include $sLoadFilePath;
                 return true;

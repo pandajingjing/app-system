@@ -33,7 +33,7 @@ class lib_sys_debugger
      *
      * @var array
      */
-    private $_aDebugInfos = [];
+    private $_aDebugInfo = [];
 
     /**
      * 是否开启debug
@@ -142,7 +142,7 @@ class lib_sys_debugger
     function startDebug($p_sModule)
     {
         if ($this->_bolNeedDebug) {
-            $this->_aDebugInfos[$p_sModule] = [
+            $this->_aDebugInfo[$p_sModule] = [
                 'fStartTime' => $this->_oVari->getRealTime(true),
                 'iStartMemory' => $this->_getMemoryUsage()
             ];
@@ -157,8 +157,8 @@ class lib_sys_debugger
     function stopDebug($p_sModule = '')
     {
         if ($this->_bolNeedDebug) {
-            $this->_aDebugInfos[$p_sModule]['fEndTime'] = $this->_oVari->getRealTime(true);
-            $this->_aDebugInfos[$p_sModule]['iEndMemory'] = $this->_getMemoryUsage();
+            $this->_aDebugInfo[$p_sModule]['fEndTime'] = $this->_oVari->getRealTime(true);
+            $this->_aDebugInfo[$p_sModule]['iEndMemory'] = $this->_getMemoryUsage();
         }
     }
 
@@ -179,7 +179,7 @@ class lib_sys_debugger
      */
     function getDebugInfo()
     {
-        return $this->_aDebugInfos;
+        return $this->_aDebugInfo;
     }
 
     /**
@@ -205,15 +205,15 @@ class lib_sys_debugger
      *
      * @return array
      */
-    function getParams()
+    function getAllParams()
     {
         return array(
-            'aPost' => $this->_oVari->getParams('post'),
-            'aGet' => $this->_oVari->getParams('get'),
-            'aRouter' => $this->_oVari->getParams('router'),
-            'aCookie' => $this->_oVari->getParams('cookie'),
-            'aServer' => $this->_oVari->getParams('server'),
-            'aConfig' => $this->_oVari->getParams('config')
+            'aPost' => $this->_oVari->getAllParams('post'),
+            'aGet' => $this->_oVari->getAllParams('get'),
+            'aRouter' => $this->_oVari->getAllParams('router'),
+            'aCookie' => $this->_oVari->getAllParams('cookie'),
+            'aServer' => $this->_oVari->getAllParams('server'),
+            'aConfig' => $this->_oVari->getAllParams('config')
         );
     }
 }

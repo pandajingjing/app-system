@@ -32,22 +32,22 @@ class util_sys_response
     {
         return [
             'iStatus' => 0,
-            'aError' => $p_aErrors
+            'aErrors' => $p_aErrors
         ];
     }
 
     /**
      * 返回列表数据
      *
-     * @param array $p_aList            
+     * @param array $p_aDataList            
      * @param int $p_iCnt            
      * @return string
      */
-    static function returnList($p_aList, $p_iCnt)
+    static function returnList($p_aDataList, $p_iCnt)
     {
         return [
             'iStatus' => 1,
-            'aList' => $p_aList,
+            'aDataList' => $p_aDataList,
             'iTotal' => $p_iCnt
         ];
     }

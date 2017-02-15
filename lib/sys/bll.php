@@ -45,13 +45,13 @@ class lib_sys_bll
     /**
      * 返回列表数据
      *
-     * @param array $p_aList            
+     * @param array $p_aDataList            
      * @param int $p_iTotal            
      * @return array
      */
-    protected function returnList($p_aList, $p_iTotal)
+    protected function returnList($p_aDataList, $p_iTotal)
     {
-        return util_sys_response::returnList($p_aList, $p_iTotal);
+        return util_sys_response::returnList($p_aDataList, $p_iTotal);
     }
 
     /**

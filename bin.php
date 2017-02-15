@@ -42,7 +42,7 @@ function bin($p_bHttpRequest = true)
     $oVar = lib_sys_var::getInstance();
     date_default_timezone_set($oVar->getConfig('sTimeZone', 'system'));
     mb_internal_encoding('utf8');
-    // register_shutdown_function('Util_Sys_Handle::handleShutdown');
+    register_shutdown_function('Util_Sys_Handle::handleShutdown');
     // set_exception_handler('Util_Sys_Handle::handleException');
     // set_error_handler('Util_Sys_Handle::handleError');
     
@@ -51,7 +51,7 @@ function bin($p_bHttpRequest = true)
     $oRouter->parseURI($oVar->getParam('DISPATCH_PARAM', 'server'));
     $sControllerName = $oRouter->getControllerName();
     $oDebugger->showMsg('router find controller: ' . $sControllerName);
-    $oVar->setRouterParams($oRouter->getRouterParams());
+    $oVar->setRouterParam($oRouter->getRouterParam());
     $oDebugger->stopDebug('Parse Route');
     
     while (true) {
@@ -75,11 +75,11 @@ function bin($p_bHttpRequest = true)
     
     if ($p_bHttpRequest) {
         $oDebugger->startDebug('Render Page: ' . $mReturn);
-        $oRelMethod = $oRelClass->getMethod('getDatas');
-        $aPageDatas = $oRelMethod->invoke($oRelInstance);
+        $oRelMethod = $oRelClass->getMethod('getPageData');
+        $aPageData = $oRelMethod->invoke($oRelInstance);
         
         $oTpl = lib_sys_template::getInstance();
-        $oTpl->setDatas($aPageDatas);
+        $oTpl->setPageData($aPageData);
         $oTpl->render($sPagePath);
         $oDebugger->stopDebug('Render Page: ' . $mReturn);
     }

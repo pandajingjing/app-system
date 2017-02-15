@@ -25,7 +25,7 @@ class lib_client_pooling
      *
      * @var array
      */
-    private $_aClients = [];
+    private $_aClient = [];
 
     /**
      * 构造函数
@@ -66,10 +66,10 @@ class lib_client_pooling
      */
     function getClient($p_sClientType)
     {
-        if (! isset($this->_aClients[$p_sClientType])) {
-            $this->_aClients[$p_sClientType] = $this->_loadClient($p_sClientType);
+        if (! isset($this->_aClient[$p_sClientType])) {
+            $this->_aClient[$p_sClientType] = $this->_loadClient($p_sClientType);
         }
-        return $this->_aClients[$p_sClientType];
+        return $this->_aClient[$p_sClientType];
     }
 
     /**

@@ -25,7 +25,7 @@ class lib_cache_pooling
      *
      * @var array
      */
-    private $_aCaches = [];
+    private $_aCache = [];
 
     /**
      * 构造函数
@@ -66,10 +66,10 @@ class lib_cache_pooling
      */
     function getCache($p_sCacheName)
     {
-        if (! isset($this->_aCaches[$p_sCacheName])) {
-            $this->_aCaches[$p_sCacheName] = $this->_loadCache($p_sCacheName);
+        if (! isset($this->_aCache[$p_sCacheName])) {
+            $this->_aCache[$p_sCacheName] = $this->_loadCache($p_sCacheName);
         }
-        return $this->_aCaches[$p_sCacheName];
+        return $this->_aCache[$p_sCacheName];
     }
 
     /**
@@ -90,7 +90,6 @@ class lib_cache_pooling
                 $oCache = new lib_sys_memcached();
                 $oCache->addServers($aConfig['aServerList']);
                 break;
-            case 'mem':
             default:
                 $oCache = new lib_cache_filecache();
                 $oCache->addDir($aConfig['aDirList']);

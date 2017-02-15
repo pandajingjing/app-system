@@ -18,7 +18,7 @@ class util_file
      *
      * @var array
      */
-    private static $_aMimeType = array(
+    private static $_aMimeType = [
         'application/msword' => 'doc',
         'application/octet-stream' => '',
         'application/pdf' => 'pdf',
@@ -41,7 +41,21 @@ class util_file
         'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
         'application/vnd.ms-works' => 'wps',
         'application/vnd.ms-office' => 'office'
-    );
+    ];
+
+    /**
+     * 未知mimetype的后缀
+     *
+     * @var string
+     */
+    const UNKNOW_MIMETYPE_EXT = 'dat';
+
+    /**
+     * 默认最大重试次数
+     *
+     * @var integer
+     */
+    const DEFAULT_MAX_TRY = 5;
 
     /**
      * 根据mimetype返回后缀名
@@ -52,12 +66,12 @@ class util_file
     static function getExtension($p_sMimeType)
     {
         if ('' == $p_sMimeType) {
-            return 'dat';
+            return self::UNKNOW_MIMETYPE_EXT;
         } else {
             if (isset(self::$_aMimeType[$p_sMimeType])) {
                 return self::$_aMimeType[$p_sMimeType];
             } else {
-                return 'dat';
+                return self::UNKNOW_MIMETYPE_EXT;
             }
         }
     }
@@ -70,7 +84,9 @@ class util_file
      */
     static function getMimeType($p_sExtension)
     {
-        if ('' == $p_sExtension) {} else {
+        if ('' == $p_sExtension) {
+            return '';
+        } else {
             foreach (self::$_aMimeType as $sMime => $sExtension) {
                 if ($p_sExtension == $sExtension) {
                     return $sMime;
@@ -86,10 +102,10 @@ class util_file
      * @param int $p_iTryTime            
      * @return string/false
      */
-    static function tryReadFile($p_sFilePath, $p_iTryTime = 5)
+    static function tryReadFile($p_sFilePath, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
         $sContent = '';
-        for ($i = 0; $i < $p_iTryTime; ++ $i) {
+        for ($iIndex = 0; $iIndex < $p_iTryTime; ++ $iIndex) {
             $sContent = @file_get_contents($p_sFilePath);
             if (false !== $sContent) {
                 return $sContent;
@@ -106,9 +122,9 @@ class util_file
      * @param int $p_iTryTime            
      * @return true/false
      */
-    static function tryWriteFile($p_sFilePath, $p_sContent, $p_iFlag = FILE_APPEND, $p_iTryTime = 5)
+    static function tryWriteFile($p_sFilePath, $p_sContent, $p_iFlag = FILE_APPEND, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
-        for ($i = 0; $i < $p_iTryTime; ++ $i) {
+        for ($iIndex = 0; $iIndex < $p_iTryTime; ++ $iIndex) {
             $bResult = @file_put_contents($p_sFilePath, $p_sContent, $p_iFlag);
             if (false !== $bResult) {
                 return true;
@@ -124,9 +140,9 @@ class util_file
      * @param int $p_iTryTime            
      * @return true/false
      */
-    static function tryDeleteFile($p_sFilePath, $p_iTryTime = 5)
+    static function tryDeleteFile($p_sFilePath, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
-        for ($i = 0; $i < $p_iTryTime; ++ $i) {
+        for ($iIndex = 0; $iIndex < $p_iTryTime; ++ $iIndex) {
             $bResult = @unlink($p_sFilePath);
             if (false !== $bResult) {
                 return true;
@@ -142,7 +158,7 @@ class util_file
      * @param boolean $p_bRecursive            
      * @param int $p_iTryTime            
      */
-    static function tryDeleteDir($p_sDir, $p_bRecursive = true, $p_iTryTime = 5)
+    static function tryDeleteDir($p_sDir, $p_bRecursive = true, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
         if (is_dir($p_sDir)) {
             $aTmp = scandir($p_sDir);
@@ -153,9 +169,7 @@ class util_file
                 $sFullPath = $p_sDir . DIRECTORY_SEPARATOR . $sPath;
                 if (is_dir($sFullPath)) {
                     if ($p_bRecursive) {
-                        if (! self::tryDeleteDir($sFullPath, $p_bRecursive, $p_iTryTime)) {
-                            return false;
-                        }
+                        return self::tryDeleteDir($sFullPath, $p_bRecursive, $p_iTryTime);
                     } else {
                         return false;
                     }
@@ -177,9 +191,9 @@ class util_file
      * @param int $p_iTryTime            
      * @return true/false
      */
-    static function tryMakeDir($p_sDir, $p_iMode = null, $p_bRecursive = null, $p_iTryTime = 5)
+    static function tryMakeDir($p_sDir, $p_iMode = 0777, $p_bRecursive = false, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
-        for ($i = 0; $i < $p_iTryTime; ++ $i) {
+        for ($iIndex = 0; $iIndex < $p_iTryTime; ++ $iIndex) {
             umask(0000);
             $bResult = @mkdir($p_sDir, $p_iMode, $p_bRecursive);
             if (false !== $bResult) {
@@ -198,14 +212,14 @@ class util_file
      * @param int $p_iTryTime            
      * @return true/false
      */
-    static function tryCopyFile($p_sSourceFilePath, $p_sDestSourceFilePath, $p_bOverWritten = false, $p_iTryTime = 5)
+    static function tryCopyFile($p_sSourceFilePath, $p_sDestSourceFilePath, $p_bOverWritten = false, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
         if (! $p_bOverWritten) {
             if (file_exists($p_sDestSourceFilePath)) {
                 return false;
             }
         }
-        for ($i = 0; $i < $p_iTryTime; ++ $i) {
+        for ($iIndex = 0; $iIndex < $p_iTryTime; ++ $iIndex) {
             $bResult = @copy($p_sSourceFilePath, $p_sDestSourceFilePath);
             if (false !== $bResult) {
                 return true;
@@ -223,14 +237,14 @@ class util_file
      * @param int $p_iTryTime            
      * @return true/false
      */
-    static function tryMoveFile($p_sSourceFilePath, $p_sDestSourceFilePath, $p_bOverWritten = false, $p_iTryTime = 5)
+    static function tryMoveFile($p_sSourceFilePath, $p_sDestSourceFilePath, $p_bOverWritten = false, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
         if (! $p_bOverWritten) {
             if (file_exists($p_sDestSourceFilePath)) {
                 return false;
             }
         }
-        for ($i = 0; $i < $p_iTryTime; ++ $i) {
+        for ($iIndex = 0; $iIndex < $p_iTryTime; ++ $iIndex) {
             $bResult = @rename($p_sSourceFilePath, $p_sDestSourceFilePath);
             if (false !== $bResult) {
                 return true;
@@ -244,16 +258,16 @@ class util_file
      *
      * @param string $p_sDir            
      * @param boolean $p_bRecursive            
-     * @return array
+     * @return array|false
      */
     static function tryReadDir($p_sDir, $p_bRecursive = false)
     {
-        if (file_exists($p_sDir)) {
+        if (is_dir($p_sDir)) {
             $aTmp = scandir($p_sDir);
         } else {
-            $aTmp = array();
+            return false;
         }
-        $aResult = array();
+        $aResults = [];
         foreach ($aTmp as $sPath) {
             if ('.' == $sPath or '..' == $sPath) {
                 continue;
@@ -261,62 +275,62 @@ class util_file
             $sFullPath = $p_sDir . DIRECTORY_SEPARATOR . $sPath;
             if (is_dir($sFullPath)) {
                 if ($p_bRecursive) {
-                    $aSubResult = self::tryReadDir($sFullPath, $p_bRecursive);
-                    $aResult = array_merge($aResult, $aSubResult);
+                    $aSubResults = self::tryReadDir($sFullPath, $p_bRecursive);
+                    $aResults = array_merge($aResults, $aSubResults);
                 } else {
-                    $aResult[] = array(
+                    $aResults[] = [
                         'sPath' => $sFullPath,
                         'sType' => 'Directory'
-                    );
+                    ];
                 }
             } elseif (is_file($sFullPath)) {
-                $aResult[] = array(
+                $aResults[] = [
                     'sPath' => $sFullPath,
                     'sType' => 'File'
-                );
+                ];
             } elseif (is_link($sFullPath)) {
-                $aResult[] = array(
+                $aResults[] = [
                     'sPath' => $sFullPath,
                     'sType' => 'Link'
-                );
+                ];
             } else {
-                $aResult[] = array(
+                $aResults[] = [
                     'sPath' => $sFullPath,
                     'sType' => 'Unknown'
-                );
+                ];
             }
         }
-        return $aResult;
+        return $aResults;
     }
 
     /**
      * 格式化输出文件大小
      *
-     * @param int $p_iBytes            
+     * @param int $p_iByte            
      * @param string $p_sUnit            
      * @param string $p_sType            
      * @return int/string/array
      */
-    static function formatFileSize($p_iBytes, $p_sUnit = 'auto', $p_sType = 'string')
+    static function formatFileSize($p_iByte, $p_sUnit = 'auto', $p_sType = 'string')
     {
         switch (strtolower($p_sUnit)) {
             case 'kb':
-                return round($p_iBytes / 1024, 2);
+                return round($p_iByte / 1024, 2);
                 break;
             case 'mb':
-                return round($p_iBytes / 1048576, 2);
+                return round($p_iByte / 1048576, 2);
                 break;
             case 'gb':
-                return round($p_iBytes / 1073741824, 2);
+                return round($p_iByte / 1073741824, 2);
                 break;
             case 'auto':
             case 'auto-sub-abs':
             case 'auto-sub-dec':
                 $aTmp = array();
-                $aTmp[] = floor($p_iBytes / 1073741824);
-                $aTmp[] = floor(($p_iBytes % 1073741824) / 1048576);
-                $aTmp[] = floor(($p_iBytes % 1048576) / 1024);
-                $aTmp[] = floor($p_iBytes % 1024);
+                $aTmp[] = floor($p_iByte / 1073741824);
+                $aTmp[] = floor(($p_iByte % 1073741824) / 1048576);
+                $aTmp[] = floor(($p_iByte % 1048576) / 1024);
+                $aTmp[] = floor($p_iByte % 1024);
                 $aUnit = array(
                     'GB',
                     'MB',
@@ -347,6 +361,6 @@ class util_file
                 }
                 break;
         }
-        return $p_iBytes;
+        return $p_iByte;
     }
 }

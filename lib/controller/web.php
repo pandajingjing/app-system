@@ -43,9 +43,9 @@ abstract class lib_controller_web extends lib_controller_http
      *
      * @return string
      */
-    protected function createInURL($p_sControllerName, $p_aRouterParams = [])
+    protected function createInURL($p_sControllerName, $p_aRouterParam = [])
     {
-        return lib_sys_var::getInstance()->getConfig('sSelfSchemeDomain', 'domain') . lib_sys_router::getInstance()->createURI($p_sControllerName, $p_aRouterParams);
+        return lib_sys_var::getInstance()->getConfig('sSelfSchemeDomain', 'domain') . lib_sys_router::getInstance()->createURI($p_sControllerName, $p_aRouterParam);
     }
 
     /**
@@ -53,12 +53,12 @@ abstract class lib_controller_web extends lib_controller_http
      *
      * @param string $p_sDomainKey            
      * @param string $p_sAlias            
-     * @param array $p_aRouterParams            
+     * @param array $p_aRouterParam            
      * @return string
      */
-    protected function createOutURL($p_sDomainKey, $p_sAlias, $p_aRouterParams = [])
+    protected function createOutURL($p_sDomainKey, $p_sAlias, $p_aRouterParam = [])
     {
-        return lib_sys_var::getInstance()->getConfig($p_sDomainKey, 'domain') . lib_sys_router::getInstance()->createOutURI($p_sDomainKey, $p_sAlias, $p_aRouterParams);
+        return lib_sys_var::getInstance()->getConfig($p_sDomainKey, 'domain') . lib_sys_router::getInstance()->createOutURI($p_sDomainKey, $p_sAlias, $p_aRouterParam);
     }
 
     /**

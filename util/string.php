@@ -105,6 +105,13 @@ class util_string
     }
 
     /**
+     * 默认截取字符串结尾
+     * 
+     * @var string
+     */
+    const DEFAULT_SUBFIX = '...';
+
+    /**
      * 截取字符串
      *
      * @param string $p_sData            
@@ -113,7 +120,7 @@ class util_string
      * @param boolean $p_bMultiByte            
      * @return string
      */
-    static function subStr($p_sData, $p_iLength, $p_sSubfix = '...', $p_bMultiByte = false)
+    static function subStr($p_sData, $p_iLength, $p_sSubfix = self::DEFAULT_SUBFIX, $p_bMultiByte = false)
     {
         if ($p_bMultiByte) {
             if (strlen($p_sData) > $p_iLength) {
@@ -131,15 +138,22 @@ class util_string
     }
 
     /**
+     * 默认随机字符串类型
+     *
+     * @var int
+     */
+    const DEFAULT_RAND_STYLE = 6;
+
+    /**
      * 获取随机字符串
      *
      * @param int $p_iLength            
      * @param int $p_iStyle,1-15            
      */
-    static function getRand($p_iLength, $p_iStyle = 6)
+    static function getRand($p_iLength, $p_iStyle = self::DEFAULT_RAND_STYLE)
     {
         if ($p_iStyle < 1 or $p_iStyle > 15) {
-            $p_iStyle = 6;
+            $p_iStyle = self::DEFAULT_RAND_STYLE;
         }
         $sStyle = substr('0000' . decbin($p_iStyle), - 4);
         $aSource = [

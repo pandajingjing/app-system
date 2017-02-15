@@ -18,7 +18,7 @@ class client_browser
      *
      * @var array
      */
-    private static $_aOpt = array();
+    private static $_aOpt = [];
 
     /**
      * 设置浏览器头部信息
@@ -53,7 +53,7 @@ class client_browser
     static function setCookie($p_aCookie = [])
     {
         if (empty($p_aCookie)) {
-            $p_aCookie = lib_sys_var::getInstance()->getParams('cookie');
+            $p_aCookie = lib_sys_var::getInstance()->getAllParams('cookie');
         }
         $sTmp = http_build_query($p_aCookie);
         if (strstr($sTmp, '&')) {

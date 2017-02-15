@@ -1,15 +1,9 @@
 <?php
+
 /**
  * lib_cache_filecache
  * @package system_lib
  */
-
-/**
- * 内容是否压缩
- *
- * @var int
- */
-define('FILECACHE_COMPRESSED', 2);
 
 /**
  * lib_cache_filecache
@@ -32,7 +26,7 @@ class lib_cache_filecache
      *
      * @var array
      */
-    private $_aServerPathList = array();
+    private $_aServerPathList = [];
 
     /**
      * 服务器路径数量

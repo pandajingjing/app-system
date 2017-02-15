@@ -6,7 +6,7 @@
  */
 /**
  * client curl
- * 
+ *
  * @author jxu
  * @package system_common_lib_client
  */
@@ -15,28 +15,28 @@ class lib_client_curl
 
     /**
      * 客户端连接
-     * 
+     *
      * @var object
      */
     private $_oResource = null;
 
     /**
      * CURL信息
-     * 
+     *
      * @var array
      */
     private $_aInfo = [];
 
     /**
      * 服务器返回信息
-     * 
+     *
      * @var string
      */
     private $_sContent = '';
 
     /**
      * 构造函数
-     * 
+     *
      * @param string $p_sURL            
      */
     function __construct($p_sURL = '')
@@ -57,7 +57,7 @@ class lib_client_curl
 
     /**
      * 设置选项
-     * 
+     *
      * @param int $p_iName            
      * @param mix $p_mValue            
      * @return true/false
@@ -69,7 +69,7 @@ class lib_client_curl
 
     /**
      * 设置要访问的URL
-     * 
+     *
      * @param string $p_sURL            
      * @return true/false
      */
@@ -80,7 +80,7 @@ class lib_client_curl
 
     /**
      * 设置超时时间
-     * 
+     *
      * @param int $p_iTime            
      * @return true/false
      */
@@ -91,7 +91,7 @@ class lib_client_curl
 
     /**
      * 设置何种方式提交数据
-     * 
+     *
      * @param boolean $p_bPost            
      * @return true/false
      */
@@ -102,21 +102,22 @@ class lib_client_curl
 
     /**
      * 设置Post参数
-     * 
-     * @param array $p_aParams            
+     *
+     * @param array $p_aParam            
      * @return true/false
      */
-    function setPostParams($p_aParams)
+    function setPostParams($p_aParam)
     {
-        if (is_array($p_aParams)) {
-            $p_aParams = http_build_query($p_aParams);
+        if (is_array($p_aParam)) {
+            return $this->setOption(CURLOPT_POSTFIELDS, http_build_query($p_aParam));
+        } else {
+            return false;
         }
-        return $this->setOption(CURLOPT_POSTFIELDS, $p_aParams);
     }
 
     /**
      * 发送请求
-     * 
+     *
      * @return true/false
      */
     function executeURL()
@@ -137,7 +138,7 @@ class lib_client_curl
 
     /**
      * 获取服务端返回信息
-     * 
+     *
      * @return string
      */
     function getContent()
@@ -147,7 +148,7 @@ class lib_client_curl
 
     /**
      * 得到版本信息
-     * 
+     *
      * @param int $p_iAge            
      * @return array
      */
@@ -158,7 +159,7 @@ class lib_client_curl
 
     /**
      * 得到CURL信息
-     * 
+     *
      * @return array
      */
     function getInfo()
@@ -171,7 +172,7 @@ class lib_client_curl
 
     /**
      * 得到错误编号
-     * 
+     *
      * @return int
      */
     function getErrNo()
@@ -181,7 +182,7 @@ class lib_client_curl
 
     /**
      * 得到错误信息
-     * 
+     *
      * @return string
      */
     function getErrMsg()

@@ -70,13 +70,19 @@ class lib_sys_logger
      */
     function addLog($p_sContent, $p_sClass = 'common')
     {
-        if (! isset($this->_aLog[$p_sClass])) {
-            $this->_aLog[$p_sClass] = [];
+        if (isset($this->_aLog[$p_sClass])) {
+            $this->_aLog[$p_sClass][] = [
+                date('YmdHis'),
+                $p_sContent
+            ];
+        } else {
+            $this->_aLog[$p_sClass] = [
+                [
+                    date('YmdHis'),
+                    $p_sContent
+                ]
+            ];
         }
-        $this->_aLog[$p_sClass][] = [
-            date('YmdHis'),
-            $p_sContent
-        ];
     }
 
     /**

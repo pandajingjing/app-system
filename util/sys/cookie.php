@@ -20,14 +20,14 @@ class util_sys_cookie
      *
      * @var array
      */
-    private static $_aSendCookies = array();
+    private static $_aSendCookies = [];
 
     /**
      * 获取所有cookie
      *
      * @return array
      */
-    static function getCookies()
+    static function getCookie()
     {
         return $_COOKIE;
     }
@@ -43,13 +43,13 @@ class util_sys_cookie
      */
     static function setCookie($p_sName, $p_sValue, $p_iExpireTime, $p_sPath = '/', $p_sDomain = '')
     {
-        self::$_aSendCookies[] = array(
+        self::$_aSendCookies[] = [
             $p_sName,
             $p_sValue,
             $p_iExpireTime,
             $p_sPath,
             $p_sDomain
-        );
+        ];
     }
 
     /**

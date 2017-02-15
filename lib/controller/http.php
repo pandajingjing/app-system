@@ -20,7 +20,7 @@ abstract class lib_controller_http extends lib_sys_controller
      */
     protected $_aPri = [
         'aPageData' => [],
-        'aHeader' => []
+        'aHeaders' => []
     ];
 
     /**
@@ -29,7 +29,7 @@ abstract class lib_controller_http extends lib_sys_controller
     function afterRequest()
     {
         // 发送头部信息
-        foreach ($this->_aPri['aHeader'] as $aHeader) {
+        foreach ($this->_aPri['aHeaders'] as $aHeader) {
             header($aHeader[0], $aHeader[1], $aHeader[2]);
         }
         parent::afterRequest();
@@ -44,7 +44,7 @@ abstract class lib_controller_http extends lib_sys_controller
      */
     protected function addHeader($p_sValue, $p_bReplace = true, $p_iCode = null)
     {
-        $this->_aPri['aHeader'][] = array(
+        $this->_aPri['aHeaders'][] = array(
             $p_sValue,
             $p_bReplace,
             $p_iCode
@@ -78,7 +78,7 @@ abstract class lib_controller_http extends lib_sys_controller
      *
      * @return array
      */
-    function getDatas()
+    function getPageData()
     {
         return $this->_aPri['aPageData'];
     }

@@ -14,137 +14,150 @@ class util_pager
 {
 
     /**
+     * 默认每页数据数量
+     *
+     * @var int
+     */
+    const DEFAULT_PAGE_SIZE = 20;
+
+    /**
+     * 默认每组页面数
+     *
+     * @var int
+     */
+    const DEFAULT_GROUP_SIZE = 10;
+
+    /**
      * 解析翻页参数
      *
      * @param int $p_iPageNum            
-     * @param int $p_iPageSize            
      * @param int $p_iTotalCnt            
+     * @param int $p_iPageSize            
      * @return array
      */
-    static function getPager($p_iPageNum, $p_iPageSize, $p_iTotalCnt = 0, $p_iDefaultGroupSize = 10)
+    static function getPager($p_iPageNum, $p_iTotalCnt, $p_iPageSize = self::DEFAULT_PAGE_SIZE, $p_iDefaultGroupSize = self::DEFAULT_GROUP_SIZE)
     {
-        $aPage = array(
-            'aFirstPage' => array(
+        $aPager = [
+            'aFirstPage' => [
                 'iIndex' => 1,
                 'sURL' => ''
-            ),
-            'aCurrentPage' => array(
+            ],
+            'aCurrentPage' => [
                 'iIndex' => $p_iPageNum,
                 'sURL' => ''
-            ),
+            ],
             'iPageSize' => $p_iPageSize
-        );
+        ];
         if (is_numeric($p_iPageNum)) {
             if ($p_iPageNum < 1) {
-                $aPage['aCurrentPage']['iIndex'] = 1;
+                $aPager['aCurrentPage']['iIndex'] = 1;
             }
         } else {
-            $aPage['aCurrentPage']['iIndex'] = 1;
+            $aPager['aCurrentPage']['iIndex'] = 1;
         }
         if (is_numeric($p_iPageSize)) {
             if ($p_iPageSize < 1) {
-                $aPage['iPageSize'] = 20;
+                $aPager['iPageSize'] = self::DEFAULT_PAGE_SIZE;
             }
         } else {
-            $aPage['iPageSize'] = 20;
+            $aPager['iPageSize'] = self::DEFAULT_PAGE_SIZE;
         }
         if (- 1 < $p_iTotalCnt) {
-            $aPage['iTotalNum'] = $p_iTotalCnt;
-            if (0 == $aPage['iTotalNum'] % $aPage['iPageSize']) {
-                $aPage['iTotalPage'] = array(
-                    'iIndex' => $aPage['iTotalNum'] / $aPage['iPageSize'],
+            $aPager['iTotalNum'] = $p_iTotalCnt;
+            if (0 == $aPager['iTotalNum'] % $aPager['iPageSize']) {
+                $aPager['iTotalPage'] = [
+                    'iIndex' => $aPager['iTotalNum'] / $aPager['iPageSize'],
                     'sURL' => ''
-                );
+                ];
             } else {
-                $aPage['iTotalPage'] = array(
-                    'iIndex' => floor($aPage['iTotalNum'] / $aPage['iPageSize']) + 1,
+                $aPager['iTotalPage'] = [
+                    'iIndex' => floor($aPager['iTotalNum'] / $aPager['iPageSize']) + 1,
                     'sURL' => ''
-                );
+                ];
             }
-            if (0 == $aPage['iTotalPage']['iIndex']) {
-                $aPage['iTotalPage']['iIndex'] = 1;
+            if (0 == $aPager['iTotalPage']['iIndex']) {
+                $aPager['iTotalPage']['iIndex'] = 1;
             }
-            if ($aPage['aCurrentPage']['iIndex'] > $aPage['iTotalPage']['iIndex']) {
-                $aPage['aCurrentPage']['iIndex'] = $aPage['iTotalPage']['iIndex'];
+            if ($aPager['aCurrentPage']['iIndex'] > $aPager['iTotalPage']['iIndex']) {
+                $aPager['aCurrentPage']['iIndex'] = $aPager['iTotalPage']['iIndex'];
             }
-            $aPage['aPrePage'] = array(
-                'iIndex' => $aPage['aCurrentPage']['iIndex'] - 1,
+            $aPager['aPrePage'] = [
+                'iIndex' => $aPager['aCurrentPage']['iIndex'] - 1,
                 'sURL' => ''
-            );
-            if ($aPage['aPrePage']['iIndex'] < 1) {
-                $aPage['aPrePage']['iIndex'] = 1;
+            ];
+            if ($aPager['aPrePage']['iIndex'] < 1) {
+                $aPager['aPrePage']['iIndex'] = 1;
             }
-            $aPage['aNextPage'] = array(
-                'iIndex' => $aPage['aCurrentPage']['iIndex'] + 1,
+            $aPager['aNextPage'] = [
+                'iIndex' => $aPager['aCurrentPage']['iIndex'] + 1,
                 'sURL' => ''
-            );
-            if ($aPage['aNextPage']['iIndex'] > $aPage['iTotalPage']['iIndex']) {
-                $aPage['aNextPage']['iIndex'] = $aPage['iTotalPage']['iIndex'];
+            ];
+            if ($aPager['aNextPage']['iIndex'] > $aPager['iTotalPage']['iIndex']) {
+                $aPager['aNextPage']['iIndex'] = $aPager['iTotalPage']['iIndex'];
             }
             if (is_numeric($p_iDefaultGroupSize)) {
                 if ($p_iDefaultGroupSize < 1) {
-                    $p_iDefaultGroupSize = 20;
+                    $p_iDefaultGroupSize = self::DEFAULT_GROUP_SIZE;
                 }
             } else {
-                $p_iDefaultGroupSize = 20;
+                $p_iDefaultGroupSize = self::DEFAULT_GROUP_SIZE;
             }
-            $aPage['iGroupSize'] = $p_iDefaultGroupSize;
-            $aPage['aPreGPage'] = array(
-                'iIndex' => $aPage['aCurrentPage']['iIndex'] - $p_iDefaultGroupSize,
+            $aPager['iGroupSize'] = $p_iDefaultGroupSize;
+            $aPager['aPreGPage'] = [
+                'iIndex' => $aPager['aCurrentPage']['iIndex'] - $p_iDefaultGroupSize,
                 'sURL' => ''
-            );
-            if ($aPage['aPreGPage']['iIndex'] < 1) {
-                $aPage['aPreGPage']['iIndex'] = 1;
+            ];
+            if ($aPager['aPreGPage']['iIndex'] < 1) {
+                $aPager['aPreGPage']['iIndex'] = 1;
             }
-            $aPage['aNextGPage'] = array(
-                'iIndex' => $aPage['aCurrentPage']['iIndex'] + $p_iDefaultGroupSize,
+            $aPager['aNextGPage'] = [
+                'iIndex' => $aPager['aCurrentPage']['iIndex'] + $p_iDefaultGroupSize,
                 'sURL' => ''
-            );
-            if ($aPage['aNextGPage']['iIndex'] > $aPage['iTotalPage']['iIndex']) {
-                $aPage['aNextGPage']['iIndex'] = $aPage['iTotalPage']['iIndex'];
+            ];
+            if ($aPager['aNextGPage']['iIndex'] > $aPager['iTotalPage']['iIndex']) {
+                $aPager['aNextGPage']['iIndex'] = $aPager['iTotalPage']['iIndex'];
             }
-            $aPage['aNumURL'] = self::_makeNumURL($aPage['aCurrentPage']['iIndex'], $aPage['iTotalPage']['iIndex'], $aPage['iGroupSize']);
+            $aPager['aNumURLs'] = self::_makeNumURL($aPager['aCurrentPage']['iIndex'], $aPager['iTotalPage']['iIndex'], $aPager['iGroupSize']);
         }
-        return $aPage;
+        return $aPager;
     }
 
     /**
      * 设置翻页控件数据
      *
-     * @param array $p_aPage            
+     * @param array $p_aPager            
      * @param string $p_sControllerName            
      * @param string $p_sColumn            
      * @param array $p_aParam            
      * @return array
      */
-    static function setPager($p_aPage, $p_sControllerName, $p_sColumn, $p_aParam = [])
+    static function setPager($p_aPager, $p_sControllerName, $p_sColumn, $p_aParam = [])
     {
         $sDomain = lib_sys_var::getInstance()->getConfig('sSelfSchemeDomain', 'domain');
-        $iCurrentPage = $p_aPage['aCurrentPage']['iIndex'];
-        foreach ($p_aPage as $sKey => $aPage) {
+        $iCurrentPage = $p_aPager['aCurrentPage']['iIndex'];
+        foreach ($p_aPager as $sKey => $aPage) {
             if (is_array($aPage) and isset($aPage['iIndex'])) {
                 if ($iCurrentPage == $aPage['iIndex']) {
-                    $p_aPage[$sKey]['bLink'] = false;
+                    $p_aPager[$sKey]['bLink'] = false;
                 } else {
-                    $p_aPage[$sKey]['bLink'] = true;
+                    $p_aPager[$sKey]['bLink'] = true;
                 }
-                $p_aPage[$sKey]['sURL'] = $sDomain . lib_sys_router::getInstance()->createURI($p_sControllerName, array_merge($p_aParam, array(
-                    $p_sColumn => $p_aPage[$sKey]['iIndex']
-                )));
+                $p_aPager[$sKey]['sURL'] = $sDomain . lib_sys_router::getInstance()->createURI($p_sControllerName, array_merge($p_aParam, [
+                    $p_sColumn => $aPage['iIndex']
+                ]));
             }
         }
-        $iCnt = count($p_aPage['aNumURL']);
-        for ($i = 0; $i < $iCnt; ++ $i) {
-            if ($iCurrentPage == $p_aPage['aNumURL'][$i]['iIndex']) {
-                $p_aPage['aNumURL'][$i]['bLink'] = false;
+        foreach ($p_aPager['aNumURLs'] as $iIndex => $aPage) {
+            if ($iCurrentPage == $aPage['iIndex']) {
+                $p_aPager['aNumURLs'][$iIndex]['bLink'] = false;
             } else {
-                $p_aPage['aNumURL'][$i]['bLink'] = true;
+                $p_aPager['aNumURLs'][$iIndex]['bLink'] = true;
             }
-            $p_aPage['aNumURL'][$i]['sURL'] = $sDomain . lib_sys_router::getInstance()->createURI($p_sControllerName, array_merge($p_aParam, array(
-                $p_sColumn => $p_aPage['aNumURL'][$i]['iIndex']
-            )));
+            $p_aPager['aNumURLs'][$iIndex]['sURL'] = $sDomain . lib_sys_router::getInstance()->createURI($p_sControllerName, array_merge($p_aParam, [
+                $p_sColumn => $aPage['iIndex']
+            ]));
         }
-        return $p_aPage;
+        return $p_aPager;
     }
 
     /**
@@ -180,13 +193,13 @@ class util_pager
             $iPageEnd = $p_iTotalPage;
         }
         $iPageEnd = $iPageEnd + 1;
-        $aURL = array();
-        for ($i = $iPageStart; $i < $iPageEnd; ++ $i) {
-            $aURL[] = array(
-                'iIndex' => $i,
+        $aURLs = [];
+        for ($iIndex = $iPageStart; $iIndex < $iPageEnd; ++ $iIndex) {
+            $aURLs[] = [
+                'iIndex' => $iIndex,
                 'sURL' => ''
-            );
+            ];
         }
-        return $aURL;
+        return $aURLs;
     }
 }

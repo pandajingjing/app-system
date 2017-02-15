@@ -14,13 +14,20 @@ class util_crypt
 {
 
     /**
+     * 加解密默认的Key
+     * 
+     * @var string
+     */
+    const DEFAULT_KEY = 'panda';
+
+    /**
      * 加密函数
      *
      * @param string $p_sValue            
      * @param string $p_sKey            
      * @return string
      */
-    static function enCrypt($p_sValue, $p_sKey)
+    static function enCrypt($p_sValue, $p_sKey = self::DEFAULT_KEY)
     {
         return self::_code($p_sValue, 'ENCODE', $p_sKey);
     }
@@ -32,7 +39,7 @@ class util_crypt
      * @param string $p_sKey            
      * @return string
      */
-    static function deCrypt($p_sValue, $p_sKey)
+    static function deCrypt($p_sValue, $p_sKey = self::DEFAULT_KEY)
     {
         return self::_code($p_sValue, 'DECODE', $p_sKey);
     }

@@ -27,7 +27,7 @@ class lib_sys_router
      *
      * @var array
      */
-    private $_aRouterParams = [];
+    private $_aRouterParam = [];
 
     /**
      * 控制器
@@ -78,7 +78,7 @@ class lib_sys_router
         $aDispatchParams = parse_url($p_sDispatchParam);
         $sPath = $aDispatchParams['path'];
         $sControllerName = '';
-        $aRouteParams = [];
+        $aRouteParam = [];
         // 自定义路由规则
         $aRoutes = lib_sys_var::getInstance()->getConfig('aRouteList', 'router');
         $aTmpParams = [];
@@ -92,12 +92,12 @@ class lib_sys_router
         }
         if ($bFound) {
             if (isset($aConfig[1])) {
-                $aParams = [];
+                $aParam = [];
                 $iIndex = 0;
                 foreach ($aConfig[1] as $sKey) {
-                    $aParams[$sKey] = $aTmpParams[++ $iIndex];
+                    $aParam[$sKey] = $aTmpParams[++ $iIndex];
                 }
-                $aRouteParams = $aParams;
+                $aRouteParam = $aParam;
             }
         } else {
             $aTmp = explode('/', $sPath);
@@ -108,20 +108,20 @@ class lib_sys_router
                 $aTmp[0] = 'controller';
                 $sControllerName = join('_', $aTmp);
             }
-            $aRouteParams = $this->_parseParam($sParam);
+            $aRouteParam = $this->_parseParam($sParam);
         }
         if (class_exists($sControllerName)) { // 默认路由规则
             $oRelClass = new ReflectionClass($sControllerName);
             if ($oRelClass->isInstantiable()) {
                 $this->_sControllerName = $sControllerName;
-                $this->_aRouterParams = $aRouteParams;
+                $this->_aRouterParam = $aRouteParam;
             } else {
                 $this->_sControllerName = 'controller_home_404';
-                $this->_aRouterParams['sURL'] = $sPath;
+                $this->_aRouterParam['sURL'] = $sPath;
             }
         } else {
             $this->_sControllerName = 'controller_home_404';
-            $this->_aRouterParams['sURL'] = $sPath;
+            $this->_aRouterParam['sURL'] = $sPath;
         }
     }
 
@@ -129,26 +129,26 @@ class lib_sys_router
      * 生成URI
      *
      * @param string $p_sControllerName            
-     * @param array $p_aRouterParams            
+     * @param array $p_aRouterParam            
      * @return boolean|string
      */
-    function createURI($p_sControllerName, $p_aRouterParams = [])
+    function createURI($p_sControllerName, $p_aRouterParam = [])
     {
         $sURL = '';
         // 自定义路由规则
         $aRoutes = lib_sys_var::getInstance()->getConfig('aRouteList', 'router');
         if (isset($aRoutes[$p_sControllerName])) {
-            $aSearchKey = $aReplaceVal = [];
-            $aNormalParams = $p_aRouterParams;
+            $aSearchKeyss = $aReplaceValss = [];
+            $aNormalParam = $p_aRouterParam;
             foreach ($aRoutes[$p_sControllerName][1] as $sKey) {
-                $aSearchKey[] = '{' . $sKey . '}';
-                $aReplaceVal[] = $p_aRouterParams[$sKey];
-                unset($aNormalParams[$sKey]);
+                $aSearchKeys[] = '{' . $sKey . '}';
+                $aReplaceVals[] = $p_aRouterParam[$sKey];
+                unset($aNormalParam[$sKey]);
             }
-            if (empty($aNormalParams)) {
-                $sURL = str_replace($aSearchKey, $aReplaceVal, $aRoutes[$p_sControllerName][2]);
+            if (empty($aNormalParam)) {
+                $sURL = str_replace($aSearchKeys, $aReplaceVals, $aRoutes[$p_sControllerName][2]);
             } else {
-                $sURL = str_replace($aSearchKey, $aReplaceVal, $aRoutes[$p_sControllerName][2]) . '?' . http_build_query($aNormalParams);
+                $sURL = str_replace($aSearchKeys, $aReplaceVals, $aRoutes[$p_sControllerName][2]) . '?' . http_build_query($aNormalParam);
             }
         } else {
             if (class_exists($p_sControllerName)) { // 默认路由规则
@@ -160,7 +160,7 @@ class lib_sys_router
                     $aURLParam = explode('_', $p_sControllerName);
                     $aURLParam[0] = '';
                 }
-                $sParam = $this->_createParam($p_aRouterParams);
+                $sParam = $this->_createParam($p_aRouterParam);
                 $aURLParam[] = $sParam;
                 $sURL = join('/', $aURLParam);
             } else {
@@ -174,24 +174,24 @@ class lib_sys_router
      * 生成外站
      *
      * @param string $p_sControllerName            
-     * @param array $p_aRouterParams            
+     * @param array $p_aRouterParam            
      * @return boolean|string
      */
-    function createOutURI($p_sDomainKey, $p_sAlias, $p_aRouterParams = [])
+    function createOutURI($p_sDomainKey, $p_sAlias, $p_aRouterParam = [])
     {
         $aDomainURIList = lib_sys_var::getInstance()->getConfig($p_sDomainKey, 'uri');
         if (isset($aDomainURIList[$p_sAlias])) {
-            $aSearchKey = $aReplaceVal = [];
-            $aNormalParams = $p_aRouterParams;
+            $aSearchKeys = $aReplaceVals = [];
+            $aNormalParam = $p_aRouterParam;
             foreach ($aDomainURIList[$p_sAlias][1] as $sKey) {
-                $aSearchKey[] = '{' . $sKey . '}';
-                $aReplaceVal[] = $p_aRouterParams[$sKey];
-                unset($aNormalParams[$sKey]);
+                $aSearchKeys[] = '{' . $sKey . '}';
+                $aReplaceVals[] = $p_aRouterParam[$sKey];
+                unset($aNormalParam[$sKey]);
             }
-            if (empty($aNormalParams)) {
-                $sURL = str_replace($aSearchKey, $aReplaceVal, $aDomainURIList[$p_sAlias][0]);
+            if (empty($aNormalParam)) {
+                $sURL = str_replace($aSearchKeys, $aReplaceVals, $aDomainURIList[$p_sAlias][0]);
             } else {
-                $sURL = str_replace($aSearchKey, $aReplaceVal, $aDomainURIList[$p_sAlias][0]) . '?' . http_build_query($aNormalParams);
+                $sURL = str_replace($aSearchKeys, $aReplaceVals, $aDomainURIList[$p_sAlias][0]) . '?' . http_build_query($aNormalParam);
             }
         } else {
             throw new Exception(__CLASS__ . ': can not found alias(' . $p_sAlias . ') in domain(' . $p_sDomainKey . ').');
@@ -207,31 +207,31 @@ class lib_sys_router
      */
     protected function _parseParam($p_sParam)
     {
-        $aParams = [];
+        $aParam = [];
         $aTmp = explode($this->_sParamSeperator, $p_sParam);
         for ($iIndex = 0;;) {
             if (isset($aTmp[$iIndex + 1]) and isset($aTmp[$iIndex + 2])) {
-                $aParams[$aTmp[++ $iIndex]] = $aTmp[++ $iIndex];
+                $aParam[$aTmp[++ $iIndex]] = $aTmp[++ $iIndex];
             } else {
                 break;
             }
         }
-        return $aParams;
+        return $aParam;
     }
 
     /**
      * 根据参数得到URL
      *
      * @param string $p_sAction            
-     * @param array $p_aParams            
+     * @param array $p_aParam            
      * @param string $p_sSuffix            
      * @return string
      */
-    protected function _createParam($p_aParams)
+    protected function _createParam($p_aParam)
     {
-        ksort($p_aParams);
+        ksort($p_aParam);
         $sParam = '';
-        foreach ($p_aParams as $sKey => $sValue) {
+        foreach ($p_aParam as $sKey => $sValue) {
             $sParam .= $this->_sParamSeperator . urlencode($sKey) . $this->_sParamSeperator . urlencode($sValue);
         }
         if (isset($sParam[0])) {
@@ -245,9 +245,9 @@ class lib_sys_router
      *
      * @return array
      */
-    function getRouterParams()
+    function getRouterParam()
     {
-        return $this->_aRouterParams;
+        return $this->_aRouterParam;
     }
 
     /**

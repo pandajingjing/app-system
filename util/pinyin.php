@@ -21,21 +21,21 @@ class util_pinyin
      */
     static function getPY($p_sString)
     {
-        $aString = $aPinyin = [];
+        $aStrings = $aPinyins = [];
         $iLength = mb_strlen($p_sString);
         while ($iLength > 0) {
-            $aString[] = mb_substr($p_sString, 0, 1);
+            $aStrings[] = mb_substr($p_sString, 0, 1);
             $p_sString = mb_substr($p_sString, 1);
             $iLength = mb_strlen($p_sString);
         }
-        foreach ($aString as $sChar) {
+        foreach ($aStrings as $sChar) {
             if (isset(self::$aDic[$sChar])) {
-                $aPinyin[] = self::$aDic[$sChar][0];
+                $aPinyins[] = self::$aDic[$sChar][0];
             } else {
-                $aPinyin[] = $sChar;
+                $aPinyins[] = $sChar;
             }
         }
-        return $aPinyin;
+        return $aPinyins;
     }
 
     /**

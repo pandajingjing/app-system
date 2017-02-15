@@ -32,7 +32,7 @@ class util_image
      * @param array $p_aOption            
      * @return blob
      */
-    private static function resizeImage_Imagick($p_sPath, $p_iWidth, $p_iHeight, $p_sExtension, $p_aOption = array())
+    private static function resizeImage_Imagick($p_sPath, $p_iWidth, $p_iHeight, $p_sExtension, $p_aOption = [])
     {
         $oImage = new Imagick();
         $oImage->setResourceLimit(6, 1);
