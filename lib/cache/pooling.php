@@ -25,7 +25,7 @@ class lib_cache_pooling
      *
      * @var array
      */
-    private $_aCache = [];
+    private $_aCaches = [];
 
     /**
      * 构造函数
@@ -66,10 +66,10 @@ class lib_cache_pooling
      */
     function getCache($p_sCacheName)
     {
-        if (! isset($this->_aCache[$p_sCacheName])) {
-            $this->_aCache[$p_sCacheName] = $this->_loadCache($p_sCacheName);
+        if (! isset($this->_aCaches[$p_sCacheName])) {
+            $this->_aCaches[$p_sCacheName] = $this->_loadCache($p_sCacheName);
         }
-        return $this->_aCache[$p_sCacheName];
+        return $this->_aCaches[$p_sCacheName];
     }
 
     /**

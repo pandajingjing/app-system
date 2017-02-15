@@ -92,12 +92,12 @@ class lib_sys_router
         }
         if ($bFound) {
             if (isset($aConfig[1])) {
-                $aParamList = [];
+                $aParams = [];
                 $iIndex = 0;
                 foreach ($aConfig[1] as $sKey) {
-                    $aParamList[$sKey] = $aTmpParams[++ $iIndex];
+                    $aParams[$sKey] = $aTmpParams[++ $iIndex];
                 }
-                $aRouteParams = $aParamList;
+                $aRouteParams = $aParams;
             }
         } else {
             $aTmp = explode('/', $sPath);

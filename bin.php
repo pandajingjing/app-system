@@ -34,6 +34,8 @@ function __autoload($p_sClassName)
  */
 function bin($p_bHttpRequest = true)
 {
+    $oDebugger = lib_sys_debugger::getInstance();
+    $oDebugger->startDebug('Proccess');
     ob_start('ob_gzhandler');
     error_reporting(E_ALL);
     
@@ -44,12 +46,16 @@ function bin($p_bHttpRequest = true)
     // set_exception_handler('Util_Sys_Handle::handleException');
     // set_error_handler('Util_Sys_Handle::handleError');
     
+    $oDebugger->startDebug('Parse Route');
     $oRouter = lib_sys_router::getInstance();
     $oRouter->parseURI($oVar->getParam('DISPATCH_PARAM', 'server'));
     $sControllerName = $oRouter->getControllerName();
+    $oDebugger->showMsg('router find controller: ' . $sControllerName);
     $oVar->setRouterParams($oRouter->getRouterParams());
+    $oDebugger->stopDebug('Parse Route');
     
     while (true) {
+        $oDebugger->startDebug('Handle Controller: ' . $sControllerName);
         $oRelClass = new ReflectionClass($sControllerName);
         $oRelInstance = $oRelClass->newInstance();
         $oRelMethod = $oRelClass->getMethod('beforeRequest');
@@ -58,6 +64,7 @@ function bin($p_bHttpRequest = true)
         $mReturn = $oRelMethod->invoke($oRelInstance);
         $oRelMethod = $oRelClass->getMethod('afterRequest');
         $oRelMethod->invoke($oRelInstance);
+        $oDebugger->stopDebug('Handle Controller: ' . $sControllerName);
         if (class_exists($mReturn)) { // 判断是否返回的是另外一个controller
             $sControllerName = $mReturn;
         } else {
@@ -67,13 +74,16 @@ function bin($p_bHttpRequest = true)
     }
     
     if ($p_bHttpRequest) {
+        $oDebugger->startDebug('Render Page: ' . $mReturn);
         $oRelMethod = $oRelClass->getMethod('getDatas');
         $aPageDatas = $oRelMethod->invoke($oRelInstance);
         
         $oTpl = lib_sys_template::getInstance();
         $oTpl->setDatas($aPageDatas);
         $oTpl->render($sPagePath);
+        $oDebugger->stopDebug('Render Page: ' . $mReturn);
     }
+    $oDebugger->stopDebug('Proccess');
 }
 
 /**
@@ -84,12 +94,12 @@ function bin($p_bHttpRequest = true)
 function debug()
 {
     $iCnt = func_num_args();
-    $aParamList = func_get_args();
+    $aParams = func_get_args();
     
     if (0 == $iCnt) {
         return;
     } elseif (1 == $iCnt) {
-        $mParam = $aParamList[0];
+        $mParam = $aParams[0];
         switch (true) {
             case is_string($mParam):
                 echo '<p class="text-success">string(' . mb_strlen($mParam) . '):' . htmlspecialchars($mParam) . '</p>';
@@ -114,7 +124,7 @@ function debug()
                 break;
         }
     } else {
-        foreach ($aParamList as $mParam) {
+        foreach ($aParams as $mParam) {
             debug($mParam);
         }
     }

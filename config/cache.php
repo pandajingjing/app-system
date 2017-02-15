@@ -16,5 +16,18 @@ return [
     'memcache' => [
         'sType' => 'memcached',
         'aServerList' => []
+    ],
+    'orm' => [
+        'sType' => 'file',
+        'aDirList' => [
+            [
+                '/tmp/filecache/orm',
+                1
+            ],
+            [
+                '/tmp/filecache/orm',
+                5
+            ]
+        ]
     ]
 ];

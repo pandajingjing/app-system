@@ -136,7 +136,7 @@ class util_string
      * @param int $p_iLength            
      * @param int $p_iStyle,1-15            
      */
-    static function getRand($p_iLength, $p_iStyle = 1)
+    static function getRand($p_iLength, $p_iStyle = 6)
     {
         if ($p_iStyle < 1 or $p_iStyle > 15) {
             $p_iStyle = 6;
