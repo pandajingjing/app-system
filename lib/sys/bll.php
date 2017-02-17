@@ -57,12 +57,13 @@ class lib_sys_bll
     /**
      * 添加日志
      *
+     * @param string $p_sTitle            
      * @param string $p_sContent            
      * @param string $p_sClass            
      */
-    protected function addLog($p_sContent, $p_sClass = 'common')
+    protected function addLog($p_sTitle, $p_sContent, $p_sClass = 'common')
     {
-        lib_sys_logger::getInstance()->addLog($p_sContent, $p_sClass = 'common');
+        lib_sys_logger::getInstance()->addLog($p_sTitle, $p_sContent, $p_sClass = 'common');
     }
 
     /**

@@ -32,6 +32,7 @@ abstract class lib_controller_http extends lib_sys_controller
         foreach ($this->_aPri['aHeaders'] as $aHeader) {
             header($aHeader[0], $aHeader[1], $aHeader[2]);
         }
+        lib_sys_logger::getInstance()->addLog('controller page data', json_encode($this->getPageData(), JSON_NUMERIC_CHECK | JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE), 'parameter');
         parent::afterRequest();
     }
 

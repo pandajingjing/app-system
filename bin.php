@@ -34,15 +34,16 @@ function __autoload($p_sClassName)
  */
 function bin($p_bHttpRequest = true)
 {
-    $oDebugger = lib_sys_debugger::getInstance();
-    $oDebugger->startDebug('Proccess');
     ob_start('ob_gzhandler');
     error_reporting(E_ALL);
+    
+    $oDebugger = lib_sys_debugger::getInstance();
+    $oDebugger->startDebug('Proccess');
     
     $oVar = lib_sys_var::getInstance();
     date_default_timezone_set($oVar->getConfig('sTimeZone', 'system'));
     mb_internal_encoding('utf8');
-    register_shutdown_function('Util_Sys_Handle::handleShutdown');
+    register_shutdown_function('util_sys_handle::handleShutdown');
     // set_exception_handler('Util_Sys_Handle::handleException');
     // set_error_handler('Util_Sys_Handle::handleError');
     

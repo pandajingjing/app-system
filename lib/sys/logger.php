@@ -65,20 +65,23 @@ class lib_sys_logger
     /**
      * 添加日志
      *
+     * @param string $p_sTitle            
      * @param string $p_sContent            
      * @param string $p_sClass            
      */
-    function addLog($p_sContent, $p_sClass = 'common')
+    function addLog($p_sTitle, $p_sContent, $p_sClass = 'common')
     {
         if (isset($this->_aLog[$p_sClass])) {
             $this->_aLog[$p_sClass][] = [
                 date('YmdHis'),
+                $p_sTitle,
                 $p_sContent
             ];
         } else {
             $this->_aLog[$p_sClass] = [
                 [
                     date('YmdHis'),
+                    $p_sTitle,
                     $p_sContent
                 ]
             ];
@@ -96,10 +99,8 @@ class lib_sys_logger
                 util_file::tryMakeDir($sDir, 0755, true);
             }
             $sFileName = $sDir . DIRECTORY_SEPARATOR . $sClass . '.log';
-            if (is_writable($sFileName)) {
-                foreach ($aLogs as $sLog) {
-                    util_file::tryWriteFile($sFileName, $sLog);
-                }
+            foreach ($aLogs as $aLog) {
+                util_file::tryWriteFile($sFileName, $aLog[0] . "\t" . $aLog[1] . ': ' . $aLog[2] . PHP_EOL);
             }
         }
     }

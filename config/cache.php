@@ -2,6 +2,7 @@
 return [
     'filecache' => [
         'sType' => 'file',
+        'bCompress' => true,
         'aDirList' => [
             [
                 '/tmp/filecache1',
@@ -19,6 +20,7 @@ return [
     ],
     'orm' => [
         'sType' => 'file',
+        'bCompress' => false,
         'aDirList' => [
             [
                 '/tmp/filecache/orm',

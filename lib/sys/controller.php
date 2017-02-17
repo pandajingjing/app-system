@@ -29,6 +29,7 @@ abstract class lib_sys_controller
     {
         // parent::beforeRequest();
         // do something
+        lib_sys_logger::getInstance()->addLog('controller parameter', json_encode(lib_sys_debugger::getInstance()->getAllParams(), JSON_NUMERIC_CHECK | JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE), 'parameter');
     }
 
     /**
@@ -93,12 +94,13 @@ abstract class lib_sys_controller
     /**
      * 添加日志
      *
+     * @param string $p_sTitle            
      * @param string $p_sContent            
      * @param string $p_sClass            
      */
-    protected function addLog($p_sContent, $p_sClass = 'common')
+    protected function addLog($p_sTitle, $p_sContent, $p_sClass = 'common')
     {
-        lib_sys_logger::getInstance()->addLog($p_sContent, $p_sClass);
+        lib_sys_logger::getInstance()->addLog($p_sTitle, $p_sContent, $p_sClass);
     }
 
     /**

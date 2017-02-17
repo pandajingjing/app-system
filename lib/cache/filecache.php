@@ -36,10 +36,27 @@ class lib_cache_filecache
     private $_iServerCnt = 0;
 
     /**
+     * 数据是否需要压缩
+     *
+     * @var boolean
+     */
+    private $_bDataCompress = false;
+
+    /**
      * 构造函数
      */
     function __construct()
     {}
+
+    /**
+     * 设置数据是否压缩
+     *
+     * @param boolean $p_bCompress            
+     */
+    function setCompress($p_bCompress)
+    {
+        $this->_bDataCompress = $p_bCompress;
+    }
 
     /**
      * 向服务器中添加项目
@@ -286,11 +303,17 @@ class lib_cache_filecache
     function setMulti($p_aData, $p_iLifeTime = 0)
     {
         if (is_array($p_aData)) {
-            $aReturnList = [];
+            $bFoundErr = false;
             foreach ($p_aData as $sKey => $mValue) {
-                $aReturnList[$sKey] = $this->set($sKey, $mValue, $p_iLifeTime);
+                if (! $this->set($sKey, $mValue, $p_iLifeTime)) {
+                    $bFoundErr = true;
+                }
             }
-            return $aReturnList;
+            if ($bFoundErr) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
             return false;
         }
@@ -338,10 +361,17 @@ class lib_cache_filecache
      */
     private function _value2Cache($p_mValue, $p_iExpireTime)
     {
-        return gzcompress(serialize([
-            'mData' => $p_mValue,
-            'iExpireTime' => $p_iExpireTime
-        ]), 9);
+        if ($this->_bDataCompress) {
+            return gzcompress(serialize([
+                'mData' => $p_mValue,
+                'iExpireTime' => $p_iExpireTime
+            ]), 9);
+        } else {
+            return serialize([
+                'mData' => $p_mValue,
+                'iExpireTime' => $p_iExpireTime
+            ]);
+        }
     }
 
     /**
@@ -352,7 +382,11 @@ class lib_cache_filecache
      */
     private function _cache2Value($p_mCache)
     {
-        $mTmp = unserialize(gzuncompress($p_mCache));
+        if ($this->_bDataCompress) {
+            $mTmp = unserialize(gzuncompress($p_mCache));
+        } else {
+            $mTmp = unserialize($p_mCache);
+        }
         if (is_array($mTmp) and isset($mTmp['mData']) and isset($mTmp['iExpireTime'])) {
             return $mTmp;
         } else {

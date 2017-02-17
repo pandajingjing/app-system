@@ -85,6 +85,7 @@ class lib_cache_pooling
             case 'file':
                 $oCache = new lib_cache_filecache();
                 $oCache->addDirs($aConfig['aDirList']);
+                $oCache->setCompress($aConfig['bCompress']);
                 break;
             case 'memcached':
                 $oCache = new lib_sys_memcached();

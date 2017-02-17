@@ -155,7 +155,7 @@ class util_string
         if ($p_iStyle < 1 or $p_iStyle > 15) {
             $p_iStyle = self::DEFAULT_RAND_STYLE;
         }
-        $sStyle = substr('0000' . decbin($p_iStyle), - 4);
+        $sStyle = substr('000' . decbin($p_iStyle), - 4);
         $aSource = [
             '`-=[]\\;\',./~!@#$%^&*()_+{}|:"<>?',
             '0123456789',

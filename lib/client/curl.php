@@ -127,6 +127,7 @@ class lib_client_curl
             return false;
         } else {
             $this->_aInfo = curl_getinfo($this->_oResource);
+            lib_sys_debugger::getInstance()->showMsg(get_class($this) . ': execution information: ' . var_export($this->_aInfo, true));
             $this->_sContent = $mResult;
             if (200 == $this->_aInfo['http_code']) {
                 return true;
@@ -187,6 +188,8 @@ class lib_client_curl
      */
     function getErrMsg()
     {
-        return curl_error($this->_oResource);
+        $sErr = curl_error($this->_oResource);
+        lib_sys_debugger::getInstance()->showMsg(get_class($this) . ': error message: ' . $sErr);
+        return $sErr;
     }
 }

@@ -156,7 +156,7 @@ class lib_sys_var
     function getParam($p_sKey, $p_sType)
     {
         $aTmp = $this->getAllParams($p_sType);
-        return $aTmp[$p_sKey] ?: null;
+        return $aTmp[$p_sKey] ?? null;
     }
 
     /**
@@ -237,14 +237,14 @@ class lib_sys_var
             $aIPLists = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
             $sIP = array_shift($aIPLists);
         } else {
-            $sIP = $_SERVER['REMOTE_ADDR'] ?: null;
+            $sIP = $_SERVER['REMOTE_ADDR'] ?? null;
         }
         $aServer['CLIENTIP'] = $sIP;
         $aServer['REQUEST_TIME'] = $_SERVER['REQUEST_TIME'];
         $aServer['REQUEST_TIME_FLOAT'] = $_SERVER['REQUEST_TIME_FLOAT'];
-        $aServer['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'] ?: '';
+        $aServer['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'] ?? '';
         $aServer['DISPATCH_PARAM'] = $_SERVER['REQUEST_URI'];
-        $aServer['HTTP_REFERER'] = $_SERVER['HTTP_REFERER'] ?: '';
+        $aServer['HTTP_REFERER'] = $_SERVER['HTTP_REFERER'] ?? '';
         $aServer['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
         return $aServer;
     }
@@ -257,7 +257,7 @@ class lib_sys_var
     private function _getConsoleParam()
     {
         $aCmd = [];
-        $aCmd['DISPATCH_PARAM'] = $_SERVER['argv'][1] ?: '';
+        $aCmd['DISPATCH_PARAM'] = $_SERVER['argv'][1] ?? '';
         $aCmd['REQUEST_TIME'] = $_SERVER['REQUEST_TIME'];
         if ($_SERVER['argc'] > 2) {
             $aCmd['REQUEST_ARGV'] = [];

@@ -94,17 +94,11 @@ class util_sys_handle
      */
     static function handleShutdown()
     {
-        // $oDebugger = sys_debugger::getInstance();
-        // if ($oDebugger->canDebug()) {
-        // $oDebugger->stopDebug('System');
-        // $sComponentPath = '/sys/debug';
-        // load_component($sComponentPath);
-        // $sComponentName = path_to_componentname($sComponentPath);
-        // $oRelClass = new ReflectionClass($sComponentName);
-        // $oRelInstance = $oRelClass->newInstance();
-        // $oRelMethod = $oRelClass->getMethod('doComponent');
-        // $oRelMethod->invoke($oRelInstance, $sComponentPath);
-        // }
+        $oDebugger = lib_sys_debugger::getInstance();
+        if ($oDebugger->canDebug()) {
+            $oTpl = lib_sys_template::getInstance();
+            $oTpl->render('component_sys_debug');
+        }
         // // 发送黑盒子日志到RabbitMQ服务器
         // load_lib('/bll/blackbox');
         // if (class_exists('bll_blackbox')) {

@@ -96,6 +96,8 @@ class lib_sys_debugger
         } else {
             $this->_bolNeedDebug = false;
         }
+        $this->_bolNeedDebug=true;
+        //debug($this->_bolNeedDebug);
     }
 
     /**
@@ -207,13 +209,13 @@ class lib_sys_debugger
      */
     function getAllParams()
     {
-        return array(
+        return [
             'aPost' => $this->_oVari->getAllParams('post'),
             'aGet' => $this->_oVari->getAllParams('get'),
             'aRouter' => $this->_oVari->getAllParams('router'),
             'aCookie' => $this->_oVari->getAllParams('cookie'),
             'aServer' => $this->_oVari->getAllParams('server'),
             'aConfig' => $this->_oVari->getAllParams('config')
-        );
+        ];
     }
 }

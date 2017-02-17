@@ -69,55 +69,57 @@ class lib_sys_template
      */
     function render($p_sPageName)
     {
+        if (! function_exists('panda')) {
 
-        /**
-         * 输出普通数据
-         *
-         * @param string $p_sStr            
-         */
-        function panda($p_sStr)
-        {
-            echo htmlspecialchars($p_sStr);
-        }
+            /**
+             * 输出普通数据
+             *
+             * @param string $p_sStr            
+             */
+            function panda($p_sStr)
+            {
+                echo htmlspecialchars($p_sStr);
+            }
 
-        /**
-         * 输出文本框数据
-         *
-         * @param string $p_sStr            
-         */
-        function pandaText($p_sStr)
-        {
-            echo str_replace([
-                "\r",
-                "\n\n",
-                "\n"
-            ], [
-                "\n",
-                "\n",
-                '<br />'
-            ], htmlspecialchars($p_sStr));
-        }
+            /**
+             * 输出文本框数据
+             *
+             * @param string $p_sStr            
+             */
+            function pandaText($p_sStr)
+            {
+                echo str_replace([
+                    "\r",
+                    "\n\n",
+                    "\n"
+                ], [
+                    "\n",
+                    "\n",
+                    '<br />'
+                ], htmlspecialchars($p_sStr));
+            }
 
-        /**
-         * 输出HTML代码
-         *
-         * @param string $p_sStr            
-         */
-        function pandaHTML($p_sStr)
-        {
-            echo $p_sStr;
-        }
+            /**
+             * 输出HTML代码
+             *
+             * @param string $p_sStr            
+             */
+            function pandaHTML($p_sStr)
+            {
+                echo $p_sStr;
+            }
 
-        /**
-         * 获取静态资源路径
-         *
-         * @param string $p_sPath            
-         * @return string
-         */
-        function pandaRes($p_sPath, $p_sDomainKey = 'sCDNSchemeDomain')
-        {
-            $sStaticDomain = lib_sys_var::getInstance()->getConfig($p_sDomainKey, 'domain');
-            return $sStaticDomain . $p_sPath;
+            /**
+             * 获取静态资源路径
+             *
+             * @param string $p_sPath            
+             * @return string
+             */
+            function pandaRes($p_sPath, $p_sDomainKey = 'sCDNSchemeDomain')
+            {
+                $sStaticDomain = lib_sys_var::getInstance()->getConfig($p_sDomainKey, 'domain');
+                return $sStaticDomain . $p_sPath;
+            }
         }
         
         $this->pandaTpl($p_sPageName);
