@@ -1,5 +1,7 @@
 <?php
 return [
     'bDebug' => true,
-    'aAllowedIpList' => []
+    'aAllowedIpList' => [
+        '/^192\.168\.88\.\d+$/'
+    ]
 ];

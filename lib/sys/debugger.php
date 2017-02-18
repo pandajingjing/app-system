@@ -43,13 +43,6 @@ class lib_sys_debugger
     private $_bolNeedDebug = false;
 
     /**
-     * 开始时间
-     *
-     * @var float
-     */
-    private $_fStartTime;
-
-    /**
      * 系统变量
      *
      * @var object
@@ -73,18 +66,29 @@ class lib_sys_debugger
                 }
             }
             if ($bCanIP) {
-                $iCanCookie = $this->_oVari->getParam('debug', 'cookie'); // cookie过滤
+                $iCanCookie = $this->_oVari->getParam('debug', 'cookie', 'int'); // cookie过滤
+                $iCanGet = $this->_oVari->getParam('debug', 'get', 'int'); // get过滤
+                $iExpireTime=$this->_oVari->getRealTime()+60;
                 if (null === $iCanCookie) {
-                    $this->_bolNeedDebug = false;
+                    if (5 == $iCanGet) {
+                        util_sys_cookie::setCookie('debug', 1, $iExpireTime);
+                        $this->_bolNeedDebug = true;
+                    } else {
+                        $this->_bolNeedDebug = false;
+                    }
                 } else {
                     if (1 == $iCanCookie) {
-                        $iCanGet = $this->_oVari->getParam('debug', 'get'); // get过滤
                         if (null === $iCanGet) {
-                            $this->_bolNeedDebug = false;
-                        } else {
                             $this->_bolNeedDebug = true;
-                            $this->_fStartTime = $this->_oVari->getRealTime(true);
-                            util_sys_cookie::setCookie('debug', 1, 60);
+                            util_sys_cookie::setCookie('debug', 1, $iExpireTime);
+                        } else {
+                            if (5 == $iCanGet) {
+                                $this->_bolNeedDebug = true;
+                                util_sys_cookie::setCookie('debug', 1, $iExpireTime);
+                            } else {
+                                $this->_bolNeedDebug = false;
+                                util_sys_cookie::setCookie('debug', 0, $iExpireTime);
+                            }
                         }
                     } else {
                         $this->_bolNeedDebug = false;
@@ -93,11 +97,11 @@ class lib_sys_debugger
             } else {
                 $this->_bolNeedDebug = false;
             }
+            //debug($bCanIP, $iCanCookie, $iCanGet);
         } else {
             $this->_bolNeedDebug = false;
         }
-        $this->_bolNeedDebug=true;
-        //debug($this->_bolNeedDebug);
+        // debug($this->_bolNeedDebug);
     }
 
     /**
@@ -128,11 +132,10 @@ class lib_sys_debugger
     function showMsg($p_sMsg, $p_bIsHTML = false)
     {
         if ($this->_bolNeedDebug) {
-            $this->_aMessages[] = array(
-                'fTime' => $this->_oVari->getRealTime(true),
+            $this->_aMessages[] = [
                 'bIsHTML' => $p_bIsHTML,
                 'sMsg' => $p_sMsg
-            );
+            ];
         }
     }
 
@@ -207,7 +210,7 @@ class lib_sys_debugger
      *
      * @return array
      */
-    function getAllParams()
+    function getAllParam()
     {
         return [
             'aPost' => $this->_oVari->getAllParams('post'),

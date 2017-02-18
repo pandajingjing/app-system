@@ -97,13 +97,13 @@ class util_sys_handle
         $oDebugger = lib_sys_debugger::getInstance();
         if ($oDebugger->canDebug()) {
             $oTpl = lib_sys_template::getInstance();
+            $oTpl->setPageData([
+                'aMessages' => $oDebugger->getMsgs(),
+                'aDebugInfo' => $oDebugger->getDebugInfo(),
+                'aAllParam' => $oDebugger->getAllParam()
+            ]);
             $oTpl->render('component_sys_debug');
         }
-        // // 发送黑盒子日志到RabbitMQ服务器
-        // load_lib('/bll/blackbox');
-        // if (class_exists('bll_blackbox')) {
-        // bll_blackbox::commit();
-        // }
         lib_sys_logger::getInstance()->writeLog();
     }
 }
