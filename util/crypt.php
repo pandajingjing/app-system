@@ -2,26 +2,29 @@
 
 /**
  * util_crypt
- * @package system_util
+ *
+ * 提供框架加密和解密的功能,可以被业务使用
+ *
+ * @package util
  */
+
 /**
  * util_crypt
  *
- * @author jxu
- * @package system_util
+ * 提供框架加密和解密的功能,可以被业务使用
  */
 class util_crypt
 {
 
     /**
      * 加解密默认的Key
-     * 
+     *
      * @var string
      */
     const DEFAULT_KEY = 'panda';
 
     /**
-     * 加密函数
+     * 加密字符串
      *
      * @param string $p_sValue            
      * @param string $p_sKey            
@@ -33,7 +36,7 @@ class util_crypt
     }
 
     /**
-     * 解密函数
+     * 解密字符串
      *
      * @param string $p_sValue            
      * @param string $p_sKey            
@@ -46,6 +49,8 @@ class util_crypt
 
     /**
      * 编码函数
+     *
+     * 根据key对字符串进行加密和解密
      *
      * @param string $p_sValue            
      * @param string $p_sOperation            

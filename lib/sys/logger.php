@@ -2,14 +2,16 @@
 
 /**
  * lib_sys_logger
- * @author jxu
- * @package system_lib_sys
+ *
+ * 系统日志类
+ *
+ * @package lib_sys
  */
 
 /**
  * lib_sys_logger
  *
- * @author jxu
+ * 系统日志类
  */
 class lib_sys_logger
 {
@@ -37,6 +39,8 @@ class lib_sys_logger
 
     /**
      * 构造函数
+     *
+     * @return void
      */
     private function __construct()
     {
@@ -44,7 +48,9 @@ class lib_sys_logger
     }
 
     /**
-     * 构造函数
+     * 克隆函数
+     *
+     * @return void
      */
     private function __clone()
     {}
@@ -68,6 +74,7 @@ class lib_sys_logger
      * @param string $p_sTitle            
      * @param string $p_sContent            
      * @param string $p_sClass            
+     * @return void
      */
     function addLog($p_sTitle, $p_sContent, $p_sClass = 'common')
     {
@@ -90,6 +97,8 @@ class lib_sys_logger
 
     /**
      * 记录日志
+     *
+     * @return void
      */
     function writeLog()
     {

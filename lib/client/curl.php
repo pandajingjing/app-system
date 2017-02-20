@@ -1,14 +1,17 @@
 <?php
 
 /**
- * client curl
- * @package system_common_lib_client
- */
-/**
- * client curl
+ * lib_client_curl
  *
- * @author jxu
- * @package system_common_lib_client
+ * curl客户端
+ *
+ * @package lib_client
+ */
+
+/**
+ * lib_client_curl
+ *
+ * curl客户端
  */
 class lib_client_curl
 {
@@ -28,7 +31,7 @@ class lib_client_curl
     private $_aInfo = [];
 
     /**
-     * 服务器返回信息
+     * 服务器返回的文本信息
      *
      * @var string
      */
@@ -37,18 +40,25 @@ class lib_client_curl
     /**
      * 构造函数
      *
+     * 设置客户端请求的url,捕获返回内容,建立连接和返回内容的超时时间
+     *
      * @param string $p_sURL            
+     * @return void
      */
     function __construct($p_sURL = '')
     {
         $this->_oResource = curl_init($p_sURL);
         $this->setOption(CURLOPT_RETURNTRANSFER, true);
-        $this->setOption(CURLOPT_CONNECTTIMEOUT_MS, lib_sys_var::getInstance()->getConfig('iConnectionTimeout', 'client'));
+        $this->setConnectTimeOut(lib_sys_var::getInstance()->getConfig('iConnectionTimeout', 'client'));
         $this->setTimeOut(lib_sys_var::getInstance()->getConfig('iExecuteTimeout', 'client'));
     }
 
     /**
      * 析构函数
+     *
+     * 主动关闭连接
+     *
+     * @return void
      */
     function __destruct()
     {
@@ -56,11 +66,11 @@ class lib_client_curl
     }
 
     /**
-     * 设置选项
+     * 设置客户端选项
      *
      * @param int $p_iName            
      * @param mix $p_mValue            
-     * @return true/false
+     * @return true|false
      */
     function setOption($p_iName, $p_mValue)
     {
@@ -71,7 +81,7 @@ class lib_client_curl
      * 设置要访问的URL
      *
      * @param string $p_sURL            
-     * @return true/false
+     * @return true|false
      */
     function setURL($p_sURL)
     {
@@ -79,10 +89,21 @@ class lib_client_curl
     }
 
     /**
-     * 设置超时时间
+     * 设置连接超时时间
      *
      * @param int $p_iTime            
-     * @return true/false
+     * @return true|false
+     */
+    function setConnectTimeOut($p_iTime)
+    {
+        return $this->setOption(CURLOPT_CONNECTTIMEOUT_MS, $p_iTime);
+    }
+
+    /**
+     * 设置执行超时时间
+     *
+     * @param int $p_iTime            
+     * @return true|false
      */
     function setTimeOut($p_iTime)
     {
@@ -90,10 +111,10 @@ class lib_client_curl
     }
 
     /**
-     * 设置何种方式提交数据
+     * 让客户端使用post方式提交数据
      *
      * @param boolean $p_bPost            
-     * @return true/false
+     * @return true|false
      */
     function setPost($p_bPost = true)
     {
@@ -104,7 +125,7 @@ class lib_client_curl
      * 设置Post参数
      *
      * @param array $p_aParam            
-     * @return true/false
+     * @return true|false
      */
     function setPostParams($p_aParam)
     {
@@ -118,7 +139,7 @@ class lib_client_curl
     /**
      * 发送请求
      *
-     * @return true/false
+     * @return true|false
      */
     function executeURL()
     {
@@ -159,7 +180,7 @@ class lib_client_curl
     }
 
     /**
-     * 得到CURL信息
+     * 得到CURL执行信息
      *
      * @return array
      */

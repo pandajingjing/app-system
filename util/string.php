@@ -1,16 +1,17 @@
 <?php
 
 /**
- * util_sys_string
- * @author jxu
- * @package system_util_sys
+ * util_string
+ *
+ * 字符串工具,可以被业务使用
+ *
+ * @package util
  */
 
 /**
- * 系统字符工具
+ * util_string
  *
- * @author jxu
- *        
+ * 字符串工具,可以被业务使用
  */
 class util_string
 {
@@ -20,7 +21,7 @@ class util_string
      *
      * @param mix $p_mValue            
      * @param string $p_sCharList            
-     * @return mix
+     * @return null|boolean|array
      */
     static function trimString($p_mValue, $p_sCharList = ' ')
     {
@@ -39,11 +40,11 @@ class util_string
     }
 
     /**
-     * 判断数据类型是否正确
+     * 检查数据类型是否正确
      *
-     * @param mix $p_mData            
+     * @param string $p_mData            
      * @param string $p_sDataType            
-     * @return true/false
+     * @return boolean
      */
     static function chkDataType($p_mData, $p_sDataType)
     {
@@ -76,13 +77,13 @@ class util_string
     }
 
     /**
-     * 检查字符串长度
+     * 检查字符串长度是否正确
      *
      * @param string $p_sData            
      * @param int $p_iMinLength            
      * @param int $p_iMaxLength            
      * @param boolean $p_bMultiByte            
-     * @return true/false
+     * @return boolean
      */
     static function chkStrLength($p_sData, $p_iMinLength = 0, $p_iMaxLength = 0, $p_bMultiByte = false)
     {
@@ -105,14 +106,16 @@ class util_string
     }
 
     /**
-     * 默认截取字符串结尾
-     * 
+     * 默认截取字符串的结尾
+     *
      * @var string
      */
     const DEFAULT_SUBFIX = '...';
 
     /**
      * 截取字符串
+     *
+     * 根据长度和结尾字符串,截取字符串,并添加结尾字符串
      *
      * @param string $p_sData            
      * @param int $p_iLength            
@@ -138,7 +141,7 @@ class util_string
     }
 
     /**
-     * 默认随机字符串类型
+     * 默认随机字符串的类型
      *
      * @var int
      */
@@ -147,8 +150,11 @@ class util_string
     /**
      * 获取随机字符串
      *
+     * 根据类型获取随机字符串,类型可以是符号,数字,小写字母,大写字幕中的一个或者几个
+     *
      * @param int $p_iLength            
-     * @param int $p_iStyle,1-15            
+     * @param int $p_iStyle            
+     * @return string
      */
     static function getRand($p_iLength, $p_iStyle = self::DEFAULT_RAND_STYLE)
     {

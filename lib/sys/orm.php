@@ -2,14 +2,16 @@
 
 /**
  * lib_sys_orm
- * @author jxu
- * @package system_lib_sys
+ *
+ * 系统数据关系映射类
+ *
+ * @package lib_sys
  */
 
 /**
  * lib_sys_orm
  *
- * @author jxu
+ * 系统数据关系映射类
  */
 abstract class lib_sys_orm
 {
@@ -207,7 +209,7 @@ abstract class lib_sys_orm
     /**
      * 是否开启缓存
      *
-     * @var $_bolNeedCache
+     * @var boolean
      */
     private $_bolNeedCache = true;
 
@@ -284,8 +286,8 @@ abstract class lib_sys_orm
     /**
      * 创建实例
      *
-     * @param string $p_sTblName            
      * @param boolean $p_bStrictMaster            
+     * @return void
      */
     function __construct($p_bStrictMaster = false)
     {
@@ -311,7 +313,9 @@ abstract class lib_sys_orm
     }
 
     /**
-     * 析构实例
+     * 析构函数
+     *
+     * @return void
      */
     function __destruct()
     {
@@ -352,6 +356,7 @@ abstract class lib_sys_orm
      * 设置排序
      *
      * @param string $p_sOrder            
+     * @return void
      */
     function setOrder($p_sOrder)
     {
@@ -362,6 +367,7 @@ abstract class lib_sys_orm
      * 设置开始行数
      *
      * @param int $p_iStart            
+     * @return void
      */
     function setStartRow($p_iStartRow)
     {
@@ -372,6 +378,7 @@ abstract class lib_sys_orm
      * 设置获取行数
      *
      * @param int $p_iFetchRow            
+     * @return void
      */
     function setFetchRow($p_iFetchRow)
     {
@@ -384,6 +391,8 @@ abstract class lib_sys_orm
      * @param string $p_sDBField            
      * @param string $p_sOperator            
      * @param mix $p_mValue            
+     * @throws Exception
+     * @return void
      */
     function addFilter($p_sDBField, $p_sOperator, $p_mValue)
     {
@@ -406,16 +415,16 @@ abstract class lib_sys_orm
                 ];
             } else {
                 throw new Exception($this->_sClassName . ': you use an unexpected operator(' . $p_sOperator . ') of ORM instance.');
-                return false;
             }
         } else {
             throw new Exception($this->_sClassName . ': you add an unexpected filter(' . $p_sDBField . ') to ORM instance.');
-            return false;
         }
     }
 
     /**
      * 清除过滤器
+     *
+     * @return void
      */
     function initFilter()
     {
@@ -455,6 +464,8 @@ abstract class lib_sys_orm
 
     /**
      * 关闭缓存功能
+     *
+     * @return void
      */
     function disableCache()
     {
@@ -465,7 +476,7 @@ abstract class lib_sys_orm
      * 根据主键删除ORM单行缓存
      *
      * @param mix $p_mPKVal            
-     * @return true/false
+     * @return true|false
      */
     function clearRowCache($p_mPKVal)
     {
@@ -475,7 +486,7 @@ abstract class lib_sys_orm
     /**
      * 添加数据
      *
-     * @return int/false
+     * @return int|false
      */
     function addData()
     {
@@ -543,7 +554,7 @@ abstract class lib_sys_orm
      * 获取一行数据
      *
      * @param boolean $p_bStrictFreshCache            
-     * @return object/null
+     * @return object|null
      */
     function getRow($p_bStrictFreshCache = false)
     {
@@ -575,6 +586,7 @@ abstract class lib_sys_orm
      * 获取多行数据
      *
      * @param boolean $p_bStrictFreshCache            
+     * @throws Exception
      * @return array
      */
     function getList($p_bStrictFreshCache = false)
@@ -601,7 +613,6 @@ abstract class lib_sys_orm
             $this->_iFetchRow = self::DEFAULT_FETCH_ROW;
         } else {
             throw new Exception($this->_sClassName . ': orm do not allowed get all data.');
-            return false;
         }
         $aPKVals = self::_getDBData($sSQL, $aWhereParam['aValue'], self::SQL_FETCH_TYPE_LIST, $this->dispatchDB($this->_sSlaveDBName), $this->_aDBField, $this->_sClassName);
         if (empty($aPKVals)) {
@@ -699,7 +710,7 @@ abstract class lib_sys_orm
     /**
      * 根据PK删除数据
      *
-     * @param mix $p_mIDs            
+     * @param mix $p_mPKVals            
      * @return int
      */
     function delDataByPKVals($p_mPKVals)
@@ -732,7 +743,7 @@ abstract class lib_sys_orm
     /**
      * 根据PK更新数据
      *
-     * @param mix $p_mIDs            
+     * @param mix $p_mPKVals            
      * @return int
      */
     function updListByPKVals($p_mPKVals)
@@ -764,7 +775,7 @@ abstract class lib_sys_orm
      * @param array $p_aParam            
      * @param boolean $p_bStrictFreshCache            
      * @throws Exception
-     * @return array/string
+     * @return array
      */
     function getBizList($p_sSQLName, $p_aParam = [], $p_bStrictFreshCache)
     {
@@ -785,7 +796,6 @@ abstract class lib_sys_orm
                 $this->_iFetchRow = self::DEFAULT_FETCH_ROW;
             } else {
                 throw new Exception($this->_sClassName . ': orm do not allowed get all data.');
-                return false;
             }
             $aPKVals = $this->_getDBData($sSQL, $aDBData, self::SQL_FETCH_TYPE_LIST, $this->dispatchDB($this->_sSlaveDBName), $this->_aDBField, $this->_sClassName);
             if (empty($aPKVals)) {
@@ -795,7 +805,6 @@ abstract class lib_sys_orm
             }
         } else {
             throw new Exception($this->_sClassName . ': you gave an invalid SQL name(' . $p_sSQLName . ').');
-            return false;
         }
     }
 
@@ -805,7 +814,7 @@ abstract class lib_sys_orm
      * @param string $p_sSQLName            
      * @param array $p_aParam            
      * @throws Exception
-     * @return array|string|boolean
+     * @return array|string
      */
     function getBizCnt($p_sSQLName, $p_aParam = [])
     {
@@ -816,12 +825,13 @@ abstract class lib_sys_orm
             return $this->_getDBData($sSQL, $aDBData, self::SQL_FETCH_TYPE_COLUMN, $this->dispatchDB($this->_sSlaveDBName), $this->_aDBField, $this->_sClassName);
         } else {
             throw new Exception($this->_sClassName . ': you gave an invalid SQL name(' . $p_sSQLName . ').');
-            return false;
         }
     }
 
     /**
      * 开始一个事务
+     *
+     * @return void
      */
     function beginTransaction()
     {
@@ -832,6 +842,8 @@ abstract class lib_sys_orm
 
     /**
      * 提交事务
+     *
+     * @return void
      */
     function commit()
     {
@@ -842,6 +854,8 @@ abstract class lib_sys_orm
 
     /**
      * 回滚事务
+     *
+     * @return void
      */
     function rollBack()
     {
@@ -900,6 +914,7 @@ abstract class lib_sys_orm
      * @param array $p_aData            
      * @param array $p_aField            
      * @param array $p_sClassName            
+     * @throws Exception
      * @return array
      */
     private static function _checkField($p_aData, $p_aField, $p_sClassName)
@@ -915,7 +930,6 @@ abstract class lib_sys_orm
                         if (! self::_isSelfOperate($sField, $mValue, $o_sOperator, $o_iParam)) {
                             if (is_numeric($mValue)) {} else {
                                 throw new Exception($p_sClassName . ': you gave a nonnumeric value(' . var_export($mValue, true) . ') to an attribute(' . $sField . ') which need a number, maybe is ' . gettype($mValue) . '.');
-                                return false;
                             }
                         }
                         break;
@@ -924,17 +938,14 @@ abstract class lib_sys_orm
                             $iLength = mb_strlen($mValue);
                             if ($iLength > $aConfig['iLength']) {
                                 throw new Exception($p_sClassName . ': you gave an overlength(' . $iLength . ') string(' . var_export($mValue, true) . ') to an attribute(' . $sField . ') which max length is ' . $aConfig['iLength'] . '.');
-                                return false;
                             }
                         } else {
                             throw new Exception($p_sClassName . ': you gave a non-string value(' . var_export($mValue, true) . ') to an attribute(' . $sField . ') which needed a string, maybe is ' . gettype($mValue) . '.');
-                            return false;
                         }
                         break;
                     case 'array':
                         if (! is_array($mValue)) {
                             throw new Exception($p_sClassName . ': you gave a non-array value(' . var_export($mValue, true) . ') to an attribute(' . $sField . ') which needed an array, maybe is ' . gettype($mValue) . '.');
-                            return false;
                         }
                         break;
                 }
@@ -945,6 +956,8 @@ abstract class lib_sys_orm
 
     /**
      * 获取缓存连接
+     *
+     * @return void
      */
     private static function _connectCache()
     {
@@ -956,8 +969,8 @@ abstract class lib_sys_orm
     /**
      * 获取数据库连接
      *
-     * @param
-     *            string 数据库连接名
+     * @param string $p_sDBName            
+     * @return void
      */
     private static function _connectDB($p_sDBName)
     {
@@ -1045,7 +1058,7 @@ abstract class lib_sys_orm
      * @param string $p_sDBName            
      * @param array $p_aDBField            
      * @param string $p_sClassName            
-     * @return int/false
+     * @return int|false
      */
     private static function _insertDBData($p_sSQL, $p_aParam, $p_sDBName, $p_aDBField, $p_sClassName)
     {
@@ -1071,7 +1084,7 @@ abstract class lib_sys_orm
      *
      * @param array $p_aCacheKeys            
      * @param string $p_sClassName            
-     * @return true/false
+     * @return true|false
      */
     private static function _clearCacheData($p_aCacheKeys, $p_sClassName)
     {
@@ -1101,6 +1114,7 @@ abstract class lib_sys_orm
      * 根据Key删除APC缓存
      *
      * @param array $p_aCacheKeys            
+     * @return void
      */
     private static function _clearAPCCacheData($p_aCacheKeys)
     {}
@@ -1108,9 +1122,9 @@ abstract class lib_sys_orm
     /**
      * 根据Key删除Memcache
      *
-     * @param array $p_sCacheKey            
+     * @param array $p_aCacheKeys            
      * @param string $p_sClassName            
-     * @return true/false
+     * @return true|false
      */
     private static function _clearMemCacheData($p_aCacheKeys, $p_sClassName)
     {
@@ -1138,6 +1152,8 @@ abstract class lib_sys_orm
      *
      * @param array $p_aCache            
      * @param int $p_iDeepLevel            
+     * @param string $p_sClassName            
+     * @return void
      */
     static function _setCacheData($p_aCache, $p_iDeepLevel, $p_sClassName)
     {
@@ -1162,7 +1178,7 @@ abstract class lib_sys_orm
      *
      * @param array $p_aCache            
      * @param string $p_sClassName            
-     * @param mix $p_mData            
+     * @return void
      */
     private static function _setStaticCacheData($p_aCache, $p_sClassName)
     {
@@ -1177,7 +1193,7 @@ abstract class lib_sys_orm
      *
      * @param array $p_aCache            
      * @param string $p_sClassName            
-     * @param mix $p_mData            
+     * @return void
      */
     private static function _setAPCCacheData($p_aCache, $p_sClassName)
     {}
@@ -1187,7 +1203,7 @@ abstract class lib_sys_orm
      *
      * @param array $p_aCache            
      * @param string $p_sClassName            
-     * @param mix $p_mData            
+     * @return void
      */
     private static function _setMemCacheData($p_aCache, $p_sClassName)
     {
@@ -1209,7 +1225,7 @@ abstract class lib_sys_orm
      *
      * @param mix $p_mCacheKey            
      * @param string $p_sClassName            
-     * @return array|false
+     * @return array
      */
     private static function _getCacheData($p_mCacheKey, $p_sClassName)
     {
@@ -1251,6 +1267,7 @@ abstract class lib_sys_orm
      * @param array $p_aParam            
      * @param array $p_aDBField            
      * @param string $p_sClassName            
+     * @throws Exception
      * @return array
      */
     private static function _parseParameter($p_aParam, $p_aDBField, $p_sClassName)
@@ -1292,6 +1309,7 @@ abstract class lib_sys_orm
      * 绑定变量
      *
      * @param array $p_aParam            
+     * @return void
      */
     private static function _bindData($p_aParam)
     {
@@ -1307,6 +1325,7 @@ abstract class lib_sys_orm
      *
      * @param array $p_aDBField            
      * @param string $p_sClassName            
+     * @throws Exception
      * @return string
      */
     private static function _joinSelectString($p_aDBField, $p_sClassName)
@@ -1319,7 +1338,6 @@ abstract class lib_sys_orm
             return substr($sFields, 2);
         } else {
             throw new Exception($p_sClassName . ': your database field(' . var_export($p_aDBField, true) . ') is empty.');
-            return false;
         }
     }
 
@@ -1329,6 +1347,7 @@ abstract class lib_sys_orm
      * @param array $p_aFilters            
      * @param string $p_sPKField            
      * @param string $p_sClassName            
+     * @throws Exception
      * @return array
      */
     private static function _joinWhereString($p_aFilters, $p_sPKField, $p_sClassName)
@@ -1361,7 +1380,6 @@ abstract class lib_sys_orm
             ];
         } else {
             throw new Exception($p_sClassName . ': orm do not allowed get all data.');
-            return false;
         }
     }
 
@@ -1372,6 +1390,7 @@ abstract class lib_sys_orm
      * @param array $p_aData            
      * @param string $p_sPKField            
      * @param string $p_sClassName            
+     * @throws Exception
      * @return array
      */
     private static function _joinAddString($p_aDBField, $p_aData, $p_sPKField, $p_sClassName)
@@ -1394,7 +1413,6 @@ abstract class lib_sys_orm
             ];
         } else {
             throw new Exception($p_sClassName . ': you have no data(' . var_export($p_aData, true) . ') to insert.');
-            return false;
         }
     }
 
@@ -1405,6 +1423,7 @@ abstract class lib_sys_orm
      * @param array $p_aData            
      * @param string $p_sPKField            
      * @param string $p_sClassName            
+     * @throws Exception
      * @return array
      */
     private static function _joinUpdString($p_aDBField, $p_aData, $p_sPKField, $p_sClassName)
@@ -1430,7 +1449,6 @@ abstract class lib_sys_orm
             ];
         } else {
             throw new Exception($p_sClassName . ': your database fields(' . var_export($p_aDBField, true) . ') are all primary key(' . $p_sPKField . ') or have no data(' . var_export($p_aData, true) . ') to update.');
-            return false;
         }
     }
 
@@ -1441,7 +1459,7 @@ abstract class lib_sys_orm
      * @param mix $p_mValue            
      * @param string $o_sOperator            
      * @param int $o_iParam            
-     * @return true/false
+     * @return true|false
      */
     private static function _isSelfOperate($p_sField, $p_mValue, &$o_sOperator, &$o_iParam)
     {
@@ -1494,6 +1512,7 @@ abstract class lib_sys_orm
      * @param string $p_sPKField            
      * @param array $p_aData            
      * @param string $p_sClassName            
+     * @throws Exception
      * @return array
      */
     private static function _joinPKWhereString($p_sPKField, $p_aData, $p_sClassName)
@@ -1507,7 +1526,6 @@ abstract class lib_sys_orm
             ];
         } else {
             throw new Exception($p_sClassName . ': you missed ORM primary key value(' . $p_sPKField . ').');
-            return false;
         }
     }
 
@@ -1515,7 +1533,7 @@ abstract class lib_sys_orm
      * 获取ORM数据缓存Key
      *
      * @param string $p_sORMName            
-     * @param int $p_mPKVal            
+     * @param mix $p_mPKVal            
      * @return string
      */
     private static function _getCacheRowKey($p_sORMName, $p_mPKVal)

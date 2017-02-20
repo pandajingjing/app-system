@@ -2,37 +2,39 @@
 
 /**
  * lib_sys_bclient
- * @author jxu
- * @package system_lib_sys
+ *
+ * 业务服务客户端基类
+ *
+ * @package lib_sys
  */
 
 /**
  * lib_sys_bclient
  *
- * @author jxu
+ * 业务服务客户端基类
  */
 class lib_sys_bclient
 {
 
     /**
-     * 远程调用
+     * 远程调用业务逻辑
      *
      * @param string $p_sClassName            
      * @param string $p_sFuncName            
-     * @param string $p_aFuncParams            
-     * @todo
-     *
+     * @param array $p_aFuncParams            
+     * @todo 完成函数体
+     *      
      * @return array
      */
     static private function _remoteCall($p_sClassName, $p_sFuncName, $p_aFuncParams)
     {}
 
     /**
-     * 本地调用
+     * 本地调用业务逻辑
      *
      * @param string $p_sClassName            
      * @param string $p_sFuncName            
-     * @param string $p_aFuncParams            
+     * @param array $p_aFuncParams            
      * @throws Exception
      * @return array
      */
@@ -56,7 +58,7 @@ class lib_sys_bclient
      *
      * @param string $p_sClassName            
      * @param string $p_sFuncName            
-     * @param string $p_aFuncParams            
+     * @param array $p_aFuncParams            
      * @return array
      */
     static protected function _call($p_sClassName, $p_sFuncName, $p_aFuncParams)

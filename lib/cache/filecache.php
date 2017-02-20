@@ -2,14 +2,16 @@
 
 /**
  * lib_cache_filecache
- * @package system_lib
+ *
+ * 文件缓存,与memcached有类似的函数
+ *
+ * @package lib_cache
  */
 
 /**
  * lib_cache_filecache
  *
- * @author jxu
- * @package system_lib
+ * 文件缓存,与memcached有类似的函数
  */
 class lib_cache_filecache
 {
@@ -44,6 +46,8 @@ class lib_cache_filecache
 
     /**
      * 构造函数
+     *
+     * @return void
      */
     function __construct()
     {}
@@ -52,6 +56,7 @@ class lib_cache_filecache
      * 设置数据是否压缩
      *
      * @param boolean $p_bCompress            
+     * @return void
      */
     function setCompress($p_bCompress)
     {
@@ -59,12 +64,14 @@ class lib_cache_filecache
     }
 
     /**
-     * 向服务器中添加项目
+     * 添加项目
+     *
+     * 有效期不能超过30天,即2592000秒.如果超过2592000秒则做为过期时间戳.
      *
      * @param string $p_sKey            
      * @param mix $p_mValue            
      * @param int $p_iLifeTime            
-     * @return true/false
+     * @return true|false
      */
     function add($p_sKey, $p_mValue, $p_iLifeTime = 0)
     {
@@ -82,11 +89,12 @@ class lib_cache_filecache
     }
 
     /**
-     * 添加一台服务器
+     * 添加缓存目录
      *
      * @param string $p_sPath            
      * @param int $p_iWeight            
-     * @return true/false
+     * @throws Exception
+     * @return true
      */
     function addDir($p_sPath, $p_iWeight = 0)
     {
@@ -96,7 +104,6 @@ class lib_cache_filecache
             if (! is_dir($p_sPath)) {
                 if (false === util_file::tryMakeDir($p_sPath, 0755, true)) {
                     throw new Exception(__CLASS__ . ': can not create path(' . $p_sPath . ').');
-                    return false;
                 }
             }
         }
@@ -107,7 +114,7 @@ class lib_cache_filecache
      * 批量添加缓存路径
      *
      * @param array $p_aDirList            
-     * @return true/false
+     * @return true|false
      */
     function addDirs($p_aDirList)
     {
@@ -121,11 +128,14 @@ class lib_cache_filecache
     }
 
     /**
-     * 删除某个缓存Key
+     * 删除某个缓存项目
+     *
+     * 有效期不能超过30天,即2592000秒.如果超过2592000秒则做为过期时间戳.
+     * 如果有效期大于0,则在<var>$p_iLifeTime</var>秒后删除项目.
      *
      * @param string $p_sKey            
      * @param int $p_iLifeTime            
-     * @return true/false
+     * @return true|false
      */
     function delete($p_sKey, $p_iLifeTime = 0)
     {
@@ -137,11 +147,13 @@ class lib_cache_filecache
     }
 
     /**
-     * 批量删除某些缓存Keys
+     * 批量删除某些缓存项目
+     *
+     * 有效期不能超过30天,即2592000秒.如果超过2592000秒则做为过期时间戳.
      *
      * @param array $p_aKeyLists            
      * @param int $p_iLifeTime            
-     * @return true/false
+     * @return true|false
      */
     function deleteMulti($p_aKeyLists, $p_iLifeTime = 0)
     {
@@ -157,7 +169,7 @@ class lib_cache_filecache
     /**
      * 删除服务器中所有项目
      *
-     * @return true/false
+     * @return true|false
      */
     function flush()
     {
@@ -171,7 +183,7 @@ class lib_cache_filecache
     }
 
     /**
-     * 获取某个缓存Key
+     * 获取某个缓存项目
      *
      * @param string $p_sKey            
      * @return mix
@@ -210,10 +222,10 @@ class lib_cache_filecache
     }
 
     /**
-     * 批量获取某些缓存Keys
+     * 批量获取某些缓存项目
      *
      * @param array $p_aKeyList            
-     * @return true/false
+     * @return array|false
      */
     function getMulti($p_aKeyList)
     {
@@ -242,12 +254,14 @@ class lib_cache_filecache
     }
 
     /**
-     * 替换服务器中的项目
+     * 替换项目
+     *
+     * 有效期不能超过30天,即2592000秒.如果超过2592000秒则做为过期时间戳.
      *
      * @param string $p_sKey            
      * @param mix $p_mValue            
      * @param int $p_iLifeTime            
-     * @return true/false
+     * @return true|false
      */
     function replace($p_sKey, $p_mValue, $p_iLifeTime = 0)
     {
@@ -265,12 +279,14 @@ class lib_cache_filecache
     }
 
     /**
-     * 在服务器中保存项目
+     * 保存项目
+     *
+     * 有效期不能超过30天,即2592000秒.如果超过2592000秒则做为过期时间戳.
      *
      * @param string $p_sKey            
      * @param mix $p_mValue            
      * @param int $p_iLifeTime            
-     * @return true/false
+     * @return true|false
      */
     function set($p_sKey, $p_mValue, $p_iLifeTime = 0)
     {
@@ -294,11 +310,13 @@ class lib_cache_filecache
     }
 
     /**
-     * 在服务器中保存项目
+     * 批量保存项目
+     *
+     * 有效期不能超过30天,即2592000秒.如果超过2592000秒则做为过期时间戳.
      *
      * @param array $p_aData            
      * @param int $p_iLifeTime            
-     * @return true/false
+     * @return true|false
      */
     function setMulti($p_aData, $p_iLifeTime = 0)
     {
@@ -345,7 +363,7 @@ class lib_cache_filecache
      */
     private function _getExpireTime($p_iLifeTime)
     {
-        if ($p_iLifeTime > 2591999) {
+        if ($p_iLifeTime > 2592000) {
             return $p_iLifeTime;
         } else {
             return 0 == $p_iLifeTime ? 0 : lib_sys_var::getInstance()->getRealTime() + $p_iLifeTime;
@@ -357,7 +375,7 @@ class lib_cache_filecache
      *
      * @param mix $p_mValue            
      * @param int $p_iExpireTime            
-     * @return mix
+     * @return array
      */
     private function _value2Cache($p_mValue, $p_iExpireTime)
     {
@@ -378,7 +396,7 @@ class lib_cache_filecache
      * 将缓存数据转换为数据
      *
      * @param mix $p_mCache            
-     * @return mix/false
+     * @return array|false
      */
     private function _cache2Value($p_mCache)
     {

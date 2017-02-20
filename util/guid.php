@@ -2,22 +2,26 @@
 
 /**
  * util_guid
- * @author jxu
- * @package system_util
+ *
+ * guid工具,用于生成guid,可以被业务使用
+ *
+ * @package util
  */
 
 /**
  * util_guid
  *
- * @author jxu
- *        
+ * guid工具,用于生成guid,可以被业务使用
  */
 class util_guid
 {
 
     /**
-     * 获取GUID
+     * 获取guid
      *
+     * 生成符合规范的guid
+     *
+     * @param string $p_sJoin            
      * @return string
      */
     static function getGuid($p_sJoin = '')

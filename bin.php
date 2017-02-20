@@ -1,15 +1,20 @@
 <?php
 
 /**
- * system basic function
+ * bin
+ * 
+ * 框架入口文件,定义了自动加载函数,入口函数和简单的调试函数
+ * 
  * @package global
  */
 
 /**
  * 自动加载函数
  *
+ * 根据<var>$G_PHP_DIR</var>加载对应类
+ *
  * @param string $p_sClassName            
- * @return boolean
+ * @return true|false
  */
 function __autoload($p_sClassName)
 {
@@ -30,7 +35,10 @@ function __autoload($p_sClassName)
 /**
  * 入口函数
  *
+ * 框架引导文件会调用此函数进入框架,完成所有流程
+ *
  * @param boolean $p_bHttpRequest            
+ * @return void
  */
 function bin($p_bHttpRequest = true)
 {
@@ -90,7 +98,9 @@ function bin($p_bHttpRequest = true)
 /**
  * 调试函数
  *
- * 支持任意个参数。
+ * 支持任意个参数,根据不同类型输出显示.配合bootstrap样式更佳.
+ *
+ * @return void
  */
 function debug()
 {

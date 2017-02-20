@@ -1,22 +1,25 @@
 <?php
 
 /**
- * controller_sys_rpc
- * @author jxu
- * @package system_controller_sys
+ * lib_controller_rpc
+ *
+ * 远程业务逻辑请求控制器基类
+ *
+ * @package lib_sys
  */
+
 /**
- * controller_sys_rpc
+ * 远程业务逻辑请求控制器基类
  *
- * @author jxu
- * @todo
- *
+ * 控制器基类
  */
 abstract class lib_controller_rpc extends lib_controller_http
 {
 
     /**
      * 在控制器开始时执行（调度使用）
+     *
+     * @return void
      */
     function beforeRequest()
     {
@@ -27,6 +30,8 @@ abstract class lib_controller_rpc extends lib_controller_http
 
     /**
      * 校验数据合法性
+     *
+     * @return void
      */
     protected function verify()
     {

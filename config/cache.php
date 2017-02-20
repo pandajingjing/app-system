@@ -1,4 +1,11 @@
 <?php
+/**
+ * config_cache
+ *
+ * 缓存相关配置
+ *
+ * @package config
+ */
 return [
     'filecache' => [
         'sType' => 'file',

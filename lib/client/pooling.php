@@ -1,14 +1,17 @@
 <?php
 
 /**
- * client pooling
- * @package system_common_lib_client
- */
-/**
- * client pooling
+ * lib_client_pooling
  *
- * @author jxu
- * @package system_common_lib_client
+ * 客户端连接池
+ *
+ * @package lib_client
+ */
+
+/**
+ * lib_client_pooling
+ *
+ * 客户端连接池
  */
 class lib_client_pooling
 {
@@ -29,18 +32,22 @@ class lib_client_pooling
 
     /**
      * 构造函数
+     *
+     * @return void
      */
     private function __construct()
     {}
 
     /**
      * 析构函数
+     *
+     * @return void
      */
     function __destruct()
     {}
 
     /**
-     * 构造函数
+     * 克隆函数
      */
     private function __clone()
     {}

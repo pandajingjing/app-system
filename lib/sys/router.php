@@ -2,15 +2,16 @@
 
 /**
  * lib_sys_router
- * @author jxu
- * @package system_lib_sys
+ *
+ * 系统路由类
+ *
+ * @package lib_sys
  */
 
 /**
- * 系统路由
+ * lib_sys_router
  *
- * @author jxu
- *        
+ * 系统路由类
  */
 class lib_sys_router
 {
@@ -57,13 +58,17 @@ class lib_sys_router
     }
 
     /**
-     * 实例化
+     * 实例化函数
+     *
+     * @return void
      */
     private function __construct()
     {}
 
     /**
-     * 克隆
+     * 克隆函数
+     *
+     * @return void
      */
     private function __clone()
     {}
@@ -72,6 +77,7 @@ class lib_sys_router
      * 解析路由规则
      *
      * @param string $p_sDispatchParam            
+     * @return void
      */
     function parseURI($p_sDispatchParam)
     {
@@ -130,7 +136,8 @@ class lib_sys_router
      *
      * @param string $p_sControllerName            
      * @param array $p_aRouterParam            
-     * @return boolean|string
+     * @throws Exception
+     * @return string
      */
     function createURI($p_sControllerName, $p_aRouterParam = [])
     {
@@ -171,11 +178,13 @@ class lib_sys_router
     }
 
     /**
-     * 生成外站
+     * 生成外站URL
      *
-     * @param string $p_sControllerName            
+     * @param string $p_sDomainKey            
+     * @param string $p_sAlias            
      * @param array $p_aRouterParam            
-     * @return boolean|string
+     * @throws Exception
+     * @return string
      */
     function createOutURI($p_sDomainKey, $p_sAlias, $p_aRouterParam = [])
     {
@@ -222,9 +231,7 @@ class lib_sys_router
     /**
      * 根据参数得到URL
      *
-     * @param string $p_sAction            
      * @param array $p_aParam            
-     * @param string $p_sSuffix            
      * @return string
      */
     protected function _createParam($p_aParam)

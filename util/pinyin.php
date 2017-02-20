@@ -2,19 +2,24 @@
 
 /**
  * util_pinyin
- * @package system_util
+ *
+ * 获取汉字拼音,可以被业务使用
+ *
+ * @package util
  */
+
 /**
  * util_pinyin
  *
- * @author jxu
- * @package system_util
+ * 获取汉字拼音,可以被业务使用
  */
 class util_pinyin
 {
 
     /**
      * 获取拼音
+     *
+     * 获取字符串对应的汉字拼音,返回拼音组成的数组.如果没有拼音则返回对应的字符.
      *
      * @param string $p_sString            
      * @return array

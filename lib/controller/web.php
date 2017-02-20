@@ -1,20 +1,25 @@
 <?php
 
 /**
- * controller_sys_web
- * @author jxu
- * @package system_controller_sys
- */
-/**
- * controller_sys_web
+ * lib_controller_web
  *
- * @author jxu
+ * 网页控制器基类
+ *
+ * @package lib_sys
+ */
+
+/**
+ * 网页lib_controller_web
+ *
+ * 控制器基类
  */
 abstract class lib_controller_web extends lib_controller_http
 {
 
     /**
      * 在控制器结束时执行（调度使用）
+     *
+     * @return void
      */
     function afterRequest()
     {
@@ -27,6 +32,7 @@ abstract class lib_controller_web extends lib_controller_http
      *
      * @param string $p_sURL            
      * @param boolean $p_bIsTemp            
+     * @return void
      */
     protected function redirectURL($p_sURL, $p_bIsTemp = true)
     {
@@ -38,9 +44,8 @@ abstract class lib_controller_web extends lib_controller_http
     /**
      * 获取当前域名的路径
      *
-     * @param string $p_sAlias            
-     * @param array $p_aData            
-     *
+     * @param string $p_sControllerName            
+     * @param array $p_aRouterParam            
      * @return string
      */
     protected function createInURL($p_sControllerName, $p_aRouterParam = [])
@@ -68,6 +73,7 @@ abstract class lib_controller_web extends lib_controller_http
      * @param string $p_sValue            
      * @param int $p_iLifeTime            
      * @param string $p_sPath            
+     * @return void
      */
     protected function setCookie($p_sName, $p_sValue, $p_iLifeTime, $p_sPath = '/')
     {

@@ -2,13 +2,16 @@
 
 /**
  * util_pager
- * @author jxu
- * @package system_util
+ *
+ * 获取分页数据,设置对应url,可以被业务使用
+ *
+ * @package util
  */
+
 /**
  * util_pager
  *
- * @author jxu
+ * 获取分页数据,设置对应url,可以被业务使用
  */
 class util_pager
 {
@@ -33,6 +36,7 @@ class util_pager
      * @param int $p_iPageNum            
      * @param int $p_iTotalCnt            
      * @param int $p_iPageSize            
+     * @param int $p_iDefaultGroupSize            
      * @return array
      */
     static function getPager($p_iPageNum, $p_iTotalCnt, $p_iPageSize = self::DEFAULT_PAGE_SIZE, $p_iDefaultGroupSize = self::DEFAULT_GROUP_SIZE)
@@ -161,7 +165,7 @@ class util_pager
     }
 
     /**
-     * 获取页码数据
+     * 获取分组页码数据
      *
      * @param int $p_iCurrentPage            
      * @param int $p_iTotalPage            

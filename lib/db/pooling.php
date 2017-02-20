@@ -1,14 +1,17 @@
 <?php
 
 /**
- * db pooling
- * @package system_common_lib_db
- */
-/**
- * db pooling
+ * lib_db_pooling
  *
- * @author jxu
- * @package system_common_lib_db
+ * 数据库连接池
+ *
+ * @package lib_db
+ */
+
+/**
+ * lib_db_pooling
+ *
+ * 数据库连接池
  */
 class lib_db_pooling
 {
@@ -21,6 +24,7 @@ class lib_db_pooling
     private static $_oInstance = null;
 
     /**
+     * 数据库密码密钥
      *
      * @var string
      */
@@ -35,18 +39,24 @@ class lib_db_pooling
 
     /**
      * 构造函数
+     *
+     * @return void
      */
     private function __construct()
     {}
 
     /**
      * 析构函数
+     *
+     * @return void
      */
     function __destruct()
     {}
 
     /**
-     * 构造函数
+     * 克隆函数
+     *
+     * @return void
      */
     private function __clone()
     {}

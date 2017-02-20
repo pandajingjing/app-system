@@ -2,20 +2,24 @@
 
 /**
  * lib_sys_bll
- * @author jxu
- * @package system_lib_sys
+ *
+ * 业务服务基类
+ *
+ * @package lib_sys
  */
 
 /**
  * lib_sys_bll
  *
- * @author jxu
+ * 业务服务基类
  */
 class lib_sys_bll
 {
 
     /**
      * 构造函数
+     *
+     * @return void
      */
     function __construct()
     {}
@@ -32,7 +36,7 @@ class lib_sys_bll
     }
 
     /**
-     * 返回失败数据
+     * 返回错误数据
      *
      * @param array $p_aErrors            
      * @return array
@@ -60,6 +64,7 @@ class lib_sys_bll
      * @param string $p_sTitle            
      * @param string $p_sContent            
      * @param string $p_sClass            
+     * @return void
      */
     protected function addLog($p_sTitle, $p_sContent, $p_sClass = 'common')
     {
@@ -69,15 +74,17 @@ class lib_sys_bll
     /**
      * 筛选数据
      *
-     * @param array $p_aAllData            
+     * 筛选<var>$p_aAllDatas</var>中是否有<var>$p_mValue</var>,如果存在则返回,否则返回<var>$p_mDefault</var>
+     *
+     * @param array $p_aAllDatas            
      * @param string $p_sColumn            
      * @param mix $p_mValue            
      * @param mix $p_mDefault            
      * @return mix
      */
-    protected function filterData($p_aAllData, $p_sColumn, $p_mValue, $p_mDefault = null)
+    protected function filterData($p_aAllDatas, $p_sColumn, $p_mValue, $p_mDefault = null)
     {
-        foreach ($p_aAllData as $aData) {
+        foreach ($p_aAllDatas as $aData) {
             if ($p_mValue == $aData[$p_sColumn]) {
                 return $p_mValue;
             }
@@ -86,7 +93,7 @@ class lib_sys_bll
     }
 
     /**
-     * 获取配置
+     * 获取配置信息
      *
      * @param string $p_sKey            
      * @param string $p_sClass            
@@ -98,9 +105,10 @@ class lib_sys_bll
     }
 
     /**
-     * 开始调试
+     * 开始模块调试
      *
      * @param string $p_sModule            
+     * @return void
      */
     protected function startDebug($p_sModule)
     {
@@ -112,6 +120,7 @@ class lib_sys_bll
      *
      * @param string $p_sMsg            
      * @param boolean $p_bIsHTML            
+     * @return void
      */
     protected function showDebugMsg($p_sMsg, $p_bIsHTML = false)
     {
@@ -119,9 +128,10 @@ class lib_sys_bll
     }
 
     /**
-     * 结束调试
+     * 结束模块调试
      *
      * @param string $p_sModule            
+     * @return void
      */
     protected function stopDebug($p_sModule)
     {

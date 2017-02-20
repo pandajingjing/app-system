@@ -2,15 +2,16 @@
 
 /**
  * util_sys_cookie
- * @author jxu
- * @package system_util_sys
+ *
+ * 获取和发送cookie的工具,应避免应用直接使用.如有需要可以在这里对读写cookie进行封装
+ *
+ * @package util_sys
  */
 
 /**
- * 系统cookie工具
+ * util_sys_cookie
  *
- * @author jxu
- *        
+ * 获取和发送cookie的工具,应避免应用直接使用.如有需要可以在这里对读写cookie进行封装
  */
 class util_sys_cookie
 {
@@ -33,13 +34,14 @@ class util_sys_cookie
     }
 
     /**
-     * 写cookie
+     * 需要发送给客户端的cookie
      *
      * @param string $p_sName            
      * @param string $p_sValue            
      * @param int $p_iExpireTime            
      * @param string $p_sPath            
      * @param string $p_sDomain            
+     * @return void
      */
     static function setCookie($p_sName, $p_sValue, $p_iExpireTime, $p_sPath = '/', $p_sDomain = '')
     {
@@ -54,6 +56,10 @@ class util_sys_cookie
 
     /**
      * 发送cookie
+     *
+     * 应在页面输出任何内容前发送
+     *
+     * @return void
      */
     static function sendCookies()
     {

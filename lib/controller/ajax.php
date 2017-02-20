@@ -1,14 +1,17 @@
 <?php
 
 /**
- * controller_sys_ajax
- * @author jxu
- * @package system_controller_sys
- */
-/**
- * controller_sys_ajax
+ * lib_controller_ajax
  *
- * @author jxu
+ * ajax控制器基类
+ *
+ * @package lib_controller
+ */
+
+/**
+ * lib_controller_ajax
+ *
+ * ajax控制器基类
  */
 abstract class lib_controller_ajax extends lib_controller_service
 {

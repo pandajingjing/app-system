@@ -1,4 +1,11 @@
 <?php
+/**
+ * config_uri
+ *
+ * 路径相关配置
+ *
+ * @package config
+ */
 return [
     'sCDNSchemeDomain' => [
         'sAlias' => [

@@ -1,16 +1,17 @@
 <?php
 
 /**
- * util image
- * @package system_common_lib_util
- * @version [versionNumber] => 1587 [versionString] => ImageMagick 6.3.3 04/21/07 Q16 http://www.imagemagick.org
- */
-/**
- * util image
+ * util_image
  *
- * @author jxu
- * @todo 提供更多功能
- * @package system_common_lib_util
+ * 缩放和裁剪图片,可以被业务使用
+ *
+ * @package util
+ */
+
+/**
+ * util_image
+ *
+ * 缩放和裁剪图片,可以被业务使用
  */
 class util_image
 {
@@ -18,7 +19,9 @@ class util_image
     /**
      * 处理图片的类库
      *
-     * @var emu
+     * 可以是imagick,gd或者完善其他的方法
+     *
+     * @var string
      */
     static $_eType = 'imagick';
 
@@ -30,6 +33,7 @@ class util_image
      * @param int $p_iHeight            
      * @param string $p_sExtension            
      * @param array $p_aOption            
+     * @throws Exception
      * @return blob
      */
     private static function resizeImage_Imagick($p_sPath, $p_iWidth, $p_iHeight, $p_sExtension, $p_aOption = [])
@@ -124,7 +128,6 @@ class util_image
                     $iPosX = max(0, floor(($iImageWidth - $iWatermarkWidth) / 2));
                 } else {
                     throw new Exception(__CLASS__ . ': can not found configuration(resize_watermark_edge).');
-                    return false;
                 }
                 if (isset($aEdge['iUp'])) {
                     $iPosY = $aEdge['iUp'];
@@ -134,14 +137,12 @@ class util_image
                     $iPosY = max(0, floor(($iImageHeight - $iWatermarkHeight) / 2));
                 } else {
                     throw new Exception(__CLASS__ . ': can not found configuration(resize_watermark_edge)');
-                    return false;
                 }
                 $oImage->compositeImage($oWaterMark, Imagick::COMPOSITE_DEFAULT, $iPosX, $iPosY);
                 $oWaterMark->clear();
                 $oWaterMark->destroy();
             } else {
                 throw new Exception(__CLASS__ . ': can not found resize_watermark_path(' . $aWatermark['sFilePath'] . ')');
-                return false;
             }
         }
         
@@ -164,7 +165,7 @@ class util_image
      * @param array $p_aOption            
      * @return blob
      */
-    static function resizeImage($p_sPath, $p_iWidth, $p_iHeight, $p_sExtension, $p_aOption = array())
+    static function resizeImage($p_sPath, $p_iWidth, $p_iHeight, $p_sExtension, $p_aOption = [])
     {
         switch (self::$_eType) {
             case 'gd':
@@ -186,7 +187,7 @@ class util_image
      * @param int $p_iHeight            
      * @param string $p_sExtension            
      * @throws Exception
-     * @return boolean|string
+     * @return blob|false
      */
     static function cropImage($p_sPath, $p_iCutPointX, $p_iCutPointY, $p_iWidth, $p_iHeight, $p_sExtension)
     {
@@ -229,128 +230,8 @@ class util_image
      * @param array $p_aOption            
      * @return blob
      */
-    static function resizeImage_GD($p_sPath, $p_iWidth, $p_iHeight, $p_sExtension, $p_aOption = array())
-    {
-        /*
-         * 图片质量
-         * jpg是否渐进式jpg
-         * gif是否背景透明
-         * 是否等比例缩放
-         * 是剪裁还是缩放
-         * 缩放的情况下是否要填充空白
-         * 等比例缩放是满足高还是满足宽还是都满足
-         */
-        switch ($p_sExtension) {
-            case 'jpg':
-                $oImage = imagecreatefromjpeg($p_sPath);
-                break;
-        }
-        $iOWidth = imagesx($oImage);
-        $iOHeight = imagesy($oImage);
-        if ($iOWidth < $p_iWidth and $iOHeight < $p_iHeight) { // 不做拉伸图片处理
-            $p_iWidth = $iOWidth;
-            $p_iHeight = $iOHeight;
-        }
-        if (true === $p_aOption['bThumbnail']) {
-            switch ($p_aOption['sMode']) {
-                case 'cut': // 裁剪
-                    $oImage->cropThumbnailImage($p_iWidth, $p_iHeight);
-                    break;
-                case 'zoom': // 缩放
-                default:
-                    switch ($p_aOption['sZoomMode']) {
-                        case 'fill': // 填充
-                            $oImage->thumbnailImage($p_iWidth, $p_iHeight);
-                            break;
-                        case 'scale': // 等比例缩放
-                        default:
-                            switch ($p_aOption['sZoomScaleMode']) {
-                                case 'width':
-                                    $oImage->thumbnailImage($p_iWidth, round($p_iWidth * $iOHeight / $iOWidth), true);
-                                    break;
-                                case 'height':
-                                    $oImage->thumbnailImage(round($p_iHeight * $iOWidth / $iOHeight), $p_iHeight, true);
-                                    break;
-                                case 'mix':
-                                default:
-                                    $oImage->thumbnailImage($p_iWidth, $p_iHeight, true);
-                                    break;
-                            }
-                            break;
-                    }
-                    break;
-            }
-        } else {
-            switch ($p_aOption['sMode']) {
-                case 'cut':
-                    $oImage->cropImage($p_iWidth, $p_iHeight, round(($iOWidth - $p_iWidth) / 2), round(($iOHeight - $p_iHeight) / 2), true);
-                    break;
-                case 'zoom':
-                default:
-                    switch ($p_aOption['sZoomMode']) {
-                        case 'fill':
-                            $oImage->resizeImage($p_iWidth, $p_iHeight, Imagick::FILTER_CATROM);
-                            break;
-                        case 'scale':
-                        default:
-                            switch ($p_aOption['sZoomScaleMode']) {
-                                case 'width':
-                                    $oImage->resizeImage($p_iWidth, round($p_iWidth * $iOHeight / $iOWidth), Imagick::FILTER_CATROM, 1, true);
-                                    break;
-                                case 'height':
-                                    $oImage->resizeImage(round($p_iHeight * $iOWidth / $iOHeight), $p_iHeight, Imagick::FILTER_CATROM, 1, true);
-                                    break;
-                                case 'mix':
-                                default:
-                                    $oImage->resizeImage($p_iWidth, $p_iHeight, Imagick::FILTER_CATROM, 1, true);
-                                    break;
-                            }
-                            break;
-                    }
-                    break;
-            }
-        }
-        
-        /*
-         * if($iOWidth>$p_iWidth or $iOHeight>$p_iHeight){
-         * if($p_aOption){
-         * $oImage->thumbnailImage($p_iWidth,$p_iHeight,true);
-         * }else{
-         * $oImage->resizeImage($p_iWidth,$p_iHeight,Imagick::FILTER_CATROM,1);
-         * }
-         * }
-         * if(false!==$p_aOption['mWatermark']){
-         * if(file_exists($p_aOption['mWatermark'])){
-         * $blWaterMark=file_get_contents($p_aOption['mWatermark']);
-         * $oWaterMark=new Imagick();
-         * $oWaterMark->readImageBlob($blWaterMark);
-         * $iPosX=$oImage->getImageWidth()-$oWaterMark->getImageWidth()-30;
-         * $iPosY=$oImage->getImageHeight()-$oWaterMark->getImageHeight()-30;
-         * $oImage->compositeImage($oWaterMark,Imagick::COMPOSITE_DEFAULT,$iPosX,$iPosY);
-         * $oWaterMark->clear();
-         * $oWaterMark->destroy();
-         * }else{
-         * throw new Exception(__CLASS__ . ': configuration(resize_watermark) lost.');
-         * return false;
-         * }
-         * }
-         */
-        
-        $oImage->setImageFormat($p_sExtension);
-        $oImage->setImageCompression(Imagick::COMPRESSION_JPEG);
-        /*
-         * $a = $imagick->getImageCompressionQuality() * 0.75;
-         * if ($a == 0) {
-         * $a = 75;
-         * }
-         * $imagick->setImageCompressionQuality($a);
-         */
-        $oImage->stripImage();
-        $blImage = $oImage->getImageBlob();
-        $oImage->clear();
-        $oImage->destroy();
-        return $blImage;
-    }
+    private static function resizeImage_GD($p_sPath, $p_iWidth, $p_iHeight, $p_sExtension, $p_aOption = array())
+    {}
 
     /**
      * 生成验证码图片
@@ -362,81 +243,12 @@ class util_image
      * @param int $p_iPointDensity            
      * @param int $p_iCircleDensity            
      * @param int $p_iFontAngle            
-     */
-    /*
-     * static function createIdentifyCodeImage($p_iWidth, $p_iHeight, $p_sStr, $p_iFontSize = 0, $p_iPointDensity = 0, $p_iCircleDensity = 0, $p_iFontAngle = 0){
-     * //获取各种默认值
-     * $sTextFont = get_config('sImgFont', 'common');
-     * if(0 == $p_iFontSize){
-     * $p_iFontSize = round($p_iHeight * 3 / 5);
-     * }
-     * if(0 == $p_iPointDensity){
-     * $p_iPointDensity = round($p_iHeight * $p_iWidth / 100);
-     * }
-     * if(0 == $p_iCircleDensity){
-     * $p_iCircleDensity = round($p_iHeight * $p_iWidth / 200);
-     * }
-     * //生成画布
-     * $oImg = imagecreatetruecolor($p_iWidth, $p_iHeight);
-     * //获取字体范围大小
-     * $aTextSize = imagettfbbox($p_iFontSize, $p_iFontAngle, $sTextFont, $p_sStr);
-     * $iTextHeight = (max($aTextSize[1], $aTextSize[3]) - min($aTextSize[5], $aTextSize[7]));
-     * $iTextWidth = (max($aTextSize[4], $aTextSize[2]) - min($aTextSize[0], $aTextSize[6]));
-     * //字体起始位置
-     * $iTextStartLeft = ($p_iWidth - $iTextWidth) / 2;
-     * $iTextStartHeight = $p_iHeight / 2 + $iTextHeight / 2;
-     * //字体颜色
-     * $iRed = rand(127, 255);
-     * $iGreen = rand(127, 255);
-     * $iBlue = rand(127, 255);
-     * $oTextColor = imagecolorallocate($oImg, $iRed, $iGreen, $iBlue);
-     * //往画布上画字符串
-     * imagettftext($oImg, $p_iFontSize, $p_iFontAngle, $iTextStartLeft, $iTextStartHeight, $oTextColor, $sTextFont, $p_sStr);
-     * //往画布上画点
-     * for($i = 0; $i < $p_iPointDensity; $i++){
-     * $iX = rand(0, $p_iWidth);
-     * $iY = rand(0, $p_iHeight);
-     * $iRed = rand(0, 255);
-     * $iGreen = rand(0, 255);
-     * $iBlue = rand(0, 255);
-     * $oPointColor = imagecolorallocate($oImg, $iRed, $iGreen, $iBlue);
-     * imagesetpixel($oImg, $iX, $iY, $oPointColor);
-     * }
-     * //往画布上画圆
-     * for($i = 0; $i < $p_iCircleDensity; $i++){
-     * $x = rand(0, $p_iWidth);
-     * $y = rand(0, $p_iHeight);
-     * $r = rand(1, $p_iFontSize / 4);
-     * $red = rand(0, 255);
-     * $green = rand(0, 255);
-     * $blue = rand(0, 255);
-     * $newcolor = imagecolorallocate($oImg, $red, $green, $blue);
-     * imagefilledellipse($oImg, $x, $y, $r, $r, $newcolor);
-     * }
-     * ob_start();
-     * imagegif($oImg);
-     * $blImage = ob_get_contents();
-     * ob_end_clean();
-     * imagedestroy($oImg);
-     * return $blImage;
-     * }
-     */
-    
-    /**
-     * 生成验证码图片
-     *
-     * @param int $p_iWidth            
-     * @param int $p_iHeight            
-     * @param string $p_sStr            
-     * @param int $p_iFontSize            
-     * @param int $p_iPointDensity            
-     * @param int $p_iCircleDensity            
-     * @param int $p_iFontAngle            
+     * @return blob
      */
     static function createIdentifyCodeImage($p_iWidth, $p_iHeight, $p_sStr, $p_iFontSize = 0, $p_iPointDensity = 0, $p_iCircleDensity = 0, $p_iFontAngle = 0)
     {
         // 获取各种默认值
-        $sTextFont = get_config('sImgFont', 'common');
+        $sTextFont = lib_sys_var::getInstance()->getConfig('sImgFont', 'common');
         if (0 == $p_iFontSize) {
             $p_iFontSize = round($p_iHeight * 3 / 5);
         }
@@ -480,6 +292,7 @@ class util_image
         ];
         $colorsValue = $colors[array_rand($colors)];
         $oTextColor = imagecolorallocate($oImg, $colorsValue[0], $colorsValue[1], $colorsValue[2]);
+        
         // 往画布上画字符串
         // imagettftext($oImg, $p_iFontSize, $p_iFontAngle, $iTextStartLeft, $iTextStartHeight, $oTextColor, $sTextFont, $p_sStr);
         
@@ -500,6 +313,29 @@ class util_image
         for ($i = 0; $i < 5; $i ++) {
             $color = imagecolorallocate($oImg, mt_rand(0, 156), mt_rand(0, 156), mt_rand(0, 156));
             imageline($oImg, mt_rand(0, $p_iWidth), mt_rand(0, $p_iHeight), mt_rand(0, $p_iWidth), mt_rand(0, $p_iHeight), $color);
+        }
+        
+        // 往画布上画点
+        for ($i = 0; $i < $p_iPointDensity; $i ++) {
+            $iX = rand(0, $p_iWidth);
+            $iY = rand(0, $p_iHeight);
+            $iRed = rand(0, 255);
+            $iGreen = rand(0, 255);
+            $iBlue = rand(0, 255);
+            $oPointColor = imagecolorallocate($oImg, $iRed, $iGreen, $iBlue);
+            imagesetpixel($oImg, $iX, $iY, $oPointColor);
+        }
+        
+        // 往画布上画圆
+        for ($i = 0; $i < $p_iCircleDensity; $i ++) {
+            $x = rand(0, $p_iWidth);
+            $y = rand(0, $p_iHeight);
+            $r = rand(1, $p_iFontSize / 4);
+            $red = rand(0, 255);
+            $green = rand(0, 255);
+            $blue = rand(0, 255);
+            $newcolor = imagecolorallocate($oImg, $red, $green, $blue);
+            imagefilledellipse($oImg, $x, $y, $r, $r, $newcolor);
         }
         
         ob_start();

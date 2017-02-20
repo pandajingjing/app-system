@@ -2,15 +2,16 @@
 
 /**
  * util_sys_handle
- * @author jxu
- * @package system_util_sys
+ *
+ * 框架对于异常,错误和结束时进行处理的相关方法,应避免应用直接使用
+ *
+ * @package util_sys
  */
 
 /**
- * 系统处理工具
+ * util_sys_handle
  *
- * @author jxu
- *        
+ * 框架对于异常,错误和结束时进行处理的相关方法,应避免应用直接使用
  */
 class util_sys_handle
 {
@@ -23,7 +24,7 @@ class util_sys_handle
      * @param string $p_sErrFile            
      * @param int $p_iErrLine            
      * @param array $p_aErrContext            
-     * @return boolean
+     * @return true|false
      */
     static function handleError($p_iErrNo, $p_sErrStr, $p_sErrFile, $p_iErrLine, $p_aErrContext)
     {
@@ -75,6 +76,7 @@ class util_sys_handle
      * 异常处理函数
      *
      * @param object $p_oException            
+     * @return void
      */
     static function handleException($p_oException)
     {
@@ -91,6 +93,8 @@ class util_sys_handle
 
     /**
      * 进程结束处理函数
+     *
+     * @return void
      */
     static function handleShutdown()
     {

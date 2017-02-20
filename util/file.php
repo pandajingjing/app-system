@@ -2,19 +2,24 @@
 
 /**
  * util_file
- * @author jxu
- * @package system_common_lib_util
- */
-/**
- * util file
  *
- * @author jxu
+ * 文件类型,大小及相关操作,可以被业务使用
+ *
+ * @package util
+ */
+
+/**
+ * util_file
+ *
+ * 文件类型,大小及相关操作,可以被业务使用
  */
 class util_file
 {
 
     /**
      * Mime定义
+     *
+     * Mime定义与文件后缀名的对应关系
      *
      * @var array
      */
@@ -53,7 +58,7 @@ class util_file
     /**
      * 默认最大重试次数
      *
-     * @var integer
+     * @var int
      */
     const DEFAULT_MAX_TRY = 5;
 
@@ -100,7 +105,7 @@ class util_file
      *
      * @param string $p_sFilePath            
      * @param int $p_iTryTime            
-     * @return string/false
+     * @return string|false
      */
     static function tryReadFile($p_sFilePath, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
@@ -120,7 +125,7 @@ class util_file
      * @param string $p_sFilePath            
      * @param string $p_sContent            
      * @param int $p_iTryTime            
-     * @return true/false
+     * @return true|false
      */
     static function tryWriteFile($p_sFilePath, $p_sContent, $p_iFlag = FILE_APPEND, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
@@ -138,7 +143,7 @@ class util_file
      *
      * @param string $p_sFilePath            
      * @param int $p_iTryTime            
-     * @return true/false
+     * @return true|false
      */
     static function tryDeleteFile($p_sFilePath, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
@@ -157,6 +162,7 @@ class util_file
      * @param string $p_sDir            
      * @param boolean $p_bRecursive            
      * @param int $p_iTryTime            
+     * @return true|false
      */
     static function tryDeleteDir($p_sDir, $p_bRecursive = true, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
@@ -189,7 +195,7 @@ class util_file
      * @param int $p_iMode            
      * @param boolean $p_bRecursive            
      * @param int $p_iTryTime            
-     * @return true/false
+     * @return true|false
      */
     static function tryMakeDir($p_sDir, $p_iMode = 0777, $p_bRecursive = false, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
@@ -210,7 +216,7 @@ class util_file
      * @param string $p_sDestSourceFilePath            
      * @param boolean $p_bOverWritten            
      * @param int $p_iTryTime            
-     * @return true/false
+     * @return true|false
      */
     static function tryCopyFile($p_sSourceFilePath, $p_sDestSourceFilePath, $p_bOverWritten = false, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
@@ -235,7 +241,7 @@ class util_file
      * @param string $p_sDestSourceFilePath            
      * @param boolean $p_bOverWritten            
      * @param int $p_iTryTime            
-     * @return true/false
+     * @return true|false
      */
     static function tryMoveFile($p_sSourceFilePath, $p_sDestSourceFilePath, $p_bOverWritten = false, $p_iTryTime = self::DEFAULT_MAX_TRY)
     {
@@ -309,7 +315,7 @@ class util_file
      * @param int $p_iByte            
      * @param string $p_sUnit            
      * @param string $p_sType            
-     * @return int/string/array
+     * @return int|string|array
      */
     static function formatFileSize($p_iByte, $p_sUnit = 'auto', $p_sType = 'string')
     {
@@ -326,17 +332,17 @@ class util_file
             case 'auto':
             case 'auto-sub-abs':
             case 'auto-sub-dec':
-                $aTmp = array();
+                $aTmp = [];
                 $aTmp[] = floor($p_iByte / 1073741824);
                 $aTmp[] = floor(($p_iByte % 1073741824) / 1048576);
                 $aTmp[] = floor(($p_iByte % 1048576) / 1024);
                 $aTmp[] = floor($p_iByte % 1024);
-                $aUnit = array(
+                $aUnit = [
                     'GB',
                     'MB',
                     'KB',
                     'B'
-                );
+                ];
                 if ('string' == $p_sType) {
                     $iFlag = 0;
                     foreach ($aTmp as $iIndex => $iValue) {

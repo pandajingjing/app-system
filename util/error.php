@@ -2,13 +2,16 @@
 
 /**
  * util_error
- * @author jxu
- * @package system_util
+ *
+ * 错误的定义,收集和返回,可以被业务使用
+ *
+ * @package util
  */
+
 /**
  * util_error
  *
- * @author jxu
+ * 错误的定义,收集和返回,可以被业务使用
  */
 class util_error
 {
@@ -77,7 +80,7 @@ class util_error
     const TYPE_UNKNOWN_ERROR = 'Unknown_Error';
 
     /**
-     * 错误池
+     * 收集的错误
      *
      * @var array
      */
@@ -86,9 +89,12 @@ class util_error
     /**
      * 添加业务错误
      *
+     * 业务错误主要发生在bll层或者controller层,当数据不符合业务逻辑时触发该错误
+     *
      * @param string $p_sErrField            
      * @param string $p_sErrType            
      * @param mix $p_mErrValue            
+     * @return void
      */
     static function addBizError($p_sErrField, $p_sErrType, $p_mErrValue = '')
     {
@@ -101,9 +107,12 @@ class util_error
     /**
      * 添加字段检验错误
      *
+     * 字段校验错误主要发生在bll层或者controller层,当数据不符合业务需要的数据类型或者格式时触发该错误
+     *
      * @param string $p_sErrField            
      * @param string $p_sErrType            
      * @param mix $p_mErrValue            
+     * @return void
      */
     static function addFieldError($p_sErrField, $p_sErrType, $p_mErrValue = '')
     {
@@ -116,9 +125,12 @@ class util_error
     /**
      * 添加系统错误
      *
+     * 系统错误主要发生在lib层,当系统出现网络,硬件或系统错误时触发该错误
+     *
      * @param string $p_sErrField            
      * @param string $p_sErrType            
      * @param mix $p_mErrValue            
+     * @return void
      */
     static function addSysError($p_sErrField, $p_sErrType, $p_mErrValue = '')
     {
@@ -129,9 +141,9 @@ class util_error
     }
 
     /**
-     * 是否有错
+     * 是否已经收集到错误
      *
-     * @return true/false
+     * @return true|false
      */
     static function isError()
     {
@@ -143,7 +155,7 @@ class util_error
     }
 
     /**
-     * 获取所有错误
+     * 获取所有收集到的错误
      *
      * @return array
      */
@@ -155,7 +167,7 @@ class util_error
     /**
      * 获取最后一个错误
      *
-     * @return string
+     * @return array
      */
     static function getLastError()
     {
@@ -164,6 +176,8 @@ class util_error
 
     /**
      * 清空错误
+     *
+     * @return void
      */
     static function initError()
     {

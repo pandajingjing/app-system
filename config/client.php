@@ -1,4 +1,11 @@
 <?php
+/**
+ * config_client
+ *
+ * 客户端相关配置
+ *
+ * @package config
+ */
 return [
     'iConnectionTimeout' => 1000, // 毫秒
     'iExecuteTimeout' => 1000, // 毫秒

@@ -2,14 +2,16 @@
 
 /**
  * lib_sys_debugger
- * @author jxu
- * @package system_lib_sys
+ *
+ * 系统调试器类
+ *
+ * @package lib_sys
  */
 
 /**
  * lib_sys_debugger
  *
- * @author jxu
+ * 系统调试器类
  */
 class lib_sys_debugger
 {
@@ -51,6 +53,8 @@ class lib_sys_debugger
 
     /**
      * 构造函数
+     *
+     * @return void
      */
     private function __construct()
     {
@@ -68,7 +72,7 @@ class lib_sys_debugger
             if ($bCanIP) {
                 $iCanCookie = $this->_oVari->getParam('debug', 'cookie', 'int'); // cookie过滤
                 $iCanGet = $this->_oVari->getParam('debug', 'get', 'int'); // get过滤
-                $iExpireTime=$this->_oVari->getRealTime()+60;
+                $iExpireTime = $this->_oVari->getRealTime() + 60;
                 if (null === $iCanCookie) {
                     if (5 == $iCanGet) {
                         util_sys_cookie::setCookie('debug', 1, $iExpireTime);
@@ -97,15 +101,15 @@ class lib_sys_debugger
             } else {
                 $this->_bolNeedDebug = false;
             }
-            //debug($bCanIP, $iCanCookie, $iCanGet);
         } else {
             $this->_bolNeedDebug = false;
         }
-        // debug($this->_bolNeedDebug);
     }
 
     /**
-     * 构造函数
+     * 克隆函数
+     *
+     * @return void
      */
     private function __clone()
     {}
@@ -128,6 +132,7 @@ class lib_sys_debugger
      *
      * @param string $p_sMsg            
      * @param boolean $p_bIsHTML            
+     * @return void
      */
     function showMsg($p_sMsg, $p_bIsHTML = false)
     {
@@ -140,9 +145,10 @@ class lib_sys_debugger
     }
 
     /**
-     * 开始调试信息
+     * 开始模块调试信息
      *
      * @param string $p_sModule            
+     * @return void
      */
     function startDebug($p_sModule)
     {
@@ -155,9 +161,10 @@ class lib_sys_debugger
     }
 
     /**
-     * 结束调试信息
+     * 结束模块调试信息
      *
      * @param string $p_sModule            
+     * @return void
      */
     function stopDebug($p_sModule = '')
     {
@@ -168,7 +175,7 @@ class lib_sys_debugger
     }
 
     /**
-     * 返回输出信息
+     * 获取输出信息
      *
      * @return array
      */
@@ -178,7 +185,7 @@ class lib_sys_debugger
     }
 
     /**
-     * 返回调试信息
+     * 获取调试信息
      *
      * @return array
      */
@@ -189,6 +196,8 @@ class lib_sys_debugger
 
     /**
      * 获取内存使用量
+     *
+     * @return int
      */
     private function _getMemoryUsage()
     {
@@ -198,7 +207,7 @@ class lib_sys_debugger
     /**
      * 是否能够debug
      *
-     * @return true/false
+     * @return true|false
      */
     function canDebug()
     {

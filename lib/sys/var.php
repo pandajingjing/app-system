@@ -2,15 +2,16 @@
 
 /**
  * lib_sys_var
- * @author jxu
- * @package system_lib_sys
+ *
+ * 系统变量类,保存了系统所有允许被访问的变量
+ *
+ * @package lib_sys
  */
 
 /**
- * 系统变量
+ * lib_sys_var
  *
- * @author jxu
- *        
+ * 系统变量类,保存了系统所有允许被访问的变量
  */
 class lib_sys_var
 {
@@ -85,7 +86,9 @@ class lib_sys_var
     }
 
     /**
-     * 实例化
+     * 实例化函数
+     *
+     * @return void
      */
     private function __construct()
     {
@@ -101,7 +104,9 @@ class lib_sys_var
     }
 
     /**
-     * 克隆
+     * 克隆函数
+     *
+     * @return void
      */
     private function __clone()
     {}
@@ -110,6 +115,7 @@ class lib_sys_var
      * 设置路由获取的变量
      *
      * @param array $p_aParam            
+     * @return void
      */
     function setRouterParam($p_aParam)
     {
@@ -120,7 +126,7 @@ class lib_sys_var
      * 获取请求时间
      *
      * @param boolean $p_bFloat            
-     * @return float/int
+     * @return float|int
      */
     function getVisitTime($p_bFloat = false)
     {
@@ -135,7 +141,7 @@ class lib_sys_var
      * 获取当前时间
      *
      * @param boolean $p_bFloat            
-     * @return float/int
+     * @return float|int
      */
     function getRealTime($p_bFloat = false)
     {
@@ -200,6 +206,7 @@ class lib_sys_var
      *
      * @param string $p_sKey            
      * @param string $p_sClass            
+     * @throws Exception
      * @return mix
      */
     function getConfig($p_sKey, $p_sClass)

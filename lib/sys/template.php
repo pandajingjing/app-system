@@ -2,15 +2,16 @@
 
 /**
  * lib_sys_template
- * @author jxu
- * @package system_lib_sys
+ *
+ * 系统模板类,根据页面数据调用页面模板,并且输出数据
+ *
+ * @package lib_sys
  */
 
 /**
- * 系统模版
+ * lib_sys_template
  *
- * @author jxu
- *        
+ * 系统模板类,根据页面数据调用页面模板,并且输出数据
  */
 class lib_sys_template
 {
@@ -24,6 +25,8 @@ class lib_sys_template
 
     /**
      * 页面数据
+     *
+     * @var array
      */
     private $_aPageData = [];
 
@@ -41,13 +44,17 @@ class lib_sys_template
     }
 
     /**
-     * 实例化
+     * 实例化函数
+     *
+     * @return void
      */
     protected function __construct()
     {}
 
     /**
-     * 克隆
+     * 克隆函数
+     *
+     * @return void
      */
     protected function __clone()
     {}
@@ -56,6 +63,7 @@ class lib_sys_template
      * 设置页面数据
      *
      * @param array $p_aPageData            
+     * @return void
      */
     function setPageData($p_aPageData)
     {
@@ -66,6 +74,7 @@ class lib_sys_template
      * 渲染页面
      *
      * @param string $p_sPageName            
+     * @return void
      */
     function render($p_sPageName)
     {
@@ -130,6 +139,8 @@ class lib_sys_template
      *
      * @param string $p_sPageName            
      * @param array $p_aExtendDatas            
+     * @throws Exception
+     * @return true
      */
     protected function pandaTpl($p_sPageName, $p_aExtendDatas = [])
     {

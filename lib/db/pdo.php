@@ -1,20 +1,23 @@
 <?php
 
 /**
- * db pdo
- * @package system_common_lib_db
- */
-/**
- * db pdo
+ * lib_db_pdo
  *
- * @author jxu
- * @package system_common_lib_db
+ * 扩展PDO
+ *
+ * @package lib_db
+ */
+
+/**
+ * lib_db_pdo
+ *
+ * 扩展PDO
  */
 class lib_db_pdo extends pdo
 {
 
     /**
-     * 返回数据格式
+     * 默认返回关联数组格式
      *
      * @var int
      */
@@ -27,6 +30,7 @@ class lib_db_pdo extends pdo
      * @param string $p_sUserName            
      * @param string $p_sUserPWD            
      * @param array $p_aDriverOption            
+     * @return void
      */
     function __construct($p_sDSN, $p_sUserName = '', $p_sUserPWD = '', $p_aDriverOption = [])
     {

@@ -1,27 +1,30 @@
 <?php
 
 /**
- * controller_sys_cmd
- * @author jxu
- * @package system_controller_sys
- */
-/**
- * controller_sys_cmd
+ * lib_controller_cmd
  *
- * @author jxu
+ * 命令行控制器基类
+ *
+ * @package lib_sys
+ */
+
+/**
+ * lib_controller_cmd
+ *
+ * 命令行控制器基类
  */
 abstract class lib_controller_cmd extends lib_sys_controller
 {
 
     /**
-     * 程序开始时间
+     * 命令行开始时间
      *
      * @var float
      */
     private $_fStartTime = '';
 
     /**
-     * 程序结束时间
+     * 命令行结束时间
      *
      * @var float
      */
@@ -30,7 +33,7 @@ abstract class lib_controller_cmd extends lib_sys_controller
     /**
      * 在控制器开始时执行（调度使用）
      *
-     * @todo 要修改脚本部分
+     * @return void
      */
     function beforeRequest()
     {
@@ -41,6 +44,8 @@ abstract class lib_controller_cmd extends lib_sys_controller
 
     /**
      * 在控制器结束时执行（调度使用）
+     *
+     * @return void
      */
     function afterRequest()
     {
@@ -66,6 +71,7 @@ abstract class lib_controller_cmd extends lib_sys_controller
      * 输出信息到控制台
      *
      * @param string $p_sMsg            
+     * @return void
      */
     protected function stdOut($p_sMsg)
     {

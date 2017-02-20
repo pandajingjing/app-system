@@ -1,16 +1,17 @@
 <?php
 
 /**
- * controller_sys_api
- * @author jxu
- * @package system_controller_sys
+ * lib_controller_api
+ *
+ * 外部接口控制器基类
+ *
+ * @package lib_controller
  */
+
 /**
- * controller_sys_api
+ * lib_controller_api
  *
- * @author jxu
- * @todo
- *
+ * a外部接口控制器基类
  */
 abstract class lib_controller_api extends lib_controller_service
 {
@@ -24,6 +25,10 @@ abstract class lib_controller_api extends lib_controller_service
 
     /**
      * 在控制器开始时执行（调度使用）
+     *
+     * 进行数据合法性校验
+     *
+     * @return void
      */
     function beforeRequest()
     {
@@ -32,6 +37,9 @@ abstract class lib_controller_api extends lib_controller_service
         $this->verify();
     }
 
+    /**
+     * 接口数据合法性校验
+     */
     protected function verify()
     {}
 }

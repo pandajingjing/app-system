@@ -1,18 +1,26 @@
 <?php
 
 /**
- * 提供返回数据格式化
- * @author jxu
+ * util_sys_response
  *
+ * 规范框架相关输出的格式,包括列表,数组和错误,应避免应用直接使用
+ *
+ * @package util_sys
+ */
+
+/**
+ * util_sys_response
+ *
+ * 规范框架相关输出的格式,包括列表,数组和错误,应避免应用直接使用
  */
 class util_sys_response
 {
 
     /**
-     * 返回成功数据
+     * 返回数组数据
      *
      * @param array $p_aData            
-     * @return string
+     * @return array
      */
     static function returnSuccess($p_aData)
     {
@@ -23,10 +31,10 @@ class util_sys_response
     }
 
     /**
-     * 返回失败数据
+     * 返回错误数据
      *
      * @param array $p_aErrors            
-     * @return string
+     * @return array
      */
     static function returnError($p_aErrors)
     {
@@ -41,7 +49,7 @@ class util_sys_response
      *
      * @param array $p_aDataList            
      * @param int $p_iCnt            
-     * @return string
+     * @return array
      */
     static function returnList($p_aDataList, $p_iCnt)
     {

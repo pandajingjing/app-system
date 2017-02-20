@@ -1,20 +1,25 @@
 <?php
 
 /**
- * controller_sys_http
- * @author jxu
- * @package system_controller_sys
- */
-/**
- * controller_sys_http
+ * lib_controller_http
  *
- * @author jxu
+ * http协议控制器基类
+ *
+ * @package lib_sys
+ */
+
+/**
+ * lib_controller_http
+ *
+ * http协议控制器基类
  */
 abstract class lib_controller_http extends lib_sys_controller
 {
 
     /**
      * 内部变量
+     *
+     * 存放响应头数据和页面数据
      *
      * @var array
      */
@@ -25,6 +30,8 @@ abstract class lib_controller_http extends lib_sys_controller
 
     /**
      * 在控制器结束时执行（调度使用）
+     *
+     * @return void
      */
     function afterRequest()
     {
@@ -42,6 +49,7 @@ abstract class lib_controller_http extends lib_sys_controller
      * @param string $p_sValue            
      * @param boolean $p_bReplace            
      * @param int $p_iCode            
+     * @return void
      */
     protected function addHeader($p_sValue, $p_bReplace = true, $p_iCode = null)
     {
@@ -53,10 +61,11 @@ abstract class lib_controller_http extends lib_sys_controller
     }
 
     /**
-     * 设置Page数据
+     * 设置页面数据
      *
      * @param string $p_sKey            
      * @param mixed $p_mValue            
+     * @return void
      */
     protected function setData($p_sKey, $p_mValue)
     {
@@ -75,7 +84,7 @@ abstract class lib_controller_http extends lib_sys_controller
     }
 
     /**
-     * 获取Page数据（调度使用）
+     * 获取整个页面的数据（调度使用）
      *
      * @return array
      */

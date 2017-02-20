@@ -1,4 +1,11 @@
 <?php
+/**
+ * config_router
+ *
+ * 路由相关配置
+ *
+ * @package config
+ */
 return [
     'aRouteList' => [
         'controller_sys_crossdomain' => [

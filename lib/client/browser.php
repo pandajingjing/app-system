@@ -1,14 +1,17 @@
 <?php
 
 /**
- * browser client
- * @package system_common_lib_client
- */
-/**
- * browser client
+ * lib_client_browser
  *
- * @author jxu
- * @package system_common_lib_client
+ * 仿浏览器客户端
+ *
+ * @package lib_client
+ */
+
+/**
+ * lib_client_browser
+ *
+ * 仿浏览器客户端
  */
 class client_browser
 {
@@ -24,6 +27,7 @@ class client_browser
      * 设置浏览器头部信息
      *
      * @param string $p_sUserAgent            
+     * @return void
      */
     static function setUserAgent($p_sUserAgent = '')
     {
@@ -39,6 +43,7 @@ class client_browser
      *
      * @param mixed $mKey            
      * @param mixed $mVal            
+     * @return void
      */
     static function setOption($mKey, $mVal)
     {
@@ -49,6 +54,7 @@ class client_browser
      * 设置浏览器cookie
      *
      * @param array $p_aCookie            
+     * @return void
      */
     static function setCookie($p_aCookie = [])
     {
@@ -92,16 +98,16 @@ class client_browser
      *
      * @param string $p_sMethod            
      * @param string $p_sURL            
-     * @param mix $p_mData            
+     * @param array $p_aData            
      * @param string $p_sResultType            
-     * @return mix
+     * @return array|string
      */
-    private static function _fetchData($p_sMethod, $p_sURL, $p_mData, $p_sResultType = 'json')
+    private static function _fetchData($p_sMethod, $p_sURL, $p_aData, $p_sResultType = 'json')
     {
         $oCURL = lib_client_pooling::getInstance()->getClient();
         if ('post' == $p_sMethod) {
             $oCURL->setPost(true);
-            $oCURL->setPostParams($p_mData);
+            $oCURL->setPostParams($p_aData);
         } else {
             $oCURL->setPost(false);
         }

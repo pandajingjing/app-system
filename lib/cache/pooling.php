@@ -1,14 +1,17 @@
 <?php
 
 /**
- * cache pooling
- * @package system_kernel_lib_cache
- */
-/**
- * cache pooling
+ * lib_cache_pooling
  *
- * @author jxu
- * @package system_kernel_lib_cache
+ * 缓存连接池
+ *
+ * @package lib_cache
+ */
+
+/**
+ * lib_cache_pooling
+ *
+ * 缓存连接池
  */
 class lib_cache_pooling
 {
@@ -29,18 +32,24 @@ class lib_cache_pooling
 
     /**
      * 构造函数
+     *
+     * @return void
      */
     private function __construct()
     {}
 
     /**
      * 析构函数
+     *
+     * @return void
      */
     function __destruct()
     {}
 
     /**
-     * 构造函数
+     * 克隆函数
+     *
+     * @return void
      */
     private function __clone()
     {}

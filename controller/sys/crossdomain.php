@@ -2,13 +2,16 @@
 
 /**
  * controller_sys_crossdomain
- * @author jxu
- * @package system_controller_sys
+ *
+ * crossdomain controller
+ *
+ * @package controller_sys
  */
+
 /**
  * controller_sys_crossdomain
  *
- * @author jxu
+ * crossdomain controller
  */
 class controller_sys_crossdomain extends lib_controller_web
 {
@@ -23,6 +26,11 @@ class controller_sys_crossdomain extends lib_controller_web
         '*.jxulife.com'
     ];
 
+    /**
+     * 控制器入口函数
+     *
+     * @return string|lib_sys_controller
+     */
     function doRequest()
     {
         $this->setData('aCrossDomainList', self::CROSS_DOMAIN_LIST);
