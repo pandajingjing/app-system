@@ -122,6 +122,7 @@ class lib_sys_template
              * 获取静态资源路径
              *
              * @param string $p_sPath            
+             * @param string $p_sDomainKey            
              * @return string
              */
             function pandaRes($p_sPath, $p_sDomainKey = 'sCDNSchemeDomain')

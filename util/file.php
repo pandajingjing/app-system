@@ -124,6 +124,7 @@ class util_file
      *
      * @param string $p_sFilePath            
      * @param string $p_sContent            
+     * @param int $p_iFlag            
      * @param int $p_iTryTime            
      * @return true|false
      */
