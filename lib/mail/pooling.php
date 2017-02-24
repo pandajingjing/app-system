@@ -1,28 +1,31 @@
 <?php
 
 /**
- * mail pooling
- * @package system_common_lib_mail
+ * lib_mail_pooling
+ *
+ * 邮件连接池
+ *
+ * @package lib_mail
  */
+
 /**
- * mail pooling
- * 
- * @author jxu
- * @package system_common_lib_mail
+ * lib_mail_pooling
+ *
+ * 邮件连接池
  */
-class mail_pooling
+class lib_mail_pooling
 {
 
     /**
      * 邮件服务实例
-     * 
+     *
      * @var object
      */
     private static $_oInstance = null;
 
     /**
      * 数据库连接池
-     * 
+     *
      * @var array
      */
     private static $_aConnect = array();
@@ -47,7 +50,7 @@ class mail_pooling
 
     /**
      * 获取实例
-     * 
+     *
      * @return object
      */
     static function getInstance()
@@ -60,7 +63,7 @@ class mail_pooling
 
     /**
      * 获取邮件服务连接
-     * 
+     *
      * @param string $p_sMailName            
      * @return object
      */
@@ -74,17 +77,16 @@ class mail_pooling
 
     /**
      * 加载邮件服务连接
-     * 
+     *
      * @param string $p_sMailName            
      * @return object
      */
     private static function _loadMail($p_sMailName)
     {
-        $aConfig = get_config($p_sMailName, 'mail');
+        $aConfig = lib_sys_var::getInstance()->getConfig($p_sMailName, 'mail');
         switch ($aConfig['sType']) {
             case 'php':
-                load_lib('/mail/phpmail');
-                $oMail = new mail_phpmail();
+                $oMail = new lib_mail_phpmail();
                 break;
         }
         return $oMail;

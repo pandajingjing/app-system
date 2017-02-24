@@ -1,19 +1,19 @@
 <?php
 
 /**
- * lib_cache_filecache
+ * lib_data_filecache
  *
  * 文件缓存,与memcached有类似的函数
  *
- * @package lib_cache
+ * @package lib_data
  */
 
 /**
- * lib_cache_filecache
+ * lib_data_filecache
  *
  * 文件缓存,与memcached有类似的函数
  */
-class lib_cache_filecache
+class lib_data_filecache
 {
 
     /**

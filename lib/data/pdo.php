@@ -1,19 +1,19 @@
 <?php
 
 /**
- * lib_db_pdo
+ * lib_data_pdo
  *
  * 扩展PDO
  *
- * @package lib_db
+ * @package lib_data
  */
 
 /**
- * lib_db_pdo
+ * lib_data_pdo
  *
  * 扩展PDO
  */
-class lib_db_pdo extends pdo
+class lib_data_pdo extends pdo
 {
 
     /**
@@ -36,7 +36,7 @@ class lib_db_pdo extends pdo
     {
         parent::__construct($p_sDSN, $p_sUserName, $p_sUserPWD, $p_aDriverOption);
         $this->setAttribute(PDO::ATTR_STATEMENT_CLASS, [
-            'lib_db_pdostatement',
+            'lib_data_pdostatement',
             [
                 $this
             ]

@@ -962,7 +962,7 @@ abstract class lib_sys_orm
     private static function _connectCache()
     {
         if (null == self::$_oCache) {
-            self::$_oCache = lib_cache_pooling::getInstance()->getCache('orm');
+            self::$_oCache = lib_cache_pooling::getInstance()->getCache('ormcache');
         }
     }
 

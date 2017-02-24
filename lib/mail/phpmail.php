@@ -1,105 +1,108 @@
 <?php
 
 /**
- * phpmail mail
- * @package system_common_lib_mail
+ * lib_mail_phpmail
+ *
+ * php邮件
+ *
+ * @package lib_mail
  */
+
 /**
- * phpmail mail
- * 
- * @author jxu
- * @package system_common_lib_mail
+ * lib_mail_phpmail
+ *
+ * php邮件
  */
-class mail_phpmail
+class lib_mail_phpmail
 {
 
     /**
      * 邮件字符集
-     * 
+     *
      * @var string
      */
-    private $_sCharset = '';
+    private $_sCharset = 'utf-8';
 
     /**
      * 邮件标题
-     * 
+     *
      * @var string
      */
     private $_sSubject = '';
 
     /**
      * 发信人
-     * 
+     *
      * @var array
      */
-    private $_aFrom = array();
+    private $_aFrom = [];
 
     /**
      * 抄送人
-     * 
+     *
      * @var array
      */
-    private $_aCC = array();
+    private $_aCC = [];
 
     /**
      * 暗送人
-     * 
+     *
      * @var array
      */
-    private $_aBCC = array();
+    private $_aBCC = [];
 
     /**
      * 收件人
-     * 
+     *
      * @var array
      */
-    private $_aTo = array();
+    private $_aTo = [];
 
     /**
      * 回信目的地址
-     * 
+     *
      * @var array
      */
-    private $_aReplyTo = array();
+    private $_aReplyTo = [];
 
     /**
      * 退信目的地址
-     * 
+     *
      * @var array
      */
-    private $_aReturnTo = array();
+    private $_aReturnTo = [];
 
     /**
      * 自定义头部信息
-     * 
+     *
      * @var string
      */
     private $_sHeader = '';
 
     /**
      * 附件
-     * 
+     *
      * @var array
      */
-    private $_aAttach = array();
+    private $_aAttachs = [];
 
     /**
      * 邮件内图片
-     * 
+     *
      * @var array
      */
-    private $_aMailImage = array();
+    private $_aMailImages = [];
 
     /**
      * 是否HTML
-     * 
+     *
      * @var boolean
      */
     private $_bIsHTML = false;
 
     /**
      * 邮件内容
-     * 
+     *
      * @var string
      */
     private $_sBody = '';
@@ -108,9 +111,7 @@ class mail_phpmail
      * 构造函数
      */
     function __construct()
-    {
-        $this->_sCharset = get_config('sCharset');
-    }
+    {}
 
     /**
      * 析构函数
@@ -123,36 +124,37 @@ class mail_phpmail
      */
     function initMail()
     {
-        $this->_aFrom = array();
-        $this->_aTo = array();
-        $this->_aCC = array();
-        $this->_aBCC = array();
-        $this->_aReplyTo = array();
-        $this->_aReturnTo = array();
+        $this->_aTo = [];
+        $this->_aCC = [];
+        $this->_aBCC = [];
         $this->_sHeader = '';
         $this->_sSubject = '';
-        $this->_aAttach = array();
-        $this->_aMailImage = array();
+        $this->_aAttachs = [];
+        $this->_aMailImages = [];
         $this->_bIsHTML = false;
         $this->_sBody = '';
     }
 
     /**
      * 设置来源邮箱
-     * 
+     *
      * @param string $p_sAddr            
      * @param string $p_sName            
+     * @return void
      */
-    function addFrom($p_sAddr, $p_sName = '')
+    function setFrom($p_sAddr, $p_sName = '')
     {
-        $this->_aFrom[$p_sAddr] = $p_sName;
+        $this->_aFrom = [
+            $p_sAddr => $p_sName
+        ];
     }
 
     /**
-     * 设置抄送者
-     * 
+     * 添加抄送者
+     *
      * @param string $p_sAddr            
      * @param string $p_sName            
+     * @return void
      */
     function addCC($p_sAddr, $p_sName = '')
     {
@@ -160,10 +162,11 @@ class mail_phpmail
     }
 
     /**
-     * 设置暗送者
-     * 
+     * 添加暗送者
+     *
      * @param string $p_sAddr            
      * @param string $p_sName            
+     * @return void
      */
     function addBCC($p_sAddr, $p_sName = '')
     {
@@ -171,10 +174,11 @@ class mail_phpmail
     }
 
     /**
-     * 设置收件人
-     * 
+     * 添加收件人
+     *
      * @param string $p_sAddr            
      * @param string $p_sName            
+     * @return void
      */
     function addTo($p_sAddr, $p_sName = '')
     {
@@ -183,30 +187,37 @@ class mail_phpmail
 
     /**
      * 设置回复邮箱
-     * 
+     *
      * @param string $p_sAddr            
      * @param string $p_sName            
+     * @return void
      */
-    function addReplyTo($p_sAddr, $p_sName = '')
+    function setReplyTo($p_sAddr, $p_sName = '')
     {
-        $this->_aReplyTo[$p_sAddr] = $p_sName;
+        $this->_aReplyTo = [
+            $p_sAddr => $p_sName
+        ];
     }
 
     /**
      * 设置退信邮箱
-     * 
+     *
      * @param string $p_sAddr            
      * @param string $p_sName            
+     * @return void
      */
-    function addReturnTo($p_sAddr, $p_sName = '')
+    function setReturnTo($p_sAddr, $p_sName = '')
     {
-        $this->_aReturnTo[$p_sAddr] = $p_sName;
+        $this->_aReturnTo = [
+            $p_sAddr => $p_sName
+        ];
     }
 
     /**
      * 设置邮件头信息
-     * 
+     *
      * @param string $p_sHeader            
+     * @return void
      */
     function setHeader($p_sHeader)
     {
@@ -215,8 +226,9 @@ class mail_phpmail
 
     /**
      * 设置邮件标题
-     * 
+     *
      * @param string $p_sSubject            
+     * @return void
      */
     function setSubject($p_sSubject)
     {
@@ -225,9 +237,10 @@ class mail_phpmail
 
     /**
      * 设置邮件体
-     * 
+     *
      * @param string $p_sBody            
      * @param boolean $p_bIsHTML            
+     * @return void
      */
     function setBody($p_sBody, $p_bIsHTML = false)
     {
@@ -236,193 +249,210 @@ class mail_phpmail
     }
 
     /**
-     * 添加附件
-     * 
+     * 添加本地附件
+     *
      * @param string $p_sName            
      * @param string $p_sPath            
+     * @return void
      */
-    function addAttachment($p_sName, $p_sPath)
+    function addLocalAttachment($p_sName, $p_sPath)
     {
         $oFInfo = finfo_open();
         $sMimeType = finfo_file($oFInfo, $p_sPath, FILEINFO_MIME_TYPE);
         finfo_close($oFInfo);
-        load_lib('/util/file');
-        $this->_aAttach[] = array(
-            'oContent' => util_file::tryReadFile($p_sPath),
-            'sName' => $p_sName,
-            'sMimeType' => $sMimeType
-        );
+        $this->addStreamAttachment($p_sName, util_file::tryReadFile($p_sPath), $sMimeType);
     }
 
     /**
-     * 添加附件 数据流的形式发送
-     * 
-     * @param
-     *            $p_sName
-     * @param
-     *            $p_oContent
-     * @param
-     *            $p_sMimeType
-     * @author : tanwei
+     * 添加数据流附件
+     *
+     * @param string $p_sName            
+     * @param blob $p_oContent            
+     * @param string $p_sMimeType            
+     * @return void
      */
-    function addAttachmentStream($p_sName, $p_oContent, $p_sMimeType)
+    function addStreamAttachment($p_sName, $p_oContent, $p_sMimeType)
     {
-        $this->_aAttach[] = array(
+        $this->_aAttachs[] = [
             'oContent' => $p_oContent,
             'sName' => $p_sName,
             'sMimeType' => $p_sMimeType
-        );
+        ];
     }
 
     /**
-     * 添加邮件中的图片
-     * 
+     * 添加邮件内图片
+     *
      * @param string $p_sName            
      * @param string $p_sPath            
+     * @return void
      */
     function addBodyImage($p_sName, $p_sPath)
     {
         $oFInfo = finfo_open();
         $sMimeType = finfo_file($oFInfo, $p_sPath, FILEINFO_MIME_TYPE);
         finfo_close($oFInfo);
-        load_lib('/util/file');
-        $this->_aMailImage[] = array(
-            'oContent' => util_file::tryReadFile($p_sPath),
+        $this->addStreamBodyImage($p_sName, util_file::tryReadFile($p_sPath), $sMimeType);
+    }
+
+    /**
+     * 添加数据流邮件内图片
+     *
+     * @param string $p_sName            
+     * @param blob $p_oContent            
+     * @param string $p_sMimeType            
+     * @return void
+     */
+    function addStreamBodyImage($p_sName, $p_oContent, $p_sMimeType)
+    {
+        $this->_aMailImages[] = array(
+            'oContent' => $p_oContent,
             'sName' => $p_sName,
-            'sMimeType' => $sMimeType,
-            'sCID' => md5(uniqid(sys_variable::getInstance()->getTime()))
+            'sMimeType' => $p_sMimeType,
+            'sCID' => md5(uniqid(lib_sys_var::getInstance()->getRealTime()))
         );
     }
 
     /**
      * 发送邮件
-     * 
+     *
      * @return boolean
      */
     function sendMail()
     {
         $sSubject = '=?' . $this->_sCharset . '?B?' . base64_encode($this->_sSubject) . '?=';
         $sHeader = 'MIME-Version: 1.0' . PHP_EOL;
-        $sHeader .= 'From: ' . $this->mkSBody($this->_aFrom) . PHP_EOL;
+        $sHeader .= 'From: ' . self::_mkSBody($this->_aFrom, $this->_sCharset) . PHP_EOL;
         if (! empty($this->_aReplyTo)) {
-            $sHeader .= 'Reply-To: ' . $this->mkSBody($this->_aReplyTo) . PHP_EOL;
+            $sHeader .= 'Reply-To: ' . self::_mkSBody($this->_aReplyTo, $this->_sCharset) . PHP_EOL;
         }
         if (! empty($this->_aReturnTo)) {
-            $sHeader .= 'Return-Path: ' . $this->mkSBody($this->_aReturnTo) . PHP_EOL;
+            $sHeader .= 'Return-Path: ' . self::_mkSBody($this->_aReturnTo, $this->_sCharset) . PHP_EOL;
         }
         if (! empty($this->_aCC)) {
-            $sHeader .= 'CC: ' . $this->mkSBody($this->_aCC) . PHP_EOL;
+            $sHeader .= 'CC: ' . self::_mkSBody($this->_aCC, $this->_sCharset) . PHP_EOL;
         }
         if (! empty($this->_sBCC)) {
-            $sHeader .= 'BCC: ' . $this->mkSBody($this->_sBCC) . PHP_EOL;
+            $sHeader .= 'BCC: ' . self::_mkSBody($this->_sBCC, $this->_sCharset) . PHP_EOL;
         }
-        $sBoundary = '=_' . md5(uniqid(sys_variable::getInstance()->getTime()));
+        $sBoundary = '=_' . md5(uniqid(lib_sys_var::getInstance()->getRealTime()));
         $sHeader .= 'Content-Type: multipart/related;charset="' . $this->_sCharset . '"; boundary="' . $sBoundary . '"' . PHP_EOL;
         $sHeader .= $this->_sHeader;
-        $sMail = $this->buildMail($sBoundary);
-        return mail($this->mkSBody($this->_aTo), $sSubject, $sMail, $sHeader);
+        return mail(self::_mkSBody($this->_aTo, $this->_sCharset), $sSubject, self::_buildMail($sBoundary, $this->_bIsHTML, $this->_sCharset, $this->_sBody, $this->_aAttachs, $this->_aMailImages), $sHeader);
+    }
+
+    /**
+     * 生成邮件内容
+     *
+     * @param string $p_sBoundary            
+     * @param boolean $p_bIsHTML            
+     * @param string $p_sCharset            
+     * @param string $p_sBody            
+     * @param array $p_aAttachs            
+     * @param array $p_aMailImages            
+     * @return string
+     */
+    private static function _buildMail($p_sBoundary, $p_bIsHTML, $p_sCharset, $p_sBody, $p_aAttachs, $p_aMailImages)
+    {
+        if ($p_bIsHTML) {
+            $sMultipart = self::_buildHTML($p_sBoundary, $p_sCharset, $p_sBody, $p_aMailImages);
+        } else {
+            $sMultipart = self::_buildTxt($p_sBoundary, $p_sCharset, $p_sBody);
+            $p_aAttachs[] = [
+                'oContent' => $p_sBody,
+                'sName' => 'body.txt',
+                'sMimeType' => 'text/plain'
+            ];
+        }
+        foreach ($p_aAttachs as $aAttach) {
+            $sMultipart .= '--' . $p_sBoundary . PHP_EOL;
+            $sMultipart .= self::_buildAttach($aAttach, $p_sCharset);
+        }
+        $sMultipart .= '--' . $p_sBoundary . '--' . PHP_EOL;
+//         debug($sMultipart);
+        return $sMultipart;
     }
 
     /**
      * 组合邮箱信息
-     * 
+     *
      * @param array $p_aSBody            
+     * @param string $p_sCharset            
      * @return string
      */
-    private function mkSBody($p_aSBody)
+    private static function _mkSBody($p_aSBody, $p_sCharset)
     {
-        $aTmp = array();
+        $aTmp = [];
         foreach ($p_aSBody as $sAddr => $sName) {
             if ('' == $sName) {
                 $aTmp[] = $sAddr;
             } else {
-                $aTmp[] = '"=?' . $this->_sCharset . '?B?' . base64_encode($sName) . '?=" <' . $sAddr . '>';
+                $aTmp[] = '"=?' . $p_sCharset . '?B?' . base64_encode($sName) . '?=" <' . $sAddr . '>';
             }
         }
         return implode(',', $aTmp);
     }
 
     /**
-     * 生成邮件内容
-     * 
-     * @param string $p_sBoundary            
-     * @return string
-     */
-    private function buildMail($p_sBoundary)
-    {
-        if ($this->_bIsHTML) {
-            $sMultipart = $this->_buildHTML($p_sBoundary);
-        } else {
-            $sMultipart = $this->_buildTxt($p_sBoundary);
-            $this->_aAttach[] = array(
-                'oContent' => $this->_sBody,
-                'sName' => 'body.txt',
-                'sMimeType' => 'text/plain'
-            );
-        }
-        foreach ($this->_aAttach as $aAttach) {
-            $sMultipart .= '--' . $p_sBoundary . PHP_EOL;
-            $sMultipart .= $this->_buildAttach($aAttach);
-        }
-        $sMultipart .= '--' . $p_sBoundary . '--' . PHP_EOL;
-        return $sMultipart;
-    }
-
-    /**
      * 生成txt内容
-     * 
+     *
      * @param string $p_sOrigBoundary            
+     * @param string $p_sCharset            
+     * @param string $p_sBody            
      * @return string
      */
-    private function _buildTxt($p_sOrigBoundary)
+    private static function _buildTxt($p_sOrigBoundary, $p_sCharset, $p_sBody)
     {
         $sMultipart = '--' . $p_sOrigBoundary . PHP_EOL;
-        $sMultipart .= 'Content-Type: text/plain;charset="' . $this->_sCharset . '"' . PHP_EOL;
+        $sMultipart .= 'Content-Type: text/plain;charset="' . $p_sCharset . '"' . PHP_EOL;
         $sMultipart .= 'Content-Transfer-Encoding: base64' . PHP_EOL . PHP_EOL;
-        $sMultipart .= chunk_split(base64_encode($this->_sBody), 76, PHP_EOL) . PHP_EOL;
+        $sMultipart .= chunk_split(base64_encode($p_sBody), 76, PHP_EOL) . PHP_EOL;
         return $sMultipart;
     }
 
     /**
-     * 生成html内容
-     * 
+     * 生成HTML内容
+     *
      * @param string $p_sOrigBoundary            
+     * @param string $p_sCharset            
+     * @param string $p_sBody            
+     * @param array $p_aMailImages            
      * @return string
      */
-    private function _buildHTML($p_sOrigBoundary)
+    private static function _buildHTML($p_sOrigBoundary, $p_sCharset, $p_sBody, $p_aMailImages = [])
     {
-        if (count($this->_aMailImage) > 0) {
-            $aPattern = $aReplace = array();
-            foreach ($this->_aMailImage as $aImage) {
-                $aPattern[] = '/' . $aImage['sName'] . '/i';
-                $aReplace[] = 'cid:' . $aImage['sCID'];
+        if (count($p_aMailImages) > 0) {
+            $aPatterns = $aReplaces = [];
+            foreach ($p_aMailImages as $aImage) {
+                $aPatterns[] = '/' . $aImage['sName'] . '/i';
+                $aReplaces[] = 'cid:' . $aImage['sCID'];
             }
-            $this->_sBody = preg_replace($aPattern, $aReplace, $this->_sBody);
+            $p_sBody = preg_replace($aPatterns, $aReplaces, $p_sBody);
             
             $sMultipart = '--' . $p_sOrigBoundary . PHP_EOL;
-            $sMultipart .= 'Content-Type: text/html;charset="' . $this->_sCharset . '"' . PHP_EOL;
+            $sMultipart .= 'Content-Type: text/html;charset="' . $p_sCharset . '"' . PHP_EOL;
             $sMultipart .= 'Content-Transfer-Encoding: base64' . PHP_EOL . PHP_EOL;
-            $sMultipart .= chunk_split(base64_encode($this->_sBody), 76, PHP_EOL) . PHP_EOL;
-            foreach ($this->_aMailImage as $aImage) {
+            $sMultipart .= chunk_split(base64_encode($p_sBody), 76, PHP_EOL) . PHP_EOL;
+            foreach ($p_aMailImages as $aImage) {
                 $sMultipart .= '--' . $p_sOrigBoundary . PHP_EOL;
-                $sMultipart .= $this->_buildHTMLImage($aImage);
+                $sMultipart .= self::_buildHTMLImage($aImage);
             }
         } else {
             $sMultipart = '--' . $p_sOrigBoundary . PHP_EOL;
-            $sMultipart .= 'Content-Type: text/html;charset="' . $this->_sCharset . '"' . PHP_EOL;
+            $sMultipart .= 'Content-Type: text/html;charset="' . $p_sCharset . '"' . PHP_EOL;
             $sMultipart .= 'Content-Transfer-Encoding: base64' . PHP_EOL . PHP_EOL;
-            $sMultipart .= chunk_split(base64_encode($this->_sBody), 76, PHP_EOL) . PHP_EOL;
+            $sMultipart .= chunk_split(base64_encode($p_sBody), 76, PHP_EOL) . PHP_EOL;
         }
         return $sMultipart;
     }
 
     /**
      * 编译HTML中带的图片
-     * 
+     *
      * @param array $p_aImage            
      * @return string
      */
-    private function _buildHTMLImage($p_aImage)
+    private static function _buildHTMLImage($p_aImage)
     {
         $sMultipart = 'Content-Type: ' . $p_aImage['sMimeType'];
         if ($p_aImage['sName'] != '') {
@@ -439,21 +469,22 @@ class mail_phpmail
 
     /**
      * 编译附件内容
-     * 
-     * @param array $p_aAttach            
+     *
+     * @param array $p_aAttachs            
+     * @param string $p_sCharset            
      * @return string
      */
-    private function _buildAttach($p_aAttach)
+    private static function _buildAttach($p_aAttachs, $p_sCharset)
     {
-        $sMultipart = 'Content-Type: ' . $p_aAttach['sMimeType'] . ';charset="' . $this->_sCharset;
-        if ($p_aAttach['sName'] != '') {
-            $sMultipart .= '; name="' . $p_aAttach['sName'] . '"' . PHP_EOL;
+        $sMultipart = 'Content-Type: ' . $p_aAttachs['sMimeType'] . ';charset="' . $p_sCharset;
+        if ($p_aAttachs['sName'] != '') {
+            $sMultipart .= '"; name="' . $p_aAttachs['sName'] . '"' . PHP_EOL;
         } else {
-            $sMultipart .= PHP_EOL;
+            $sMultipart .= '"' . PHP_EOL;
         }
         $sMultipart .= 'Content-Transfer-Encoding: base64' . PHP_EOL;
-        $sMultipart .= 'Content-Disposition: attachment; filename="' . $p_aAttach['sName'] . '"' . PHP_EOL . PHP_EOL;
-        $sMultipart .= chunk_split(base64_encode($p_aAttach['oContent']), 76, PHP_EOL) . PHP_EOL;
+        $sMultipart .= 'Content-Disposition: attachment; filename="' . $p_aAttachs['sName'] . '"' . PHP_EOL . PHP_EOL;
+        $sMultipart .= chunk_split(base64_encode($p_aAttachs['oContent']), 76, PHP_EOL) . PHP_EOL;
         return $sMultipart;
     }
 }

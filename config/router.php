@@ -14,6 +14,9 @@ return [
         'controller_sys_robot' => [
             '/^\/robot\.txt$/i'
         ],
+        'controller_sys_phpinfo' => [
+            '/^\/phpinfo\/$/i'
+        ],
         'controller_app_test' => [
             '/^\/(\w+)-(\w+)-(\w+)/i',
             [

@@ -24,7 +24,10 @@ class controller_sys_phpinfo extends lib_controller_web
     function doRequest()
     {
         $this->addHeader('Content-Type:text/html; charset=utf-8');
-        return 'controller_home_404';
-        return 'app_phpinfo';
+        if (PANDA_ENV_NAME == PANDA_ENV_RELEASE) {
+            return 'controller_home_404';
+        } else {
+            return 'app_phpinfo';
+        }
     }
 }
