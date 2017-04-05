@@ -7,5 +7,5 @@
  * @package config
  */
 return [
-    'sCookieDomain' => 'dev.jxu.home'
+    'sCookieDomain' => 'dev.jxulife.com'
 ];

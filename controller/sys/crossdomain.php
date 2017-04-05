@@ -22,7 +22,6 @@ class controller_sys_crossdomain extends lib_controller_web
      * @var array
      */
     const CROSS_DOMAIN_LIST = [
-        '*.jxu.home',
         '*.jxulife.com'
     ];
 

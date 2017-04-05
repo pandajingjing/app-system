@@ -38,6 +38,13 @@ class lib_client_curl
     private $_sContent = '';
 
     /**
+     * 最大重定向次数
+     *
+     * @var int
+     */
+    private $_iMaxRedirs = 5;
+
+    /**
      * 构造函数
      *
      * 设置客户端请求的url,捕获返回内容,建立连接和返回内容的超时时间
@@ -49,8 +56,15 @@ class lib_client_curl
     {
         $this->_oResource = curl_init($p_sURL);
         $this->setOption(CURLOPT_RETURNTRANSFER, true);
+        $this->setOption(CURLOPT_FILETIME, true);
+        $this->setOption(CURLOPT_MAXREDIRS, $this->_iMaxRedirs);
+        $this->setOption(CURLOPT_SAFE_UPLOAD, true);
+        $this->setOption(CURLOPT_FOLLOWLOCATION, true);
         $this->setConnectTimeOut(lib_sys_var::getInstance()->getConfig('iConnectionTimeout', 'client'));
         $this->setTimeOut(lib_sys_var::getInstance()->getConfig('iExecuteTimeout', 'client'));
+        $sCookieFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cookie';
+        $this->setOption(CURLOPT_COOKIEJAR, $sCookieFile);
+        $this->setOption(CURLOPT_COOKIEFILE, $sCookieFile);
     }
 
     /**
@@ -108,6 +122,17 @@ class lib_client_curl
     function setTimeOut($p_iTime)
     {
         return $this->setOption(CURLOPT_TIMEOUT_MS, $p_iTime);
+    }
+
+    /**
+     * 设置来源网页
+     *
+     * @param string $p_sReferer            
+     * @return true|false
+     */
+    function setReferer($p_sReferer)
+    {
+        return $this->setOption(CURLOPT_REFERER, $p_sReferer);
     }
 
     /**
