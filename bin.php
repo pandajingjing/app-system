@@ -42,7 +42,9 @@ function __autoload($p_sClassName)
  */
 function bin($p_bHttpRequest = true)
 {
-    ob_start('ob_gzhandler');
+    if ($p_bHttpRequest) {
+        ob_start('ob_gzhandler');
+    }
     error_reporting(E_ALL);
     
     $oDebugger = lib_sys_debugger::getInstance();

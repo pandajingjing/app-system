@@ -37,6 +37,7 @@ abstract class lib_controller_cmd extends lib_sys_controller
      */
     function beforeRequest()
     {
+        set_time_limit(1800);
         parent::beforeRequest();
         $this->_fStartTime = $this->getRealTime(true);
         $this->stdOut('PHP Console Type Start: ' . get_class($this));
