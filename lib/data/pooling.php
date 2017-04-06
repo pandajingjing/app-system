@@ -28,7 +28,7 @@ class lib_data_pooling
      *
      * @var string
      */
-    private $_sDeCrypt = 'ce61649168';
+    private $_sDeCrypt = '0fc613bdc6';//substr(md5('jxu'),-10)
 
     /**
      * 数据连接池

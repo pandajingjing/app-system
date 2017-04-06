@@ -15,4 +15,7 @@
  */
 class lib_data_pdostatement extends PDOStatement
 {
+
+    protected function __construct()
+    {}
 }
