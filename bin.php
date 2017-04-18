@@ -37,14 +37,72 @@ function __autoload($p_sClassName)
  *
  * 框架引导文件会调用此函数进入框架,完成所有流程
  *
- * @param boolean $p_bHttpRequest            
  * @return void
  */
-function bin($p_bHttpRequest = true)
+function bin()
 {
-    if ($p_bHttpRequest) {
-        ob_start('ob_gzhandler');
+    ob_start('ob_gzhandler');
+    error_reporting(E_ALL);
+    
+    $oDebugger = lib_sys_debugger::getInstance();
+    $oDebugger->startDebug('Proccess');
+    
+    $oVar = lib_sys_var::getInstance();
+    date_default_timezone_set($oVar->getConfig('sTimeZone', 'system'));
+    mb_internal_encoding('utf8');
+    register_shutdown_function('util_sys_handle::handleShutdown');
+    // set_exception_handler('Util_Sys_Handle::handleException');
+    // set_error_handler('Util_Sys_Handle::handleError');
+    
+    $oDebugger->startDebug('Parse Route');
+    $oRouter = lib_sys_router::getInstance();
+    $oRouter->parseURI($oVar->getParam('DISPATCH_PARAM', 'server'));
+    $sControllerName = $oRouter->getControllerName();
+    $oDebugger->showMsg('router find controller: ' . $sControllerName);
+    $oVar->setRouterParam($oRouter->getRouterParam());
+    $oDebugger->stopDebug('Parse Route');
+    
+    while (true) {
+        $oDebugger->startDebug('Handle Controller: ' . $sControllerName);
+        $oRelClass = new ReflectionClass($sControllerName);
+        $oRelInstance = $oRelClass->newInstance();
+        $oRelMethod = $oRelClass->getMethod('beforeRequest');
+        $oRelMethod->invoke($oRelInstance);
+        $oRelMethod = $oRelClass->getMethod('doRequest');
+        $mReturn = $oRelMethod->invoke($oRelInstance);
+        $oDebugger->showMsg('controller return: ' . $mReturn);
+        $oRelMethod = $oRelClass->getMethod('afterRequest');
+        $oRelMethod->invoke($oRelInstance);
+        $oDebugger->stopDebug('Handle Controller: ' . $sControllerName);
+        if (class_exists($mReturn)) { // 判断是否返回的是另外一个controller
+            $sControllerName = $mReturn;
+        } else {
+            $sPagePath = $mReturn;
+            break;
+        }
     }
+    
+    $oDebugger->startDebug('Render Page: ' . $mReturn);
+    $oRelMethod = $oRelClass->getMethod('getPageData');
+    $aPageData = $oRelMethod->invoke($oRelInstance);
+    
+    $oTpl = lib_sys_template::getInstance();
+    $oTpl->setPageData($aPageData);
+    $oTpl->render($sPagePath);
+    $oDebugger->stopDebug('Render Page: ' . $mReturn);
+    
+    $oDebugger->stopDebug('Proccess');
+}
+
+/**
+ * 入口函数
+ *
+ * 框架引导文件会调用此函数进入框架,完成所有流程
+ *
+ * @return void
+ */
+function bin_cmd()
+{
     error_reporting(E_ALL);
     
     $oDebugger = lib_sys_debugger::getInstance();
@@ -84,16 +142,6 @@ function bin($p_bHttpRequest = true)
         }
     }
     
-    if ($p_bHttpRequest) {
-        $oDebugger->startDebug('Render Page: ' . $mReturn);
-        $oRelMethod = $oRelClass->getMethod('getPageData');
-        $aPageData = $oRelMethod->invoke($oRelInstance);
-        
-        $oTpl = lib_sys_template::getInstance();
-        $oTpl->setPageData($aPageData);
-        $oTpl->render($sPagePath);
-        $oDebugger->stopDebug('Render Page: ' . $mReturn);
-    }
     $oDebugger->stopDebug('Proccess');
 }
 
@@ -110,7 +158,9 @@ function debug()
     $aParams = func_get_args();
     
     if (0 == $iCnt) {
-        return;
+        $aTmp = debug_backtrace();
+        $aTmp = $aTmp[0];
+        debug($aTmp['file'] . '::' . $aTmp['line']);
     } elseif (1 == $iCnt) {
         $mParam = $aParams[0];
         switch (true) {

@@ -248,7 +248,7 @@ class util_image
     static function createIdentifyCodeImage($p_iWidth, $p_iHeight, $p_sStr, $p_iFontSize = 0, $p_iPointDensity = 0, $p_iCircleDensity = 0, $p_iFontAngle = 0)
     {
         // 获取各种默认值
-        $sTextFont = lib_sys_var::getInstance()->getConfig('sImgFont', 'common');
+        $sTextFont = lib_sys_var::getInstance()->getConfig('sImgFont', 'image');
         if (0 == $p_iFontSize) {
             $p_iFontSize = round($p_iHeight * 3 / 5);
         }

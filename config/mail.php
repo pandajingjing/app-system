@@ -1,8 +1,8 @@
 <?php
 /**
- * config_data
+ * config_mail
  *
- * 数据存储相关配置
+ * 邮件相关配置
  *
  * @package config
  */

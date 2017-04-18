@@ -79,6 +79,44 @@ class lib_sys_router
      * @param string $p_sDispatchParam            
      * @return void
      */
+    function parseCMD($p_sDispatchParam)
+    {
+        $aDispatchParams = parse_url($p_sDispatchParam);
+        $sPath = $aDispatchParams['path'];
+        $sControllerName = '';
+        $aRouteParam = [];
+        
+        $aTmp = explode('/', $sPath);
+        $sParam = array_pop($aTmp);
+        if (1 == count($aTmp)) {
+            $sControllerName = 'cmd_home_home';
+        } else {
+            $aTmp[0] = 'cmd';
+            $sControllerName = join('_', $aTmp);
+        }
+        $aRouteParam = $this->_parseParam($sParam);
+        
+        if (class_exists($sControllerName)) { // 默认路由规则
+            $oRelClass = new ReflectionClass($sControllerName);
+            if ($oRelClass->isInstantiable()) {
+                $this->_sControllerName = $sControllerName;
+                $this->_aRouterParam = $aRouteParam;
+            } else {
+                $this->_sControllerName = 'cmd_home_404';
+                $this->_aRouterParam['sURL'] = $sPath;
+            }
+        } else {
+            $this->_sControllerName = 'cmd_home_404';
+            $this->_aRouterParam['sURL'] = $sPath;
+        }
+    }
+
+    /**
+     * 解析路由规则
+     *
+     * @param string $p_sDispatchParam            
+     * @return void
+     */
     function parseURI($p_sDispatchParam)
     {
         $aDispatchParams = parse_url($p_sDispatchParam);
@@ -219,8 +257,9 @@ class lib_sys_router
         $aParam = [];
         $aTmp = explode($this->_sParamSeperator, $p_sParam);
         for ($iIndex = 0;;) {
-            if (isset($aTmp[$iIndex + 1]) and isset($aTmp[$iIndex + 2])) {
-                $aParam[$aTmp[++ $iIndex]] = $aTmp[++ $iIndex];
+            if (isset($aTmp[$iIndex]) and isset($aTmp[$iIndex + 1])) {
+                $aParam[$aTmp[$iIndex]] = $aTmp[++ $iIndex];
+                ++ $iIndex;
             } else {
                 break;
             }

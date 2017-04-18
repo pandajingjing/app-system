@@ -7,5 +7,7 @@
  * @package config
  */
 return [
-    'sCookieDomain' => 'dev.jxulife.com'
+    'sCookieDomain' => 'dev.jxulife.com',
+    'sSelfSchemeDomain' => 'http://www.master.dev.jxulife.com',
+    'sCDNSchemeDomain' => 'http://static.master.dev.jxulife.com'
 ];

@@ -17,6 +17,9 @@ return [
         'controller_sys_phpinfo' => [
             '/^\/phpinfo\/$/i'
         ],
+        'controller_home_404' => [
+            '/^\/favicon\.ico$/i'
+        ],
         'controller_app_test' => [
             '/^\/(\w+)-(\w+)-(\w+)/i',
             [
