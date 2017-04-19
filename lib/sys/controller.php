@@ -35,7 +35,7 @@ abstract class lib_sys_controller
     {
         // parent::beforeRequest();
         // do something
-        lib_sys_logger::getInstance()->addLog('controller parameter', json_encode(lib_sys_debugger::getInstance()->getAllParam(), JSON_NUMERIC_CHECK | JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE), 'parameter');
+        $this->addLog('controller parameter', json_encode(lib_sys_debugger::getInstance()->getAllParam(), JSON_NUMERIC_CHECK | JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE), 'parameter');
     }
 
     /**

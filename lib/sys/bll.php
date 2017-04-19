@@ -41,9 +41,9 @@ class lib_sys_bll
      * @param array $p_aErrors            
      * @return array
      */
-    protected function returnError($p_aErrors)
+    protected function returnErrors($p_aErrors)
     {
-        return util_sys_response::returnError($p_aErrors);
+        return util_sys_response::returnErrors($p_aErrors);
     }
 
     /**

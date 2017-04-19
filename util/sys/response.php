@@ -36,7 +36,7 @@ class util_sys_response
      * @param array $p_aErrors            
      * @return array
      */
-    static function returnError($p_aErrors)
+    static function returnErrors($p_aErrors)
     {
         return [
             'iStatus' => 0,
