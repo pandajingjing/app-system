@@ -10,8 +10,8 @@ return [
     'test_db' => [
         'sType' => 'mysql',
         'sDSN' => 'mysql:host=127.0.0.1;dbname=test_db;port=3306',
-        'sUserName' => 'app',
-        'sUserPassword' => 'N71rS2bx+VcloDgnQEg',
+        'sUserName' => 'username',
+        'sUserPassword' => 'userpassword',
         'aInitSQL' => [
             'set names utf8'
         ]
@@ -52,7 +52,7 @@ return [
             6379,
             1
         ],
-        'sUserPassword' => '123456',
+        'sUserPassword' => 'password',
         'iIndex' => 1
     ],
     'ormcache' => [
