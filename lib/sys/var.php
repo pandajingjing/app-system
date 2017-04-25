@@ -218,7 +218,7 @@ class lib_sys_var
                 $sConfigFilePath = $sConfigDir . DIRECTORY_SEPARATOR . $p_sClass . '.php';
                 if (file_exists($sConfigFilePath)) {
                     $aConfig = include $sConfigFilePath;
-                    $this->_aConfig[$p_sClass] = array_merge_recursive($this->_aConfig[$p_sClass], $aConfig);
+                    $this->_aConfig[$p_sClass] = array_merge($this->_aConfig[$p_sClass], $aConfig);
                 }
             }
         }
