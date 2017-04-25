@@ -25,14 +25,36 @@ class lib_sys_bll
     {}
 
     /**
-     * 返回成功数据
+     * 返回一行数据
      *
-     * @param array $p_aData            
+     * @param array $p_aRow            
      * @return array
      */
-    protected function returnSuccess($p_aData)
+    protected function returnRow($p_aRow)
     {
-        return util_sys_response::returnSuccess($p_aData);
+        return util_sys_response::returnRow($p_aRow);
+    }
+
+    /**
+     * 返回一个值
+     *
+     * @param mix $p_mOne            
+     * @return array
+     */
+    protected function returnOne($p_mOne)
+    {
+        return util_sys_response::returnOne($p_mOne);
+    }
+
+    /**
+     * 返回主键值
+     *
+     * @param mix $p_mPrimary            
+     * @return array
+     */
+    protected function returnPrimary($p_mPrimary)
+    {
+        return util_sys_response::returnPrimary($p_mPrimary);
     }
 
     /**
@@ -49,13 +71,13 @@ class lib_sys_bll
     /**
      * 返回列表数据
      *
-     * @param array $p_aDataList            
+     * @param array $p_aList            
      * @param int $p_iTotal            
      * @return array
      */
-    protected function returnList($p_aDataList, $p_iTotal)
+    protected function returnList($p_aList, $p_iTotal)
     {
-        return util_sys_response::returnList($p_aDataList, $p_iTotal);
+        return util_sys_response::returnList($p_aList, $p_iTotal);
     }
 
     /**
@@ -68,7 +90,7 @@ class lib_sys_bll
      */
     protected function addLog($p_sTitle, $p_sContent, $p_sClass = 'common')
     {
-        lib_sys_logger::getInstance()->addLog($p_sTitle, $p_sContent, $p_sClass = 'common');
+        lib_sys_logger::getInstance()->addLog($p_sTitle, $p_sContent, $p_sClass);
     }
 
     /**

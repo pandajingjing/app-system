@@ -161,7 +161,7 @@ class lib_sys_var
      */
     function getParam($p_sKey, $p_sType)
     {
-        $aTmp = $this->getAllParams($p_sType);
+        $aTmp = $this->getAllParam($p_sType);
         return $aTmp[$p_sKey] ?? null;
     }
 
@@ -171,7 +171,7 @@ class lib_sys_var
      * @param string $p_sType            
      * @return mix
      */
-    function getAllParams($p_sType)
+    function getAllParam($p_sType)
     {
         switch ($p_sType) {
             case 'post':
@@ -249,9 +249,9 @@ class lib_sys_var
         $aServer['CLIENTIP'] = $sIP;
         $aServer['REQUEST_TIME'] = $_SERVER['REQUEST_TIME'];
         $aServer['REQUEST_TIME_FLOAT'] = $_SERVER['REQUEST_TIME_FLOAT'];
-        $aServer['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        $aServer['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'] ?? null;
         $aServer['DISPATCH_PARAM'] = $_SERVER['REQUEST_URI'];
-        $aServer['HTTP_REFERER'] = $_SERVER['HTTP_REFERER'] ?? '';
+        $aServer['HTTP_REFERER'] = $_SERVER['HTTP_REFERER'] ?? null;
         $aServer['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
         return $aServer;
     }
@@ -264,7 +264,7 @@ class lib_sys_var
     private function _getConsoleParam()
     {
         $aCmd = [];
-        $aCmd['DISPATCH_PARAM'] = $_SERVER['argv'][1] ?? '';
+        $aCmd['DISPATCH_PARAM'] = $_SERVER['argv'][1] ?? null;
         $aCmd['REQUEST_TIME'] = $_SERVER['REQUEST_TIME'];
         if ($_SERVER['argc'] > 2) {
             $aCmd['REQUEST_ARGV'] = [];

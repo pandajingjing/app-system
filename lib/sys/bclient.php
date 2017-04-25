@@ -43,15 +43,39 @@ class lib_sys_bclient
         $aTmp = explode('_', $p_sClassName);
         $aTmp[0] = 'bll';
         $sBllName = join('_', $aTmp);
-        if (class_exists($sBllName)) {
-            $oRelClass = new ReflectionClass($sBllName);
-            $oRelInstance = $oRelClass->newInstance();
-            $oRelMethod = $oRelClass->getMethod($p_sFuncName);
-            return $oRelMethod->invokeArgs($oRelInstance, $p_aFuncParams);
+        $sFuncKey = $sBllName . '::' . $p_sFuncName;
+        
+        if (isset(self::$_aBllPool[$sBllName])) {
+            if (isset(self::$_aFuncPool[$sFuncKey])) {} else {
+                $oRelClass = new ReflectionClass($sBllName);
+                self::$_aFuncPool[$sFuncKey] = $oRelClass->getMethod($p_sFuncName);
+            }
+            return self::$_aFuncPool[$sFuncKey]->invokeArgs(self::$_aBllPool[$sBllName], $p_aFuncParams);
         } else {
-            throw new Exception(__CLASS__ . ': can not find bll class(' . $sBllName . ').');
+            if (class_exists($sBllName)) {
+                $oRelClass = new ReflectionClass($sBllName);
+                self::$_aBllPool[$sBllName] = $oRelClass->newInstance();
+                self::$_aFuncPool[$sFuncKey] = $oRelClass->getMethod($p_sFuncName);
+                return self::$_aFuncPool[$sFuncKey]->invokeArgs(self::$_aBllPool[$sBllName], $p_aFuncParams);
+            } else {
+                throw new Exception(__CLASS__ . ': can not find bll class(' . $sBllName . ').');
+            }
         }
     }
+
+    /**
+     * 用于存放本地调用时的业务逻辑函数
+     * 
+     * @var array
+     */
+    private static $_aFuncPool = [];
+
+    /**
+     * 用于存放本地调用时的业务逻辑类实例
+     *
+     * @var array
+     */
+    private static $_aBllPool = [];
 
     /**
      * 调用业务逻辑

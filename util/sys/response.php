@@ -17,16 +17,44 @@ class util_sys_response
 {
 
     /**
-     * 返回数组数据
+     * 返回一行数据
      *
-     * @param array $p_aData            
+     * @param array $p_aRow            
      * @return array
      */
-    static function returnSuccess($p_aData)
+    static function returnRow($p_aRow)
     {
         return [
             'iStatus' => 1,
-            'aData' => $p_aData
+            'aRow' => $p_aRow
+        ];
+    }
+
+    /**
+     * 返回一个值
+     *
+     * @param mix $p_mOne            
+     * @return array
+     */
+    static function returnOne($p_mOne)
+    {
+        return [
+            'iStatus' => 1,
+            'mOne' => $p_mOne
+        ];
+    }
+
+    /**
+     * 返回主键值
+     *
+     * @param mix $p_mPrimary            
+     * @return array
+     */
+    static function returnPrimary($p_mPrimary)
+    {
+        return [
+            'iStatus' => 1,
+            'mPrimary' => $p_mPrimary
         ];
     }
 
@@ -47,16 +75,16 @@ class util_sys_response
     /**
      * 返回列表数据
      *
-     * @param array $p_aDataList            
-     * @param int $p_iCnt            
+     * @param array $p_aList            
+     * @param int $p_iTotal            
      * @return array
      */
-    static function returnList($p_aDataList, $p_iCnt)
+    static function returnList($p_aList, $p_iTotal)
     {
         return [
             'iStatus' => 1,
-            'aDataList' => $p_aDataList,
-            'iTotal' => $p_iCnt
+            'aList' => $p_aList,
+            'iTotal' => $p_iTotal
         ];
     }
 }

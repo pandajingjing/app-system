@@ -26,9 +26,7 @@ class controller_sys_rpc extends lib_controller_http
         if (util_error::isError()) {
             $this->setData('mJData', util_sys_response::returnErrors(util_error::getErrors()));
         } else {
-            $this->setData('mJData', util_sys_response::returnSuccess([
-                'this is a rpc request.'
-            ]));
+            $this->setData('mJData', util_sys_response::returnOne('this is a rpc request.'));
         }
         return 'service_json';
     }

@@ -28,14 +28,38 @@ abstract class lib_controller_service extends lib_controller_http
     }
 
     /**
-     * 设置成功数据,并返回模版名称
+     * 返回一行数据
      *
-     * @param array $p_aData            
-     * @return string
+     * @param array $p_aRow            
+     * @return array
      */
-    protected function returnSuccess($p_aData)
+    protected function returnRow($p_aRow)
     {
-        $this->setData('mJData', util_sys_response::returnSuccess($p_aData));
+        $this->setData('mJData', util_sys_response::returnRow($p_aRow));
+        return 'service_json';
+    }
+
+    /**
+     * 返回一个值
+     *
+     * @param mix $p_mOne            
+     * @return array
+     */
+    protected function returnOne($p_mOne)
+    {
+        $this->setData('mJData', util_sys_response::returnOne($p_mOne));
+        return 'service_json';
+    }
+
+    /**
+     * 返回主键值
+     *
+     * @param mix $p_mPrimary            
+     * @return array
+     */
+    protected function returnPrimary($p_mPrimary)
+    {
+        $this->setData('mJData', util_sys_response::returnPrimary($p_mPrimary));
         return 'service_json';
     }
 
@@ -58,9 +82,9 @@ abstract class lib_controller_service extends lib_controller_http
      * @param int $p_iCnt            
      * @return string
      */
-    protected function returnList($p_aList, $p_iCnt)
+    protected function returnList($p_aList, $p_iTotal)
     {
-        $this->setData('mJData', util_sys_response::returnList($p_aList, $p_iCnt));
+        $this->setData('mJData', util_sys_response::returnList($p_aList, $p_iTotal));
         return 'service_json';
     }
 }

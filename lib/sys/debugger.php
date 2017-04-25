@@ -222,12 +222,12 @@ class lib_sys_debugger
     function getAllParam()
     {
         return [
-            'aPost' => $this->_oVari->getAllParams('post'),
-            'aGet' => $this->_oVari->getAllParams('get'),
-            'aRouter' => $this->_oVari->getAllParams('router'),
-            'aCookie' => $this->_oVari->getAllParams('cookie'),
-            'aServer' => $this->_oVari->getAllParams('server'),
-            'aConfig' => $this->_oVari->getAllParams('config')
+            'aPost' => $this->_oVari->getAllParam('post'),
+            'aGet' => $this->_oVari->getAllParam('get'),
+            'aRouter' => $this->_oVari->getAllParam('router'),
+            'aCookie' => $this->_oVari->getAllParam('cookie'),
+            'aServer' => $this->_oVari->getAllParam('server'),
+            'aConfig' => $this->_oVari->getAllParam('config')
         ];
     }
 }

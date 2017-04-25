@@ -70,7 +70,7 @@ class util_browser
     static function setCookie($p_aCookie = [])
     {
         if (empty($p_aCookie)) {
-            $p_aCookie = lib_sys_var::getInstance()->getAllParams('cookie');
+            $p_aCookie = lib_sys_var::getInstance()->getAllParam('cookie');
         }
         $sTmp = http_build_query($p_aCookie);
         if (strstr($sTmp, '&')) {

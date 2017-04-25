@@ -82,6 +82,17 @@ abstract class lib_sys_controller
     }
 
     /**
+     * 获取相关方法的所有参数
+     *
+     * @param string $p_sMethod            
+     * @return array
+     */
+    protected function getAllParam($p_sMethod)
+    {
+        return lib_sys_var::getInstance()->getAllParam($p_sMethod);
+    }
+
+    /**
      * 获取请求时间
      *
      * @param boolean $p_bFloat            
